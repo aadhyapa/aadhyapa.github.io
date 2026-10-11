@@ -1,0 +1,23 @@
+Contrast report (WCAG 2.x, text threshold 4.5:1)
+
+PASS  11.95:1  text #2c3a31 on white #ffffff  (body on window)
+PASS  10.43:1  text #2c3a31 on blush #ffeaf4  (body on panel)
+PASS   9.63:1  text #2c3a31 on mint #cdefd6  (body on tag/card)
+PASS   9.14:1  text #2c3a31 on pink-light #ffd6ea  (body on selected row)
+PASS  14.75:1  ink #1e2b22 on white #ffffff  (label on window)
+PASS   7.63:1  ink #1e2b22 on pink #ff9ccb  (title bar / button label)
+PASS  11.28:1  ink #1e2b22 on pink-light #ffd6ea  (inactive tab label)
+PASS  12.87:1  ink #1e2b22 on blush #ffeaf4  (toolbar label)
+PASS   8.42:1  ink #1e2b22 on green #8fd3a0  (title bar label)
+PASS  11.88:1  ink #1e2b22 on mint #cdefd6  (tag label)
+PASS   6.45:1  deep-green #1f6b49 on white #ffffff  (link on white)
+PASS   5.63:1  deep-green #1f6b49 on blush #ffeaf4  (link on panel)
+PASS   5.19:1  deep-green #1f6b49 on mint #cdefd6  (link on mint)
+PASS   6.79:1  raspberry #b0145a on white #ffffff  (handwriting on white)
+PASS   5.92:1  raspberry #b0145a on blush #ffeaf4  (handwriting on panel)
+PASS   5.19:1  raspberry #b0145a on pink-light #ffd6ea  (handwriting on soft fill)
+
+NOTE  lace #ffc4e0: DECORATION ONLY, never text. Excluded from text checks.
+      for reference, lace on white = 1.48:1
+
+All text pairings pass 4.5:1

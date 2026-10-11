@@ -1,0 +1,60 @@
+:root {
+	/* color */
+	--color-ink: #1e2b22;
+	--color-text: #2c3a31;
+	--color-white: #ffffff;
+	--color-pink: #ff9ccb;
+	--color-pink-light: #ffd6ea;
+	--color-blush: #ffeaf4;
+	--color-lace: #ffc4e0; /* decoration only, never text */
+	--color-green: #8fd3a0;
+	--color-mint: #cdefd6;
+	--color-deep-green: #1f6b49;
+	--color-raspberry: #b0145a;
+
+	/* type */
+	--font-display: 'Bagel Fat One', system-ui, sans-serif;
+	--font-body: 'Quicksand Variable', system-ui, sans-serif;
+	--font-pixel: 'Silkscreen', ui-monospace, monospace;
+	--font-hand: 'La Belle Aurore', cursive;
+
+	--text-xs: 0.75rem;
+	--text-sm: 0.875rem;
+	--text-base: 1rem;
+	--text-md: 1.0625rem;
+	--text-lg: 1.25rem;
+	--text-xl: 1.75rem;
+	--text-2xl: 2.5rem;
+
+	--weight-medium: 500;
+	--weight-bold: 700;
+	--leading-body: 1.6;
+	--leading-tight: 1.15;
+
+	/* spacing */
+	--space-1: 0.25rem;
+	--space-2: 0.5rem;
+	--space-3: 0.75rem;
+	--space-4: 1rem;
+	--space-5: 1.5rem;
+	--space-6: 2rem;
+	--space-7: 3rem;
+	--space-8: 4rem;
+	--tap-target: 44px;
+
+	/* shape */
+	--outline-width: 2.5px;
+	--radius-sm: 8px;
+	--radius-window: 16px;
+	--radius-window-sm: 14px;
+	--radius-pill: 999px;
+
+	/* hard shadows */
+	--shadow-sm: 2px 2px 0 var(--color-ink);
+	--shadow-md: 4px 4px 0 var(--color-ink);
+	--shadow-lg: 6px 6px 0 var(--color-ink);
+
+	/* focus */
+	--focus-ring: 3px solid var(--color-ink);
+	--focus-offset: 2px;
+}

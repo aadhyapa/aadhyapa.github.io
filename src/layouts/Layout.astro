@@ -1,5 +1,6 @@
 ---
 import { ClientRouter } from 'astro:transitions';
+import '../styles/global.css';
 
 interface Props {
 	title: string;
@@ -51,14 +52,14 @@ const { title } = Astro.props;
 	#backdrop {
 		min-height: 100vh;
 		padding: 1rem;
-		background: #cdefd6;
+		background: var(--color-mint);
 	}
 
 	dialog[open] {
 		position: fixed;
 		inset: 20% auto auto 50%;
 		translate: -50% 0;
-		border: 2px solid #1e2b22;
-		background: #fff;
+		border: var(--outline-width) solid var(--color-ink);
+		background: var(--color-white);
 	}
 </style>

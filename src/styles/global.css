@@ -1,0 +1,100 @@
+@import '@fontsource/bagel-fat-one/latin-400.css';
+@import '@fontsource/silkscreen/latin-400.css';
+@import '@fontsource/silkscreen/latin-700.css';
+@import '@fontsource/la-belle-aurore/latin-400.css';
+@import '@fontsource-variable/quicksand/wght.css';
+@import './tokens.css';
+
+*,
+*::before,
+*::after {
+	box-sizing: border-box;
+}
+
+* {
+	margin: 0;
+}
+
+html {
+	-webkit-text-size-adjust: 100%;
+	text-size-adjust: 100%;
+}
+
+body {
+	min-height: 100vh;
+	font-family: var(--font-body);
+	font-size: var(--text-md);
+	font-weight: var(--weight-medium);
+	line-height: var(--leading-body);
+	color: var(--color-text);
+	background: var(--color-mint);
+	-webkit-font-smoothing: antialiased;
+}
+
+img,
+picture,
+svg,
+video,
+canvas {
+	display: block;
+	max-width: 100%;
+}
+
+input,
+button,
+textarea,
+select {
+	font: inherit;
+	color: inherit;
+}
+
+h1,
+h2,
+h3 {
+	font-family: var(--font-display);
+	font-weight: 400;
+	line-height: var(--leading-tight);
+	color: var(--color-ink);
+}
+
+p,
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+	overflow-wrap: break-word;
+}
+
+a {
+	color: var(--color-deep-green);
+	text-decoration-thickness: 0.1em;
+	text-underline-offset: 0.15em;
+}
+
+a:hover {
+	text-decoration-thickness: 0.18em;
+}
+
+:focus-visible {
+	outline: var(--focus-ring);
+	outline-offset: var(--focus-offset);
+}
+
+@media (prefers-reduced-motion: reduce) {
+	*,
+	*::before,
+	*::after {
+		animation-duration: 0.01ms !important;
+		animation-iteration-count: 1 !important;
+		transition-duration: 0.01ms !important;
+		scroll-behavior: auto !important;
+	}
+
+	::view-transition-group(*),
+	::view-transition-old(*),
+	::view-transition-new(*) {
+		animation: none !important;
+	}
+}
