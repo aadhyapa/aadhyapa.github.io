@@ -1,0 +1,42 @@
+---
+/**
+ * RibbonLabel: black ribbon heading with swallowtail ends, pixel font.
+ * Props:
+ *   as     'h2' | 'h3' | 'h4' | 'p' | 'span'   element to render, default 'h2'
+ *   class  extra classes
+ * Slot: label text.
+ */
+interface Props {
+	as?: 'h2' | 'h3' | 'h4' | 'p' | 'span';
+	class?: string;
+}
+const { as: Tag = 'h2', class: className = '' } = Astro.props;
+---
+
+<Tag class:list={['ribbon-label', className]}>
+	<slot />
+</Tag>
+
+<style>
+	.ribbon-label {
+		--notch: 0.6rem;
+		display: inline-block;
+		padding: var(--space-2) calc(var(--space-4) + var(--notch));
+		font-family: var(--font-pixel);
+		font-size: var(--text-xs);
+		font-weight: var(--weight-bold);
+		line-height: 1;
+		letter-spacing: 0.12em;
+		text-transform: uppercase;
+		color: var(--color-white);
+		background: var(--color-ink);
+		clip-path: polygon(
+			0 0,
+			100% 0,
+			calc(100% - var(--notch)) 50%,
+			100% 100%,
+			0 100%,
+			var(--notch) 50%
+		);
+	}
+</style>

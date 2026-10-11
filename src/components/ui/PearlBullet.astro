@@ -1,0 +1,37 @@
+---
+/**
+ * PearlBullet: small pearl for list markers. Decorative, aria-hidden.
+ * Props:
+ *   size   CSS length, default '0.7rem'
+ *   class  extra classes
+ * Use inside a list item before the text.
+ */
+interface Props {
+	size?: string;
+	class?: string;
+}
+const { size = '0.7rem', class: className = '' } = Astro.props;
+---
+
+<span
+	class:list={['pearl-bullet', className]}
+	style={`--pearl:${size}`}
+	aria-hidden="true"
+></span>
+
+<style>
+	.pearl-bullet {
+		display: inline-block;
+		flex: none;
+		width: var(--pearl);
+		height: var(--pearl);
+		border-radius: 50%;
+		background: radial-gradient(
+			circle at 35% 30%,
+			var(--color-white) 0 15%,
+			var(--color-pink-light) 50%,
+			var(--color-lace) 100%
+		);
+		box-shadow: 0 0 0 1px var(--color-lace);
+	}
+</style>

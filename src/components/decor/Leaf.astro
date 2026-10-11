@@ -1,0 +1,55 @@
+---
+/**
+ * Leaf: single leaf with a vein.
+ * Props:
+ *   variant  'green' | 'deep'   default 'green'
+ *   size     CSS width, default '1.5rem'
+ *   class    extra classes
+ * Decorative: always aria-hidden.
+ */
+interface Props {
+	variant?: 'green' | 'deep';
+	size?: string;
+	class?: string;
+}
+const {
+	variant = 'green',
+	size = '1.5rem',
+	class: className = '',
+} = Astro.props;
+---
+
+<svg
+	class:list={['leaf', `leaf--${variant}`, className]}
+	style={`width:${size}`}
+	viewBox="0 0 24 24"
+	aria-hidden="true"
+	focusable="false"
+>
+	<path class="leaf-body" d="M4 20 C3 10 9 3 21 3 C21 15 15 21 4 20 Z"></path>
+	<path class="leaf-vein" d="M4 20 L15 9"></path>
+</svg>
+
+<style>
+	.leaf {
+		--leaf-fill: var(--color-green);
+		--leaf-vein: var(--color-white);
+		height: auto;
+	}
+	.leaf--deep {
+		--leaf-fill: var(--color-deep-green);
+		--leaf-vein: var(--color-green);
+	}
+	.leaf-body {
+		fill: var(--leaf-fill);
+		stroke: var(--color-ink);
+		stroke-width: 1.8;
+		stroke-linejoin: round;
+	}
+	.leaf-vein {
+		fill: none;
+		stroke: var(--leaf-vein);
+		stroke-width: 1.5;
+		stroke-linecap: round;
+	}
+</style>

@@ -1,0 +1,36 @@
+/*
+ * Gingham: two crossed stripe gradients. Overlap makes the darker squares.
+ * Classes: .gingham (pink on white), .gingham--green, .gingham--mint (pink + green, wallpaper)
+ * Custom properties: --gingham-size (check width), --gingham-a, --gingham-b, --gingham-strength
+ */
+.gingham {
+	--gingham-size: 28px;
+	--gingham-a: var(--color-pink);
+	--gingham-b: var(--color-pink);
+	--gingham-strength: 38%;
+	background-color: var(--color-white);
+	background-image:
+		linear-gradient(
+			90deg,
+			color-mix(in srgb, var(--gingham-a) var(--gingham-strength), transparent)
+				50%,
+			transparent 50%
+		),
+		linear-gradient(
+			color-mix(in srgb, var(--gingham-b) var(--gingham-strength), transparent)
+				50%,
+			transparent 50%
+		);
+	background-size: var(--gingham-size) var(--gingham-size);
+}
+
+.gingham--green {
+	--gingham-a: var(--color-green);
+	--gingham-b: var(--color-green);
+}
+
+.gingham--mint {
+	--gingham-a: var(--color-pink);
+	--gingham-b: var(--color-green);
+	background-color: var(--color-mint);
+}

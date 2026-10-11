@@ -1,0 +1,42 @@
+/*
+ * Scallops and pearls from radial gradients.
+ * .scallop-edge        row of bumps hanging down from its top edge
+ * .scallop-edge--up    bumps rising from its bottom edge
+ * .pearl-row           row of small pearls (lace trim)
+ * Custom properties: --scallop-size (bump width), --scallop-color
+ */
+.scallop-edge {
+	--scallop-size: 20px;
+	--scallop-color: var(--color-lace);
+	height: calc(var(--scallop-size) / 2);
+	background-image: radial-gradient(
+		circle at 50% 0,
+		var(--scallop-color) calc(var(--scallop-size) / 2 - 0.5px),
+		transparent calc(var(--scallop-size) / 2)
+	);
+	background-size: var(--scallop-size) 100%;
+	background-repeat: repeat-x;
+}
+
+.scallop-edge--up {
+	background-image: radial-gradient(
+		circle at 50% 100%,
+		var(--scallop-color) calc(var(--scallop-size) / 2 - 0.5px),
+		transparent calc(var(--scallop-size) / 2)
+	);
+}
+
+.pearl-row {
+	--pearl-size: 10px;
+	--pearl-gap: 6px;
+	height: var(--pearl-size);
+	background-image: radial-gradient(
+		circle at calc(var(--pearl-size) / 2) 50%,
+		var(--color-white) 0 10%,
+		var(--color-pink-light) 40%,
+		var(--color-lace) calc(var(--pearl-size) / 2 - 0.75px),
+		transparent calc(var(--pearl-size) / 2)
+	);
+	background-size: calc(var(--pearl-size) + var(--pearl-gap)) 100%;
+	background-repeat: repeat-x;
+}

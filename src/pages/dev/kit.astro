@@ -1,0 +1,297 @@
+---
+/**
+ * Dev-only preview of every decor and UI part. Not linked from navigation, noindex.
+ */
+import '../../styles/global.css';
+import '../../styles/gingham.css';
+import '../../styles/scallop.css';
+import Bow from '../../components/decor/Bow.astro';
+import PixelHeart from '../../components/decor/PixelHeart.astro';
+import Leaf from '../../components/decor/Leaf.astro';
+import Sparkle from '../../components/decor/Sparkle.astro';
+import LaceEdge from '../../components/decor/LaceEdge.astro';
+import RibbonLabel from '../../components/ui/RibbonLabel.astro';
+import StickerButton from '../../components/ui/StickerButton.astro';
+import Pill from '../../components/ui/Pill.astro';
+import StatusTile from '../../components/ui/StatusTile.astro';
+import PearlBullet from '../../components/ui/PearlBullet.astro';
+import ProgressBar from '../../components/ui/ProgressBar.astro';
+---
+
+<!doctype html>
+<html lang="en">
+	<head>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1" />
+		<meta name="robots" content="noindex, nofollow" />
+		<title>UI kit</title>
+	</head>
+	<body class="gingham gingham--mint">
+		<main class="kit">
+			<h1>UI kit</h1>
+			<p>Dev preview of every decor and UI part.</p>
+
+			<section class="card">
+				<RibbonLabel>Bow</RibbonLabel>
+				<div class="row">
+					<figure>
+						<Bow variant="pink" size="5rem" />
+						<figcaption>pink</figcaption>
+					</figure>
+					<figure>
+						<Bow variant="black" size="5rem" />
+						<figcaption>black</figcaption>
+					</figure>
+					<figure>
+						<Bow variant="green" size="5rem" />
+						<figcaption>green</figcaption>
+					</figure>
+					<figure>
+						<Bow variant="pink" size="2rem" />
+						<figcaption>2rem</figcaption>
+					</figure>
+				</div>
+			</section>
+
+			<section class="card">
+				<RibbonLabel>Pixel heart, leaf, sparkle</RibbonLabel>
+				<div class="row">
+					<figure>
+						<PixelHeart variant="pink" size="3rem" />
+						<figcaption>heart pink</figcaption>
+					</figure>
+					<figure>
+						<PixelHeart variant="green" size="3rem" />
+						<figcaption>heart green</figcaption>
+					</figure>
+					<figure>
+						<PixelHeart variant="raspberry" size="3rem" />
+						<figcaption>heart raspberry</figcaption>
+					</figure>
+					<figure>
+						<Leaf variant="green" size="3rem" />
+						<figcaption>leaf green</figcaption>
+					</figure>
+					<figure>
+						<Leaf variant="deep" size="3rem" />
+						<figcaption>leaf deep</figcaption>
+					</figure>
+					<figure>
+						<Sparkle variant="outline" size="3rem" />
+						<figcaption>sparkle outline</figcaption>
+					</figure>
+					<figure>
+						<Sparkle variant="pink" size="3rem" />
+						<figcaption>sparkle pink</figcaption>
+					</figure>
+					<figure>
+						<Sparkle variant="green" size="3rem" />
+						<figcaption>sparkle green</figcaption>
+					</figure>
+				</div>
+			</section>
+
+			<section class="card">
+				<RibbonLabel>Lace edge</RibbonLabel>
+				<div class="lace-demo">
+					<LaceEdge position="top" />
+					<p>position top</p>
+					<LaceEdge position="bottom" size="28px" />
+				</div>
+			</section>
+
+			<section class="card">
+				<RibbonLabel>Ribbon label</RibbonLabel>
+				<div class="row">
+					<RibbonLabel as="h3">Quick facts</RibbonLabel>
+					<RibbonLabel as="span">Things I love</RibbonLabel>
+					<RibbonLabel as="span">What I learned</RibbonLabel>
+				</div>
+			</section>
+
+			<section class="card">
+				<RibbonLabel>Sticker button</RibbonLabel>
+				<div class="row">
+					<StickerButton variant="pink">pink button</StickerButton>
+					<StickerButton variant="green">green button</StickerButton>
+					<StickerButton variant="white">white button</StickerButton>
+					<StickerButton variant="pink" href="#kit-link">
+						pink link →
+					</StickerButton>
+					<StickerButton variant="green" href="#kit-link">
+						green link
+					</StickerButton>
+					<StickerButton variant="white" disabled>
+						disabled
+					</StickerButton>
+				</div>
+			</section>
+
+			<section class="card">
+				<RibbonLabel>Pill</RibbonLabel>
+				<div class="row">
+					<Pill tone="pink">thing one</Pill>
+					<Pill tone="green">thing two</Pill>
+					<Pill tone="white">thing three</Pill>
+					<Pill tone="green" pixel>
+						work
+					</Pill>
+					<Pill tone="pink" pixel>
+						project
+					</Pill>
+				</div>
+			</section>
+
+			<section class="card">
+				<RibbonLabel>Status tile</RibbonLabel>
+				<div class="grid">
+					<StatusTile label="based in" value="[city]" tone="pink" />
+					<StatusTile
+						label="right now"
+						value="[role or project]"
+						tone="green"
+					/>
+					<StatusTile label="reading" tone="pink">
+						[a book]
+					</StatusTile>
+					<StatusTile label="listening to" tone="green">
+						<Sparkle slot="icon" variant="pink" size="1.25rem" />
+						[an album]
+					</StatusTile>
+				</div>
+			</section>
+
+			<section class="card">
+				<RibbonLabel>Pearl bullet</RibbonLabel>
+				<ul class="pearls">
+					<li>
+						<PearlBullet />
+						[Something you can share]
+					</li>
+					<li>
+						<PearlBullet />
+						[Something you can share]
+					</li>
+					<li>
+						<PearlBullet size="1rem" />
+						larger pearl
+					</li>
+				</ul>
+			</section>
+
+			<section class="card">
+				<RibbonLabel>Progress bar</RibbonLabel>
+				<div class="stack">
+					<ProgressBar value={62} label="Building next project" tone="pink" />
+					<ProgressBar value={30} label="Green at 30 percent" tone="green" />
+					<ProgressBar value={0} label="Empty" segments={8} />
+					<ProgressBar value={100} label="Full" segments={8} tone="green" />
+				</div>
+			</section>
+
+			<section class="card gingham gingham--green">
+				<RibbonLabel>Gingham and scallop styles</RibbonLabel>
+				<div class="row">
+					<div class="swatch gingham">.gingham</div>
+					<div class="swatch gingham gingham--green">.gingham--green</div>
+					<div class="swatch gingham gingham--mint">.gingham--mint</div>
+					<div class="swatch">
+						<div class="scallop-edge"></div>
+						.scallop-edge
+					</div>
+					<div class="swatch">
+						<div class="pearl-row"></div>
+						.pearl-row
+					</div>
+				</div>
+			</section>
+		</main>
+	</body>
+</html>
+
+<style>
+	.kit {
+		display: grid;
+		grid-template-columns: minmax(0, 1fr);
+		gap: var(--space-5);
+		max-width: 60rem;
+		margin-inline: auto;
+		padding: var(--space-6) var(--space-4);
+	}
+	.card {
+		min-width: 0;
+		display: grid;
+		gap: var(--space-4);
+		justify-items: start;
+		padding: var(--space-5);
+		background: var(--color-white);
+		border: var(--outline-width) solid var(--color-ink);
+		border-radius: var(--radius-window);
+		box-shadow: var(--shadow-md);
+	}
+	.row {
+		display: flex;
+		flex-wrap: wrap;
+		gap: var(--space-4);
+		align-items: center;
+	}
+	.grid {
+		display: grid;
+		grid-template-columns: repeat(auto-fit, minmax(14rem, 1fr));
+		gap: var(--space-3);
+		width: 100%;
+	}
+	.stack {
+		display: grid;
+		gap: var(--space-3);
+		width: min(100%, 24rem);
+	}
+	figure {
+		display: grid;
+		justify-items: center;
+		gap: var(--space-1);
+	}
+	figcaption {
+		font-family: var(--font-pixel);
+		font-size: var(--text-xs);
+		color: var(--color-ink);
+	}
+	.lace-demo {
+		width: min(100%, 24rem);
+		background: var(--color-blush);
+		border: 2px solid var(--color-ink);
+		border-radius: var(--radius-sm);
+		overflow: hidden;
+	}
+	.lace-demo p {
+		padding: var(--space-4);
+		text-align: center;
+	}
+	.pearls {
+		display: grid;
+		gap: var(--space-2);
+		list-style: none;
+		padding: 0;
+	}
+	.pearls li {
+		display: flex;
+		align-items: center;
+		gap: var(--space-3);
+	}
+	.swatch {
+		display: grid;
+		gap: var(--space-2);
+		align-content: end;
+		width: 9rem;
+		height: 7rem;
+		padding: var(--space-2);
+		font-family: var(--font-pixel);
+		font-size: var(--text-xs);
+		color: var(--color-ink);
+		border: 2px solid var(--color-ink);
+		border-radius: var(--radius-sm);
+	}
+	.swatch:not(.gingham) {
+		background: var(--color-white);
+	}
+</style>

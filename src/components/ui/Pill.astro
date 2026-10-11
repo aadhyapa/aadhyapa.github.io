@@ -1,0 +1,49 @@
+---
+/**
+ * Pill: small rounded tag, not interactive.
+ * Props:
+ *   tone   'pink' | 'green' | 'white'   default 'white'
+ *   pixel  use the pixel font for tiny status tags, default false
+ *   class  extra classes
+ * Slot: text.
+ */
+interface Props {
+	tone?: 'pink' | 'green' | 'white';
+	pixel?: boolean;
+	class?: string;
+}
+const { tone = 'white', pixel = false, class: className = '' } = Astro.props;
+---
+
+<span class:list={['pill', `pill--${tone}`, pixel && 'pill--pixel', className]}>
+	<slot />
+</span>
+
+<style>
+	.pill {
+		--pill-bg: var(--color-white);
+		display: inline-flex;
+		align-items: center;
+		gap: var(--space-1);
+		padding: var(--space-1) var(--space-3);
+		font-size: var(--text-sm);
+		font-weight: var(--weight-bold);
+		line-height: 1.3;
+		color: var(--color-ink);
+		background: var(--pill-bg);
+		border: 2px solid var(--color-ink);
+		border-radius: var(--radius-pill);
+	}
+	.pill--pink {
+		--pill-bg: var(--color-pink-light);
+	}
+	.pill--green {
+		--pill-bg: var(--color-mint);
+	}
+	.pill--pixel {
+		font-family: var(--font-pixel);
+		font-size: var(--text-xs);
+		letter-spacing: 0.1em;
+		text-transform: uppercase;
+	}
+</style>

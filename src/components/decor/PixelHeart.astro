@@ -1,0 +1,72 @@
+---
+/**
+ * PixelHeart: 9x8 pixel heart with outline and highlight.
+ * Props:
+ *   variant  'pink' | 'green' | 'raspberry'   default 'pink'
+ *   size     CSS width, default '1.5rem'
+ *   class    extra classes
+ * Decorative: always aria-hidden.
+ */
+interface Props {
+	variant?: 'pink' | 'green' | 'raspberry';
+	size?: string;
+	class?: string;
+}
+const {
+	variant = 'pink',
+	size = '1.5rem',
+	class: className = '',
+} = Astro.props;
+
+const rows = [
+	'.ooo.ooo.',
+	'oxxxoxxxo',
+	'oxhxxxxxo',
+	'oxxxxxxxo',
+	'.oxxxxxo.',
+	'..oxxxo..',
+	'...oxo...',
+	'....o....',
+];
+const cells = rows.flatMap((row, y) =>
+	[...row].flatMap((c, x) => (c === '.' ? [] : [{ x, y, kind: c }])),
+);
+---
+
+<svg
+	class:list={['pixel-heart', `pixel-heart--${variant}`, className]}
+	style={`width:${size}`}
+	viewBox="0 0 9 8"
+	shape-rendering="crispEdges"
+	aria-hidden="true"
+	focusable="false"
+>
+	{cells.map((c) => (
+		<rect class={`c-${c.kind}`} x={c.x} y={c.y} width="1" height="1" />
+	))}
+</svg>
+
+<style>
+	.pixel-heart {
+		--heart-fill: var(--color-pink);
+		--heart-shine: var(--color-white);
+		--heart-line: var(--color-ink);
+		height: auto;
+	}
+	.pixel-heart--green {
+		--heart-fill: var(--color-green);
+	}
+	.pixel-heart--raspberry {
+		--heart-fill: var(--color-raspberry);
+		--heart-shine: var(--color-pink);
+	}
+	.c-o {
+		fill: var(--heart-line);
+	}
+	.c-x {
+		fill: var(--heart-fill);
+	}
+	.c-h {
+		fill: var(--heart-shine);
+	}
+</style>

@@ -1,0 +1,89 @@
+---
+/**
+ * StickerButton: pill button with dark outline and hard shadow. Link when href is
+ * given, otherwise a real <button>. At least 44px tall (--tap-target).
+ * Props:
+ *   href      renders <a> when set
+ *   variant   'pink' | 'green' | 'white'   default 'pink'
+ *   type      'button' | 'submit' | 'reset'   button only, default 'button'
+ *   disabled  button only
+ *   class     extra classes
+ *   ...rest   any other attribute is passed to the element (aria-label, download, data-*)
+ * Slot: label, may include an icon.
+ */
+import type { HTMLAttributes } from 'astro/types';
+
+interface Props extends Omit<HTMLAttributes<'a'>, 'class'> {
+	href?: string;
+	variant?: 'pink' | 'green' | 'white';
+	type?: 'button' | 'submit' | 'reset';
+	disabled?: boolean;
+	class?: string;
+}
+const {
+	href,
+	variant = 'pink',
+	type = 'button',
+	disabled,
+	class: className = '',
+	...rest
+} = Astro.props;
+const classes = ['sticker-button', `sticker-button--${variant}`, className];
+---
+
+{href ? (
+	<a class:list={classes} href={href} {...rest}>
+		<slot />
+	</a>
+) : (
+	<button class:list={classes} type={type} disabled={disabled} {...rest}>
+		<slot />
+	</button>
+)}
+
+<style>
+	.sticker-button {
+		--sticker-bg: var(--color-pink);
+		display: inline-flex;
+		align-items: center;
+		justify-content: center;
+		gap: var(--space-2);
+		min-height: var(--tap-target);
+		padding: var(--space-2) var(--space-5);
+		font-family: var(--font-body);
+		font-size: var(--text-base);
+		font-weight: var(--weight-bold);
+		line-height: 1.2;
+		text-decoration: none;
+		color: var(--color-ink);
+		background: var(--sticker-bg);
+		border: var(--outline-width) solid var(--color-ink);
+		border-radius: var(--radius-pill);
+		box-shadow: var(--shadow-md);
+		cursor: pointer;
+		transition:
+			transform 120ms ease,
+			box-shadow 120ms ease;
+	}
+	.sticker-button--green {
+		--sticker-bg: var(--color-green);
+	}
+	.sticker-button--white {
+		--sticker-bg: var(--color-white);
+	}
+	.sticker-button:hover {
+		transform: translate(-1px, -1px);
+		box-shadow: var(--shadow-lg);
+		text-decoration: none;
+	}
+	.sticker-button:active {
+		transform: translate(4px, 4px);
+		box-shadow: 0 0 0 var(--color-ink);
+	}
+	.sticker-button:disabled {
+		opacity: 0.55;
+		cursor: not-allowed;
+		transform: none;
+		box-shadow: var(--shadow-sm);
+	}
+</style>

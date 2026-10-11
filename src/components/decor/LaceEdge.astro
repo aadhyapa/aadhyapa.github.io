@@ -1,0 +1,49 @@
+---
+/**
+ * LaceEdge: scalloped lace trim with a row of pearls, full width of its parent.
+ * Props:
+ *   position  'top' | 'bottom'   which edge it sits on; scallops hang down from a top
+ *             edge, rise up from a bottom edge. default 'top'
+ *   size      scallop width as CSS length, default '20px'
+ *   pearls    show the pearl row, default true
+ *   class     extra classes
+ * Decorative: always aria-hidden.
+ */
+import '../../styles/scallop.css';
+
+interface Props {
+	position?: 'top' | 'bottom';
+	size?: string;
+	pearls?: boolean;
+	class?: string;
+}
+const {
+	position = 'top',
+	size = '20px',
+	pearls = true,
+	class: className = '',
+} = Astro.props;
+---
+
+<div
+	class:list={['lace-edge', `lace-edge--${position}`, className]}
+	style={`--scallop-size:${size}`}
+	aria-hidden="true"
+>
+	<div
+		class:list={['scallop-edge', position === 'bottom' && 'scallop-edge--up']}
+	></div>
+	{pearls && <div class="pearl-row"></div>}
+</div>
+
+<style>
+	.lace-edge {
+		display: flex;
+		flex-direction: column;
+		gap: var(--space-1);
+		width: 100%;
+	}
+	.lace-edge--bottom {
+		flex-direction: column-reverse;
+	}
+</style>

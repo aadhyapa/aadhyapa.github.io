@@ -1,0 +1,58 @@
+---
+/**
+ * StatusTile: outlined tile with a heart icon, bold label and a value.
+ * Props:
+ *   label  bold lead text, e.g. "based in"
+ *   value  text after the label (or use the default slot instead)
+ *   tone   'pink' | 'green'   heart colour, default 'pink'
+ *   class  extra classes
+ * Slots: default (value, overrides prop), "icon" (replaces the heart).
+ */
+import PixelHeart from '../decor/PixelHeart.astro';
+
+interface Props {
+	label: string;
+	value?: string;
+	tone?: 'pink' | 'green';
+	class?: string;
+}
+const { label, value, tone = 'pink', class: className = '' } = Astro.props;
+---
+
+<div class:list={['status-tile', className]}>
+	<span class="status-icon">
+		<slot name="icon">
+			<PixelHeart variant={tone} size="1.25rem" />
+		</slot>
+	</span>
+	<p>
+		<strong>{label}</strong>
+		<slot>{value}</slot>
+	</p>
+</div>
+
+<style>
+	.status-tile {
+		display: flex;
+		align-items: center;
+		gap: var(--space-3);
+		min-height: var(--tap-target);
+		padding: var(--space-3) var(--space-4);
+		background: var(--color-white);
+		border: 2px solid var(--color-ink);
+		border-radius: var(--radius-window-sm);
+	}
+	.status-icon {
+		display: inline-flex;
+		flex: none;
+	}
+	p {
+		font-size: var(--text-base);
+		line-height: 1.3;
+		color: var(--color-ink);
+	}
+	strong {
+		margin-inline-end: 0.3em;
+		font-weight: var(--weight-bold);
+	}
+</style>

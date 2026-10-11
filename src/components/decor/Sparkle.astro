@@ -1,0 +1,49 @@
+---
+/**
+ * Sparkle: four-point star.
+ * Props:
+ *   variant  'outline' | 'pink' | 'green'   default 'outline'
+ *   size     CSS width, default '1.5rem'
+ *   class    extra classes
+ * Decorative: always aria-hidden.
+ */
+interface Props {
+	variant?: 'outline' | 'pink' | 'green';
+	size?: string;
+	class?: string;
+}
+const {
+	variant = 'outline',
+	size = '1.5rem',
+	class: className = '',
+} = Astro.props;
+---
+
+<svg
+	class:list={['sparkle', `sparkle--${variant}`, className]}
+	style={`width:${size}`}
+	viewBox="0 0 24 24"
+	aria-hidden="true"
+	focusable="false"
+>
+	<path d="M12 2 C13 8 16 11 22 12 C16 13 13 16 12 22 C11 16 8 13 2 12 C8 11 11 8 12 2 Z"></path>
+</svg>
+
+<style>
+	.sparkle {
+		--sparkle-fill: transparent;
+		height: auto;
+	}
+	.sparkle--pink {
+		--sparkle-fill: var(--color-pink);
+	}
+	.sparkle--green {
+		--sparkle-fill: var(--color-green);
+	}
+	.sparkle path {
+		fill: var(--sparkle-fill);
+		stroke: var(--color-ink);
+		stroke-width: 1.6;
+		stroke-linejoin: round;
+	}
+</style>
