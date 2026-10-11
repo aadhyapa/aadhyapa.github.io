@@ -34,3 +34,11 @@
 	--gingham-b: var(--color-green);
 	background-color: var(--color-mint);
 }
+
+/* Quiet theme: no checks. Plain surface, same box. */
+:root[data-theme='quiet'] .gingham,
+:root[data-theme='quiet'] .gingham--green,
+:root[data-theme='quiet'] .gingham--mint {
+	background-color: var(--color-surface);
+	background-image: none;
+}

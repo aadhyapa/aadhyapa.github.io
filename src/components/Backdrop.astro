@@ -107,4 +107,19 @@ import Sparkle from './decor/Sparkle.astro';
 			display: none;
 		}
 	}
+
+	/* Quiet theme: flat background with a faint dot grid, no decoration. */
+	:global(:root[data-theme='quiet']) .backdrop {
+		background-color: var(--color-bg);
+		background-image: radial-gradient(
+			color-mix(in srgb, var(--color-line) 65%, var(--color-bg)) 1px,
+			transparent 1.4px
+		);
+		background-size: 24px 24px;
+	}
+	:global(:root[data-theme='quiet']) .glow,
+	:global(:root[data-theme='quiet']) .spark,
+	:global(:root[data-theme='quiet']) .hearts {
+		display: none;
+	}
 </style>

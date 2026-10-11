@@ -1,0 +1,58 @@
+---
+/**
+ * ThemeSwitch: text button that flips between the cute and quiet themes. It shows
+ * the theme it will switch to. The label swaps by CSS from the data-theme on <html>,
+ * so it is right on first paint and after view transitions with no script.
+ * Behavior (save choice, set data-theme) lives in scripts/theme.ts.
+ */
+---
+
+<button class="theme-switch" type="button" data-theme-switch>
+	<span class="to-quiet">
+		<span class="sr">Switch to </span>quiet<span class="sr"> theme</span>
+	</span>
+	<span class="to-cute">
+		<span class="sr">Switch to </span>cute<span class="sr"> theme</span>
+	</span>
+</button>
+
+<style>
+	.theme-switch {
+		display: inline-flex;
+		align-items: center;
+		justify-content: center;
+		min-block-size: var(--tap-target);
+		min-inline-size: var(--tap-target);
+		padding-inline: var(--space-3);
+		font-family: var(--font-pixel);
+		font-size: var(--text-sm);
+		font-weight: var(--weight-bold);
+		letter-spacing: 0.08em;
+		text-transform: uppercase;
+		white-space: nowrap;
+		color: var(--color-ink);
+		background: var(--color-white);
+		border: var(--outline-width) solid var(--color-ink);
+		border-radius: var(--radius-pill);
+		cursor: pointer;
+	}
+	.to-cute,
+	:global(:root[data-theme='quiet']) .to-quiet {
+		display: none;
+	}
+	:global(:root[data-theme='quiet']) .to-cute {
+		display: inline;
+	}
+	.sr {
+		position: absolute;
+		inline-size: 1px;
+		block-size: 1px;
+		overflow: hidden;
+		clip-path: inset(50%);
+		white-space: nowrap;
+	}
+</style>
+
+<script>
+	import '../scripts/theme.ts';
+</script>

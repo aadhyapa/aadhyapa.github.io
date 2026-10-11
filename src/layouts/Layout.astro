@@ -1,6 +1,7 @@
 ---
 import { ClientRouter } from 'astro:transitions';
 import '../styles/global.css';
+import '../styles/quiet.css';
 import '../styles/gingham.css';
 import '../styles/scallop.css';
 import '../styles/responsive.css';
@@ -8,6 +9,7 @@ import Backdrop from '../components/Backdrop.astro';
 import MenuBar from '../components/MenuBar.astro';
 import SideWidgets from '../components/SideWidgets.astro';
 import quicksand from '@fontsource-variable/quicksand/files/quicksand-latin-wght-normal.woff2?url';
+import plexMono from '@fontsource/ibm-plex-mono/files/ibm-plex-mono-latin-500-normal.woff2?url';
 import silkscreen from '@fontsource/silkscreen/files/silkscreen-latin-700-normal.woff2?url';
 
 interface Props {
@@ -26,11 +28,13 @@ const { title } = Astro.props;
 		<link rel="icon" href="/favicon.ico" />
 		<meta name="generator" content={Astro.generator} />
 		<title>{title}</title>
-		{
-			[quicksand, silkscreen].map((href) => (
-				<link rel="preload" as="font" type="font/woff2" href={href} crossorigin />
-			))
-		}
+		{[quicksand, silkscreen].map((href) => (
+			<link rel="preload" as="font" type="font/woff2" href={href} crossorigin />
+		))}
+		<!-- prettier-ignore -->
+		<script is:inline data-f={plexMono}>
+			(()=>{const d=document,h=d.documentElement;try{if(localStorage.getItem('theme')==='quiet'){h.dataset.theme='quiet';const l=d.createElement('link');l.rel='preload';l.as='font';l.type='font/woff2';l.crossOrigin='';l.href=d.currentScript.dataset.f;d.head.append(l)}}catch{/* storage blocked */}d.addEventListener('astro:before-swap',e=>{const n=e.newDocument.documentElement,t=h.dataset.theme;if(t)n.dataset.theme=t;else n.removeAttribute('data-theme')})})()
+		</script>
 		<ClientRouter />
 	</head>
 	<body>

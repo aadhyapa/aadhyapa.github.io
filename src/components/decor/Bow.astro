@@ -75,4 +75,9 @@ const { variant = 'pink', size = '4rem', class: className = '' } = Astro.props;
 	.bow-shine {
 		stroke: var(--bow-shine);
 	}
+
+	/* Quiet theme: render nothing but keep the box so layout does not move. */
+	:global(:root[data-theme='quiet']) .bow {
+		visibility: hidden;
+	}
 </style>

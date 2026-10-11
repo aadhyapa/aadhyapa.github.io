@@ -332,4 +332,76 @@ const links = [
 			grid-template-columns: 1fr;
 		}
 	}
+
+	/* Quiet theme: one hairline panel, left-aligned mono type, no frame or ribbons.
+	   Hairlines are outlines drawn inside transparent borders, so every box keeps
+	   the size it has in the cute theme. */
+	:global(:root[data-theme='quiet']) .lace-frame {
+		background: transparent;
+		border-color: transparent;
+		box-shadow: none;
+	}
+	:global(:root[data-theme='quiet']) .card {
+		border-color: transparent;
+		outline: 1px solid var(--color-line);
+		outline-offset: calc(var(--outline-width) / -2 - 0.5px);
+	}
+	:global(:root[data-theme='quiet']) .ribbon-wrap,
+	:global(:root[data-theme='quiet']) .intro {
+		text-align: left;
+	}
+	:global(:root[data-theme='quiet']) .card :global(.ribbon-label) {
+		color: var(--color-muted);
+		padding-inline: 0;
+		background: none;
+		clip-path: none;
+	}
+	:global(:root[data-theme='quiet']) .status :global(.status-icon) {
+		display: none;
+	}
+	:global(:root[data-theme='quiet']) .heart-outer {
+		background: var(--color-line);
+	}
+	:global(:root[data-theme='quiet']) .heart-inner {
+		color: var(--color-muted);
+		background: var(--color-surface);
+	}
+	:global(:root[data-theme='quiet']) .hi {
+		font-family: var(--font-body);
+		color: var(--color-muted);
+	}
+	:global(:root[data-theme='quiet']) .name {
+		color: var(--color-ink);
+		font-weight: var(--weight-medium);
+		text-shadow: none;
+	}
+	:global(:root[data-theme='quiet']) .pills :global(.pill),
+	:global(:root[data-theme='quiet']) .status :global(.status-tile) {
+		color: var(--color-text);
+		background: transparent;
+		border-color: transparent;
+		outline: 1px solid var(--color-line);
+		outline-offset: -1.5px;
+	}
+	:global(:root[data-theme='quiet']) .status :global(strong) {
+		color: var(--color-muted);
+		font-weight: var(--weight-medium);
+	}
+	:global(:root[data-theme='quiet']) .directory :global(.sticker-button) {
+		color: var(--color-ink);
+		background: transparent;
+		border-width: var(--hairline-width);
+		border-color: var(--color-line);
+		box-shadow: none;
+		transform: none;
+	}
+	:global(:root[data-theme='quiet']) .directory :global(.sticker-button:hover) {
+		border-color: var(--color-ink);
+	}
+	:global(:root[data-theme='quiet']) .strip {
+		border-block-color: transparent;
+		background: linear-gradient(var(--color-line), var(--color-line)) top / 100%
+			1px no-repeat;
+		background-origin: border-box;
+	}
 </style>

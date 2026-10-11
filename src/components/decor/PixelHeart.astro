@@ -69,4 +69,9 @@ const cells = rows.flatMap((row, y) =>
 	.c-h {
 		fill: var(--heart-shine);
 	}
+
+	/* Quiet theme: render nothing but keep the box so layout does not move. */
+	:global(:root[data-theme='quiet']) .pixel-heart {
+		visibility: hidden;
+	}
 </style>

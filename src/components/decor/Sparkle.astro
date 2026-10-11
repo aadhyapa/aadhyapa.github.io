@@ -46,4 +46,9 @@ const {
 		stroke-width: 1.6;
 		stroke-linejoin: round;
 	}
+
+	/* Quiet theme: render nothing but keep the box so layout does not move. */
+	:global(:root[data-theme='quiet']) .sparkle {
+		visibility: hidden;
+	}
 </style>

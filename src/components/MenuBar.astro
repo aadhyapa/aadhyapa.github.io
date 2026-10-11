@@ -8,6 +8,7 @@
 import PixelHeart from './decor/PixelHeart.astro';
 import StickerButton from './ui/StickerButton.astro';
 import Clock from './Clock.astro';
+import ThemeSwitch from './ThemeSwitch.astro';
 
 const links = [
 	{ href: '/experience', label: 'Experience' },
@@ -51,6 +52,7 @@ const isCurrent = (href: string) =>
 				<span class="resume-text">résumé.pdf</span>
 				<span aria-hidden="true">↓</span>
 			</StickerButton>
+			<ThemeSwitch />
 			<Clock />
 		</div>
 	</div>
@@ -139,6 +141,49 @@ const isCurrent = (href: string) =>
 	.right :global(.resume) {
 		padding-inline: var(--space-4);
 		box-shadow: var(--shadow-sm);
+	}
+
+	/* Quiet theme: flat bar, hairline rule, no scallops, no shadows. Borders on
+	   controls shrink to a hairline; the 44px tap targets keep their size. */
+	:global(:root[data-theme='quiet']) .bar {
+		background: var(--color-bg);
+		border-bottom-color: transparent;
+		box-shadow: 0 1px 0 var(--color-line);
+	}
+	:global(:root[data-theme='quiet']) .divider {
+		border-inline-start-color: var(--color-line);
+		opacity: 1;
+	}
+	:global(:root[data-theme='quiet']) .nav-link {
+		border-width: var(--hairline-width);
+		font-weight: var(--weight-medium);
+		color: var(--color-muted);
+	}
+	:global(:root[data-theme='quiet']) .nav-link:hover {
+		color: var(--color-ink);
+		background: transparent;
+	}
+	:global(:root[data-theme='quiet']) .nav-link[aria-current='page'] {
+		color: var(--color-ink);
+		background: transparent;
+		border-color: var(--color-text);
+	}
+	:global(:root[data-theme='quiet']) .right :global(.resume),
+	:global(:root[data-theme='quiet']) .right :global(.theme-switch),
+	:global(:root[data-theme='quiet']) .right :global(.clock) {
+		color: var(--color-text);
+		background: transparent;
+		border-width: var(--hairline-width);
+		border-color: var(--color-line);
+		box-shadow: none;
+		font-weight: var(--weight-medium);
+	}
+	:global(:root[data-theme='quiet']) .right :global(.resume:hover),
+	:global(:root[data-theme='quiet']) .right :global(.theme-switch:hover) {
+		color: var(--color-ink);
+		border-color: var(--color-ink);
+		transform: none;
+		box-shadow: none;
 	}
 
 	@media (max-width: 43.75rem) {

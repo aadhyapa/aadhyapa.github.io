@@ -1,0 +1,4 @@
+/* Quiet mode fonts. Faces are declared but only fetched once text uses them,
+   so the cute theme never downloads Plex Mono. Skins live in T18 and T19. */
+@import '@fontsource/ibm-plex-mono/latin-500.css';
+@import '@fontsource/ibm-plex-mono/latin-700.css';

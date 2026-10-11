@@ -214,4 +214,9 @@ import ProgressBar from './ui/ProgressBar.astro';
 			display: none;
 		}
 	}
+
+	/* Quiet theme: the widgets are decoration only, so they are not rendered. */
+	:global(:root[data-theme='quiet']) .widgets {
+		display: none;
+	}
 </style>

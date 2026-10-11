@@ -40,3 +40,10 @@
 	background-size: calc(var(--pearl-size) + var(--pearl-gap)) 100%;
 	background-repeat: repeat-x;
 }
+
+/* Quiet theme: no lace or pearls. The rows keep their height so layout holds. */
+:root[data-theme='quiet'] .scallop-edge,
+:root[data-theme='quiet'] .scallop-edge--up,
+:root[data-theme='quiet'] .pearl-row {
+	background-image: none;
+}

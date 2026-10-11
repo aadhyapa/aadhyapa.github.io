@@ -46,4 +46,9 @@ const {
 	.lace-edge--bottom {
 		flex-direction: column-reverse;
 	}
+
+	/* Quiet theme: render nothing but keep the box so layout does not move. */
+	:global(:root[data-theme='quiet']) .lace-edge {
+		visibility: hidden;
+	}
 </style>

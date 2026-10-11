@@ -52,4 +52,9 @@ const {
 		stroke-width: 1.5;
 		stroke-linecap: round;
 	}
+
+	/* Quiet theme: render nothing but keep the box so layout does not move. */
+	:global(:root[data-theme='quiet']) .leaf {
+		visibility: hidden;
+	}
 </style>
