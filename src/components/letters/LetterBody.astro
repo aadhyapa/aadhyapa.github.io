@@ -1,0 +1,110 @@
+---
+/**
+ * LetterBody: body of the letter window, a white sheet on gingham.
+ * Props:
+ *   entry   a letter from the letters collection
+ * Renders the date and reading time, the title as the page's only h1, the
+ * handwritten salutation and sign-off, and the Markdown body between them.
+ * Markdown headings should start at ## so they nest under the h1.
+ */
+import { render, type CollectionEntry } from 'astro:content';
+import { readingTime } from '../../lib/readingTime';
+import '../../styles/letter-prose.css';
+
+interface Props {
+	entry: CollectionEntry<'letters'>;
+}
+
+const { entry } = Astro.props;
+const { title, date } = entry.data;
+const { Content } = await render(entry);
+const minutes = readingTime(entry.body ?? '');
+const dateLabel = date.toLocaleDateString('en-US', {
+	year: 'numeric',
+	month: 'long',
+	day: 'numeric',
+	timeZone: 'UTC',
+});
+---
+
+<div class="letter-gingham gingham">
+	<article class="sheet">
+		<p class="meta">
+			<time datetime={date.toISOString().slice(0, 10)}>{dateLabel}</time>
+			<span aria-hidden="true">·</span>
+			<span>{minutes} min read</span>
+		</p>
+		<h1 class="title">{title}</h1>
+		<p class="hand salutation">dear reader,</p>
+		<div class="letter-prose">
+			<Content />
+		</div>
+		<p class="hand signoff">xo, [your name]</p>
+	</article>
+</div>
+
+<style>
+	.letter-gingham {
+		--gingham-size: 28px;
+		--bleed: var(--space-5);
+		margin: calc(var(--bleed) * -1);
+		padding: var(--space-5) var(--space-6);
+	}
+	.sheet {
+		padding: var(--space-5) var(--space-6) var(--space-6);
+		background: var(--color-white);
+		border: var(--outline-width) solid var(--color-ink);
+		border-radius: var(--radius-window);
+		color: var(--color-text);
+	}
+
+	.meta {
+		display: flex;
+		flex-wrap: wrap;
+		gap: var(--space-2);
+		margin: 0 0 var(--space-2);
+		font-size: var(--text-sm);
+	}
+	.title {
+		margin: 0;
+		font-family: var(--font-display);
+		font-size: var(--text-2xl);
+		font-weight: 400;
+		line-height: var(--leading-tight);
+		color: var(--color-ink);
+		text-shadow: 2px 2px 0 var(--color-pink);
+		overflow-wrap: anywhere;
+	}
+
+	.hand {
+		margin: 0;
+		font-family: var(--font-hand);
+		color: var(--color-raspberry);
+	}
+	.salutation {
+		margin-block: var(--space-2) var(--space-4);
+		font-size: var(--text-xl);
+	}
+	.signoff {
+		margin-block-start: var(--space-5);
+		font-size: var(--text-xl);
+		color: var(--color-ink);
+	}
+
+	@media (max-width: 43.75rem) {
+		.letter-gingham {
+			--bleed: var(--space-4);
+			padding: var(--space-4);
+		}
+		.sheet {
+			padding: var(--space-4);
+		}
+		.title {
+			font-size: var(--text-xl);
+		}
+		.salutation,
+		.signoff {
+			font-size: var(--text-lg);
+		}
+	}
+</style>

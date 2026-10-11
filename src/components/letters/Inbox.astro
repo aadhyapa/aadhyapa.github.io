@@ -1,0 +1,217 @@
+---
+/**
+ * Inbox: toolbar of category tabs over the letter list for the letters window.
+ * Props:
+ *   category   category slug for the active tab; omit for the inbox
+ * Tabs are real links, so filtering works without JavaScript. Drafts are
+ * excluded by loadPublished.
+ */
+import {
+	formatDate,
+	loadPublished,
+	loadTabs,
+	minutes,
+	slugify,
+} from './letters';
+
+interface Props {
+	category?: string;
+}
+
+const { category } = Astro.props;
+const published = await loadPublished();
+const tabs = await loadTabs(published);
+const active = tabs.find((t) => t.slug === (category ?? null));
+const rows = category
+	? published.filter((l) => slugify(l.data.category) === category)
+	: published;
+---
+
+<div class="inbox">
+	<div class="toolbar">
+		<nav aria-label="Letter categories">
+			<ul class="tabs">
+				{tabs.map((tab) => (
+					<li>
+						<a
+							class="tab"
+							href={tab.href}
+							aria-current={tab === active ? 'page' : undefined}
+						>
+							{tab.label}
+							{tab.slug === null && ` · ${tab.count}`}
+						</a>
+					</li>
+				))}
+			</ul>
+		</nav>
+	</div>
+
+	{rows.length === 0 ? (
+		<div class="empty">
+			<p class="empty-title">No letters here yet.</p>
+			<p>
+				Nothing has been posted in {active?.label ?? 'this category'}.{' '}
+				<a href="/letters">Back to the inbox</a>
+			</p>
+		</div>
+	) : (
+		<ul class="list" aria-label="Letters">
+			{rows.map((letter, i) => (
+				<li>
+					<a class="row" href={`/letters/${letter.id}`}>
+						<span
+							class:list={['dot', { 'dot--new': i === 0 }]}
+							aria-hidden="true"
+						/>
+						<span class="row-text">
+							<span class="row-title">{letter.data.title}</span>
+							<span class="row-summary">{letter.data.summary}</span>
+						</span>
+						<span class="row-meta">
+							<time datetime={letter.data.date.toISOString()}>
+								{formatDate(letter.data.date)}
+							</time>
+							<span>{minutes(letter)} min read</span>
+						</span>
+					</a>
+				</li>
+			))}
+		</ul>
+	)}
+</div>
+
+<style>
+	/* Cancel the window body padding so the list runs edge to edge. */
+	.inbox {
+		margin: calc(-1 * var(--space-5));
+	}
+
+	.toolbar {
+		padding: var(--space-2) var(--space-4);
+		background: var(--color-blush);
+		border-block-end: var(--outline-width) solid var(--color-ink);
+	}
+	.tabs {
+		display: flex;
+		flex-wrap: wrap;
+		gap: var(--space-2);
+		margin: 0;
+		padding: 0;
+		list-style: none;
+	}
+	.tab {
+		display: inline-flex;
+		align-items: center;
+		min-block-size: var(--tap-target);
+		padding-inline: var(--space-4);
+		font-weight: var(--weight-bold);
+		text-decoration: none;
+		color: var(--color-ink);
+		background: var(--color-pink-light);
+		border: 2px solid var(--color-ink);
+		border-radius: var(--radius-pill);
+	}
+	.tab:hover {
+		background: var(--color-white);
+		text-decoration: none;
+	}
+	.tab[aria-current='page'] {
+		background: var(--color-mint);
+	}
+
+	.empty {
+		padding: var(--space-7) var(--space-5);
+		text-align: center;
+	}
+	.empty-title {
+		font-family: var(--font-hand);
+		font-size: var(--text-xl);
+		color: var(--color-raspberry);
+	}
+
+	.list {
+		margin: 0;
+		padding: 0;
+		list-style: none;
+	}
+	.list li {
+		border-block-end: 2px solid var(--color-pink-light);
+	}
+	.row {
+		display: flex;
+		inline-size: 100%; /* responsive.css makes window links inline-flex on phones */
+		align-items: center;
+		gap: var(--space-4);
+		padding: var(--space-4) var(--space-5);
+		text-decoration: none;
+		color: var(--color-ink);
+	}
+	.row:hover {
+		background: var(--color-blush);
+		text-decoration: none;
+	}
+	.row-text {
+		display: flex;
+		flex: 1;
+		flex-direction: column;
+		min-inline-size: 0;
+	}
+	.row-title {
+		font-size: var(--text-lg);
+		font-weight: var(--weight-bold);
+		line-height: 1.3;
+	}
+	.row-summary {
+		overflow: hidden;
+		text-overflow: ellipsis;
+		white-space: nowrap;
+		color: var(--color-text);
+	}
+	.row-meta {
+		display: flex;
+		flex: none;
+		flex-direction: column;
+		align-items: flex-end;
+		font-size: var(--text-sm);
+		color: var(--color-text);
+	}
+
+	.dot {
+		flex: none;
+		inline-size: 0.9rem;
+		block-size: 0.9rem;
+		background: var(--color-white);
+		border: var(--outline-width) solid var(--color-ink);
+		border-radius: 50%;
+	}
+	.dot--new {
+		background: var(--color-pink);
+	}
+
+	@media (max-width: 43.75rem) {
+		.inbox {
+			margin: calc(-1 * var(--space-4));
+		}
+		.toolbar {
+			padding-inline: var(--space-3);
+		}
+		.row {
+			flex-wrap: wrap;
+			gap: var(--space-2) var(--space-3);
+			padding-inline: var(--space-3);
+		}
+		.row-text {
+			flex: 1 1 0;
+		}
+		.row-summary {
+			white-space: normal;
+		}
+		.row-meta {
+			flex-basis: 100%;
+			flex-direction: row;
+			justify-content: space-between;
+			padding-inline-start: calc(0.9rem + var(--space-3));
+		}
+	}
+</style>

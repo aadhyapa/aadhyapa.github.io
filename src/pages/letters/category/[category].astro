@@ -1,0 +1,23 @@
+---
+import Layout from '../../../layouts/Layout.astro';
+import Window from '../../../components/Window.astro';
+import Inbox from '../../../components/letters/Inbox.astro';
+import { loadCategories } from '../../../components/letters/letters';
+
+export async function getStaticPaths() {
+	const categories = await loadCategories();
+	return [...categories].map(([slug, label]) => ({
+		params: { category: slug },
+		props: { label },
+	}));
+}
+
+const { category } = Astro.params;
+const { label } = Astro.props;
+---
+
+<Layout title={`Letters: ${label}`}>
+	<Window title="letters" closeHref="/">
+		<Inbox category={category} />
+	</Window>
+</Layout>
