@@ -4,14 +4,14 @@ Oct 10, 2026 · @aadhya
 
 ## Goals and scope
 
-Build a fast, static one-page site in roughly seven part-time weeks (an estimate, adjust to your hours): a green and pink cyber OS desktop where every page opens as a popup window over the same background.
+Build a fast, static one-page site in roughly eight part-time weeks (an estimate, adjust to your hours): a green and pink cyber OS desktop where every page opens as a popup window over the same background. Once the cute theme is finished and checked, add a black minimal quiet mode a visitor can switch to.
 
 - **Audience:** hiring managers and clients who want to see how you work, plus readers who enjoy your writing.
-- **Core promise:** NDA work shown honestly, rebuilt on synthetic data and labelled as such.
-- **Look:** a green and pink cyber OS with gingham wallpaper, lace edges, black and pink bows, pixel hearts and chunky window frames. Dark green outlines and white window bodies do the reading work, so it stays professional.
+- **Core promise:** NDA work told honestly as written case studies, with no demos for now and no client detail.
+- **Look:** a green and pink cyber OS with gingham wallpaper, lace edges, black and pink bows, pixel hearts and chunky window frames. Dark green outlines and white window bodies do the reading work, so it stays professional. Quiet mode is the second skin, added after the cute theme is done: black, hairline borders, monospace type and no decoration, for visitors who want the content without the ribbons.
 - **Structure:** one home backdrop that never changes. About, Experience and Letters open as popup windows on top of it, each with its own web address.
 - **Done means:** every window live on your own domain, passing accessibility and speed checks on desktop and phone, and a new letter publishable by adding one text file.
-- **Out of scope for v1:** comments, accounts, a CMS dashboard, draggable or stackable windows, and a separate mobile design. Phones get the same windows as full-screen sheets.
+- **Out of scope for v1:** comments, accounts, a CMS dashboard, draggable or stackable windows, and a separate mobile design. Demos are out for now; they can return later as their own section without touching the window shell. Phones get the same windows as full-screen sheets.
 
 ## Site map and windows
 
@@ -23,7 +23,7 @@ Three nav items (About, Experience, Letters) over one home backdrop. Work and Pr
 | /about | about\_me.txt | Taped photo, "dear visitor" letter, quick facts, things I love, contact line | Mocked |
 | /experience | experience | All, work and projects tabs, list, preview pane, résumé button | Mocked |
 | /experience/(role) | experience / role | What I did, stack, What I learned, link to a letter | Mocked |
-| /experience/(project) | experience / project | Synthetic-data badge, demo frame, problem, what I made, what I would change | Mocked |
+| /experience/(project) | experience / project | NDA note, problem, what I made, what I would change, stack and timeline | Mocked |
 | /letters | letters | Category tabs, inbox list with date and reading time | Mocked |
 | /letters/(letter) | letters / title | Long-read body and sign-off | Mocked |
 | /404 | error.exe | Friendly error window with a link home | Not mocked |
@@ -37,11 +37,11 @@ Three nav items (About, Experience, Letters) over one home backdrop. Work and Pr
 - Detail pages (a role, a project, a letter) open inside the same window, with a back button in the title bar.
 - Every address also works on its own: a direct visit, a search result or a shared link shows the backdrop with that window already open, and the window text is real HTML, not loaded after a click.
 - Below about 700px wide the window becomes a full-screen sheet and the side widgets hide.
-- With reduced motion on, windows appear without animation.
+- With reduced motion on, windows appear without animation. The theme switch in the menu bar changes only colors, type and decoration, never layout or content; the choice is saved in the browser and applied before first paint, so there is no flash.
 
 ## Tech stack
 
-Use Astro for a static site, with Markdown files for Experience and Letters. Astro's view transitions keep the backdrop in place while only the window changes, and every address still loads as plain HTML. Small React islands appear only where a demo needs them.
+Use Astro for a static site, with Markdown files for Experience and Letters. Astro's view transitions keep the backdrop in place while only the window changes, and every address still loads as plain HTML. The only scripts are the window shell and the theme switch; there is no React.
 
 | Layer | Choice | Why |
 | --- | --- | --- |
@@ -51,9 +51,9 @@ Use Astro for a static site, with Markdown files for Experience and Letters. Ast
 | Styling | Plain CSS with custom properties | Gingham, lace and scallops are gradients; no UI kit to fight |
 | Decoration | Inline SVG components: bows, pixel hearts, leaves, sparkles | Crisp at any size, recolored from tokens, no image requests |
 | Experience and letters | Two Markdown content collections | Experience entries carry a kind (work or project), dates, summary, what I did and what I learned; letters carry category and date. Reading time and an RSS feed are generated |
-| Demos | React islands on project pages only | Interactive dashboards and flows load their code only where they appear |
-| Demo data | Local JSON fixtures | Synthetic data lives in the repo, so a demo never touches a client system |
-| Fonts | Self-hosted Bagel Fat One, Quicksand, Silkscreen, La Belle Aurore | Faster than a font CDN and no third-party request |
+| Theme switch | A data-theme attribute on the root element, saved in localStorage | Both skins share the same HTML and swap only CSS tokens. A tiny inline script in the head sets the theme before first paint |
+| Quiet mode | A second token set plus a small override stylesheet | Decorative components hide themselves under quiet mode, so no page needs a second version |
+| Fonts | Self-hosted Bagel Fat One, Quicksand, Silkscreen, La Belle Aurore; quiet mode adds IBM Plex Mono | Faster than a font CDN and no third-party request |
 | Images | Astro image optimization, WebP or AVIF | Keeps the portrait and thumbnails light |
 | Hosting | Cloudflare Pages, Netlify or Vercel free tier | Deploys on every push to the main branch; any of the three works |
 
@@ -87,27 +87,40 @@ Turn the mockup's colors, type and shapes into CSS custom properties first, so e
 - Never set text in lace pink; it is decoration only.
 - Silkscreen is hard to read below 12px. The mockups use 10 to 11px for small labels, so raise them to 12px or more, or keep them decorative.
 - Each window is a dialog with a name, a visible close button and a visible focus ring in ink. The mockup's menu and title-bar buttons are about 26 to 30px tall, so enlarge the tap area to 44px.
-- Mark decorative bows, hearts and sparkles `aria-hidden`; give demo charts a text summary.
+- Mark decorative bows, hearts and sparkles `aria-hidden`; label the theme switch with text, not only an icon.
 - Respect reduced-motion settings for window and hover animations.
+
+**Quiet mode tokens.** A second set of the same custom properties, switched by a data-theme attribute. It uses hairline borders, no hard shadows and no bows, lace, gingham or hearts. Type is IBM Plex Mono for everything, with Silkscreen kept for small labels and window title bars at 11 to 12px.
+
+| Token | Value | Use |
+| --- | --- | --- |
+| Background | #0A0A0A | Page, with a faint dot grid |
+| Surface | #111111 | Windows and panels |
+| Line | #2B2B2B | Hairline borders and dividers |
+| Text | #EDEDED | Body text |
+| Muted | #A3A3A3 | Labels, dates, secondary text |
+| White | #FFFFFF | Name, headings, hover and focus ring |
+
+Text on the background should measure well above 4.5:1; confirm Muted with a contrast checker before locking the tokens. Under quiet mode, decorative SVG components render nothing, so each page keeps one HTML structure. Quiet mode could be the default on small screens, with the cute theme one tap away.
 
 ## Build phases
 
-Seven weeks in five phases, with a review gate before work moves on. The week counts are estimates for part-time work.
+Eight weeks in five phases, with a review gate before work moves on. The week counts are estimates for part-time work.
 
 &#91;embedded content: build roadmap · 5 phases, 3 gates\]
 
-The gates catch the two costliest late surprises: a window pattern that breaks for keyboard, back-button or phone users, and a demo that edges toward confidential work. Windows and demos run side by side in weeks 3 to 5.
+The gates catch the two costliest late surprises: a window pattern that breaks for keyboard, back-button or phone users, and a case study that edges toward confidential work. Windows and case studies run side by side in weeks 3 to 5. Quiet mode waits until the cute theme is built and has passed its accessibility audit, then runs in weeks 6 to 7.
 
-## Projects and demos
+## Projects (no demos)
 
-Rebuild each piece from scratch as a new work, keeping the interaction idea and visual logic and replacing every real detail. The mockup shows three: Fulfillment Dashboard, Onboarding Flow and the Signal Study artwork.
+Write each NDA project as a case study with no demo for now: the problem, what you made and what you would change, told without client names, real numbers or screenshots. The mockup shows three: Fulfillment Dashboard, Onboarding Flow and Signal Study.
 
 1. **Check your agreement first.** Read your NDA or employment contract for what counts as confidential. I am not a lawyer, so if a piece feels close to the line, ask the company for written permission or leave it out.
-2. **Rebuild, don't copy.** Write fresh code and fresh copy. Do not reuse source files, screenshots, brand assets, internal terminology or proprietary logic.
-3. **Invent the data.** Generate it with a seeded script so numbers stay the same on every load, and add texture: uneven days, outliers, a few odd entries.
-4. **Label it plainly.** Every project carries a "rebuilt with synthetic data" badge near the top and one plain sentence on what you cannot show.
-5. **Use one window template.** The problem, what I made, what I would change, with the demo or artwork at the top. Keep outcomes to what you are allowed to share.
-6. **Make demos work inside a window.** A demo has to fit a window about 700px wide and a phone sheet. Filters, steps and hover states should respond; a static screenshot undersells the work. Keep each demo as its own component so it can be reused or removed.
+2. **Describe, don't copy.** Write fresh prose. Do not reuse source files, screenshots, brand assets, internal terminology or proprietary logic.
+3. **Lead with the engineering.** For backend and ML roles, the reader wants the problem, the design choices, the trade-offs and what you would change. Say what you can honestly say about scale, latency or model quality in generic terms, and nothing you were told to keep private.
+4. **Say plainly what you can't show.** Every project carries one short NDA note near the top, in place of a demo.
+5. **Use one window template.** The NDA note, the problem, what I made, what I would change, then stack and timeline. Keep outcomes to what you are allowed to share.
+6. **Keep the door open for demos.** If you later build a public side project, it can get its own section without changing the window shell.
 
 ## Content checklist
 
@@ -119,11 +132,11 @@ Every bracket in the mockup is something to write or gather. Finish these before
 - [ ] The four status tiles (open to, building, reading, listening) and the three side-widget lines
 - [ ] Two or three roles for Experience: what you did, your stack, and three lessons each for "What I learned"
 - [ ] Three projects: problem, what you made, what you would change, stack, timeline
-- [ ] Synthetic datasets and a one-line caption for each demo
+- [ ] A one-line NDA note for each project: what you cannot show
 - [ ] Three starter letters, plus your category names
 - [ ] Email address, LinkedIn, GitHub and a résumé PDF
 - [ ] Favicon (the bow works), social share image, and a page title and description per window
-- [ ] Footer line and a short note on synthetic data
+- [ ] Footer line and a short note on NDA work
 
 ## Launch and after
 
@@ -136,6 +149,7 @@ Launch on your own domain once the checks below pass, then keep upkeep small eno
 - [ ] Run Lighthouse on each address; aim for 90 or higher in performance and accessibility
 - [ ] Walk every window with the keyboard only: open it, tab around, press Escape, and confirm focus returns to the link that opened it. Spot-check one window with a screen reader
 - [ ] Check contrast, 200% zoom, and phone, tablet and laptop widths, including the full-screen sheet on a phone
+- [ ] Switch themes on every window: contrast in both, a saved choice after reload, no flash on first load, and the switch usable by keyboard
 - [ ] Test every link, each address opened directly in a fresh tab, the back button, the contact email, the résumé download and the RSS feed
 - [ ] Add titles, descriptions, a sitemap and a social share image
 - [ ] Ask one trusted person to read the project windows for anything that sounds confidential
@@ -143,5 +157,5 @@ Launch on your own domain once the checks below pass, then keep upkeep small eno
 **After launch**
 
 - Publish a letter on a rhythm you can keep, even if it is one a month.
-- Review project pages every six months and retire any demo you no longer stand behind.
+- Review project pages every six months and retire any case study you no longer stand behind.
 - Update dependencies monthly and re-run Lighthouse after bigger changes.

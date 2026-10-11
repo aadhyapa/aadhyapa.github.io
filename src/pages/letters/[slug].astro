@@ -1,12 +1,12 @@
 ---
-import { getCollection } from 'astro:content';
 import Layout from '../../layouts/Layout.astro';
 import Window from '../../components/Window.astro';
 import LetterBody from '../../components/letters/LetterBody.astro';
+import { loadPublished } from '../../components/letters/letters';
 
 export async function getStaticPaths() {
-	const entries = await getCollection('letters', ({ data }) => !data.draft);
-	return entries.map((entry) => ({
+	const letters = await loadPublished();
+	return letters.map((entry) => ({
 		params: { slug: entry.id },
 		props: { entry },
 	}));
