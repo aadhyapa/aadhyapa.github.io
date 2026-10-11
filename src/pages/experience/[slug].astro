@@ -1,0 +1,34 @@
+---
+import { getCollection } from 'astro:content';
+import Layout from '../../layouts/Layout.astro';
+import Window from '../../components/Window.astro';
+import RoleDetail from '../../components/experience/RoleDetail.astro';
+
+export async function getStaticPaths() {
+	const entries = await getCollection('experience');
+	return entries.map((entry) => ({
+		params: { slug: entry.id },
+		props: { entry },
+	}));
+}
+
+const { entry } = Astro.props;
+---
+
+<Layout title={entry.data.title}>
+	<Window
+		title={`experience / ${entry.data.title}`}
+		backHref="/experience"
+		closeHref="/"
+	>
+		{entry.data.kind === 'work' ? (
+			<RoleDetail entry={entry} />
+		) : (
+			/* T16 replaces this fallback with the project template. */
+			<article>
+				<h1>{entry.data.title}</h1>
+				<p>{entry.data.summary}</p>
+			</article>
+		)}
+	</Window>
+</Layout>
