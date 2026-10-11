@@ -25,11 +25,19 @@ Run all commands from the project root.
 ```text
 /
 ├── docs/               plan, task list and design
-├── public/             static files (favicon)
+├── public/             static files (favicon, resume.pdf placeholder)
 └── src/
     ├── layouts/        Layout.astro: persistent backdrop + view transitions
     └── pages/          one file per address
 ```
+
+## 404 page
+
+`src/pages/404.astro` builds to `dist/404.html`, the error.exe window with a link home. Cloudflare Pages, Netlify and Vercel all serve a root `404.html` from a static site for any unknown address, with a real 404 status, so no host config is needed. After the first deploy, check with `curl -I https://<site>/no-such-page` and expect `HTTP/... 404`. Locally, `npm run preview` does the same.
+
+## Résumé
+
+`public/resume.pdf` is a placeholder (one page reading "Placeholder résumé, replace with the real file"). Replace it with the real file under the same name; the menu bar, home card and experience window all link to `/resume.pdf`.
 
 ## Docs
 

@@ -1,0 +1,60 @@
+{
+	"note": "Invented data. Six made-up carriers.",
+	"seed": 20260214,
+	"carriers": [
+		{
+			"id": "brindlewick",
+			"name": "Brindlewick Freight",
+			"region": "North coast",
+			"international": false,
+			"onTimeRate": 0.889,
+			"avgTransitDays": 4,
+			"share": 0.19
+		},
+		{
+			"id": "quillon",
+			"name": "Quillon Haulage",
+			"region": "Inland plains",
+			"international": false,
+			"onTimeRate": 0.896,
+			"avgTransitDays": 2.7,
+			"share": 0.27
+		},
+		{
+			"id": "marrowdale",
+			"name": "Marrowdale Express",
+			"region": "Southern valleys",
+			"international": true,
+			"onTimeRate": 0.883,
+			"avgTransitDays": 1.7,
+			"share": 0.17
+		},
+		{
+			"id": "tessaly",
+			"name": "Tessaly Cargo",
+			"region": "Harbour cities",
+			"international": true,
+			"onTimeRate": 0.922,
+			"avgTransitDays": 2.9,
+			"share": 0.26
+		},
+		{
+			"id": "oddfell",
+			"name": "Oddfell Parcel",
+			"region": "Hill towns",
+			"international": false,
+			"onTimeRate": 0.942,
+			"avgTransitDays": 2.8,
+			"share": 0.19
+		},
+		{
+			"id": "vantry",
+			"name": "Vantry Lines",
+			"region": "Cross-border",
+			"international": true,
+			"onTimeRate": 0.945,
+			"avgTransitDays": 3.2,
+			"share": 0.09
+		}
+	]
+}
