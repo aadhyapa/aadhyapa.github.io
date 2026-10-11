@@ -1,46 +1,37 @@
-# Astro Starter Kit: Basics
+# my-coquette-life
 
-```sh
-npm create astro@latest -- --template basics
-```
+Personal portfolio site: a green and pink cyber OS. One persistent home backdrop; pages open as popup windows at their own addresses. Built with Astro (static output) and view transitions.
 
-> 🧑‍🚀 **Seasoned astronaut?** Delete this file. Have fun!
+Requires Node 22.12 or newer.
 
-## 🚀 Project Structure
+## Commands
 
-Inside of your Astro project, you'll see the following folders and files:
+Run all commands from the project root.
+
+| Command                | Action                                                 |
+| :--------------------- | :----------------------------------------------------- |
+| `npm install`          | Install dependencies                                   |
+| `npm run dev`          | Start the dev server at `localhost:4321`               |
+| `npm run build`        | Build the production site to `./dist/`                 |
+| `npm run preview`      | Serve the built site locally, before deploying         |
+| `npm run check`        | Type check `.astro` and `.ts` files with `astro check` |
+| `npm run lint`         | Lint with ESLint (TypeScript and Astro rules)          |
+| `npm run format`       | Rewrite files with Prettier (Astro plugin)             |
+| `npm run format:check` | Fail if any file is not Prettier-formatted             |
+| `npm run astro ...`    | Run Astro CLI commands, e.g. `npm run astro -- --help` |
+
+## Layout
 
 ```text
 /
-├── public/
-│   └── favicon.svg
-├── src
-│   ├── assets
-│   │   └── astro.svg
-│   ├── components
-│   │   └── Welcome.astro
-│   ├── layouts
-│   │   └── Layout.astro
-│   └── pages
-│       └── index.astro
-└── package.json
+├── docs/               plan, task list and design
+├── public/             static files (favicon)
+└── src/
+    ├── layouts/        Layout.astro: persistent backdrop + view transitions
+    └── pages/          one file per address
 ```
 
-To learn more about the folder structure of an Astro project, refer to [our guide on project structure](https://docs.astro.build/en/basics/project-structure/).
+## Docs
 
-## 🧞 Commands
-
-All commands are run from the root of the project, from a terminal:
-
-| Command                   | Action                                           |
-| :------------------------ | :----------------------------------------------- |
-| `npm install`             | Installs dependencies                            |
-| `npm run dev`             | Starts local dev server at `localhost:4321`      |
-| `npm run build`           | Build your production site to `./dist/`          |
-| `npm run preview`         | Preview your build locally, before deploying     |
-| `npm run astro ...`       | Run CLI commands like `astro add`, `astro check` |
-| `npm run astro -- --help` | Get help using the Astro CLI                     |
-
-## 👀 Want to learn more?
-
-Feel free to check [our documentation](https://docs.astro.build) or jump into our [Discord server](https://astro.build/chat).
+- [Dev plan](docs/Cyber%20OS%20Portfolio%20Dev%20Plan.md)
+- [Agent tasks](docs/Agent%20tasks.md)

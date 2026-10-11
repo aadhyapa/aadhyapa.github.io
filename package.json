@@ -1,17 +1,31 @@
 {
-  "name": "absolute-asteroid",
-  "type": "module",
-  "version": "0.0.1",
-  "engines": {
-    "node": ">=22.12.0"
-  },
-  "scripts": {
-    "dev": "astro dev",
-    "build": "astro build",
-    "preview": "astro preview",
-    "astro": "astro"
-  },
-  "dependencies": {
-    "astro": "^7.3.8"
-  }
+	"name": "my-coquette-life",
+	"type": "module",
+	"version": "0.0.1",
+	"engines": {
+		"node": ">=22.12.0"
+	},
+	"scripts": {
+		"dev": "astro dev",
+		"build": "astro build",
+		"preview": "astro preview",
+		"astro": "astro",
+		"check": "astro check",
+		"lint": "eslint .",
+		"format": "prettier --write .",
+		"format:check": "prettier --check ."
+	},
+	"dependencies": {
+		"astro": "^7.3.8"
+	},
+	"devDependencies": {
+		"@astrojs/check": "^0.9.10",
+		"@eslint/js": "^10.0.1",
+		"eslint": "^10.12.0",
+		"eslint-plugin-astro": "^1.7.0",
+		"prettier": "^3.9.10",
+		"prettier-plugin-astro": "^1.1.1",
+		"typescript": "^6.0.3",
+		"typescript-eslint": "^8.71.1"
+	}
 }
