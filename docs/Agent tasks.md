@@ -1,6 +1,6 @@
 # Agent task breakdown
 
-29 tasks in six waves for the single-page cyber OS site. Tasks inside a wave can run in parallel once the tasks they depend on are done. Work and Projects are already merged into Experience, so that choice no longer blocks anything.
+28 tasks in six waves for the single-page cyber OS site. Tasks inside a wave can run in parallel once the tasks they depend on are done. Work and Projects are already merged into Experience, so that choice no longer blocks anything.
 
 ## How to run this
 
@@ -10,7 +10,7 @@ Dispatch Wave 1 first; each later wave unlocks as its dependencies finish. The c
 
 - [ ] **D1:** hosting provider; blocks T4
 - [ ] **D2:** domain name; blocks T28
-- [ ] **D3:** which three projects are safe to rebuild after checking your NDA; gates the real content in T9 and T16 to T20
+- [ ] **D3:** which three projects to feature; gates the real content in T9, T16 and T27
 - [ ] **D4:** name, role, city, portrait and bio; needed by T27, placeholders are fine until then
 - [ ] **D5:** whether windows should be draggable in v1; the plan assumes no, so this blocks nothing
 
@@ -19,7 +19,7 @@ Dispatch Wave 1 first; each later wave unlocks as its dependencies finish. The c
 - Touch only the files your task owns; list anything else as a follow-up instead of fixing it.
 - Use values from the design tokens (T2) only; never hard-code a color, font or radius.
 - Open every page through the window shell (T6); do not build one-off popups.
-- Never use real client names, data, screenshots or code. There are no demos for now; project windows are written case studies with an NDA note. Every component uses theme tokens, never raw colors, so quiet mode works everywhere.
+- Never use real client names, data, screenshots or code. There are no demos for now; project windows are written case studies. Every component uses theme tokens, never raw colors, so quiet mode works everywhere.
 - Run build, lint and type check before handing off, and include the output.
 - Keep decorative SVG `aria-hidden` and every interactive element reachable by keyboard, including closing a window with Escape.
 - Work on one branch per task, named `task/T<number>-<slug>`.
@@ -53,7 +53,7 @@ Seven tasks that build the windows. T9 comes first; T10 to T15 can then run in p
 
 | ID | Task | Agent role | Depends on | Done when | Status |
 | --- | --- | --- | --- | --- | --- |
-| T9 | Content models: an experience collection (kind work or project, title, organization, dates, summary, what I did, what I learned, stack, NDA-note field) and a letters collection (title, date, category, summary, draft flag); reading-time helper; sample entries | Content agent | T1, D3 | Build fails when a required field is missing; every project entry carries an NDA note; samples use invented names only and are marked as samples | Not started |
+| T9 | Content models: an experience collection (kind work or project, title, organization, dates, summary, what I did, what I learned, stack; projects add problem and what I would change) and a letters collection (title, date, category, summary, draft flag); reading-time helper; sample entries | Content agent | T1, D3 | Build fails when a required field is missing; every project entry carries a problem and what I would change; samples use invented names only and are marked as samples | Not started |
 | T10 | About window: taped photo, "dear visitor" text, quick facts, things I love, contact line | Page agent | T6 | Matches the mockup; the text is real HTML; the contact line is a working mailto link | Not started |
 | T11 | Experience window: all, work and projects tabs as links, list, preview pane, résumé button | Page agent | T6, T9 | Tabs work without JavaScript through their own addresses; picking a row updates the preview; the résumé button downloads the PDF | Not started |
 | T12 | Role window: what I did, stack, numbered "What I learned" lessons, link to a letter | Page agent | T6, T9 | Renders from a work entry; opens inside the same window with a back button; the lessons are an ordered list | Not started |
@@ -67,7 +67,7 @@ Five tasks. T16 builds the case-study window and runs alongside Wave 3. T17 to T
 
 | ID | Task | Agent role | Depends on | Done when | Status |
 | --- | --- | --- | --- | --- | --- |
-| T16 | Case-study window: NDA note, problem, what I made, what I would change, stack and timeline | Page agent | T6, T9 | Renders from a project entry; the NDA note sits above the problem; fits a window about 700px wide and the phone sheet | Not started |
+| T16 | Case-study window: problem, what I made, what I would change, stack and timeline | Page agent | T6, T9 | Renders from a project entry; sections run problem, what I made, what I would change, then stack and timeline; fits a window about 700px wide and the phone sheet | Not started |
 | T17 | Theme layer: cute and quiet token sets under a data-theme attribute, a head script that applies the saved choice before first paint, and the switch in the menu bar | Scaffold agent | T22 | Both themes are token sets; the saved choice survives a reload with no flash; the switch has a text label and works by keyboard | Not started |
 | T18 | Quiet skin for the backdrop, menu bar and home card: hairline borders, dot grid, left-aligned mono home, decorative components hidden | Page agent | T7, T17 | Matches the quiet home board; no bows, lace or gingham render; the switch sits in the menu bar | Not started |
 | T19 | Quiet skin for every window: title bars, tabs, lists, case studies and letters, in IBM Plex Mono with small Silkscreen labels | Page agent | T11, T12, T14, T16, T17 | Matches the quiet boards for About, Experience, role, project and Letters; layout identical to the cute theme | Not started |
@@ -75,7 +75,7 @@ Five tasks. T16 builds the case-study window and runs alongside Wave 3. T17 to T
 
 ## Wave 5: Polish and QA
 
-Six tasks that check and tighten the whole site. T24 can start early; T21 starts once the windows exist and unlocks T22 and T23; T26 needs the case-study window (T16) and is the second gate.
+Five tasks that check and tighten the whole site. T24 can start early; T21 starts once the windows exist and unlocks T22 and T23.
 
 | ID | Task | Agent role | Depends on | Done when | Status |
 | --- | --- | --- | --- | --- | --- |
@@ -84,7 +84,6 @@ Six tasks that check and tighten the whole site. T24 can start early; T21 starts
 | T23 | Performance pass: image optimization, font subsetting, script budget for the window shell and theme switch | QA agent | T21 | Lighthouse performance 90 or higher on mobile for every address; the theme script stays small and inline | Not started |
 | T24 | SEO and meta: unique title and description per address, social share image, sitemap, robots file, bow favicon | Page agent | T5 | The sitemap lists every address; the share image shows in a link-preview checker; no two addresses share a title | Not started |
 | T25 | Placeholder and link guard: a build check that fails on leftover \[brackets\] and broken internal links, switched on by a flag so previews can keep placeholders | Scaffold agent | T10, T11, T13 | With the flag on, the build fails on a planted bracket and a planted broken link, and passes on clean content | Not started |
-| T26 | NDA review: run a checklist over each project window for real names, assets, numbers or code that resemble the original, and write a report | Review agent, then you | T16, D3 | The report marks each project pass or fix; you sign off before launch | Not started |
 
 ## Wave 6: Launch
 
@@ -92,7 +91,7 @@ Three tasks that take the site live. T27 and T28 can run in parallel; T29 runs l
 
 | ID | Task | Agent role | Depends on | Done when | Status |
 | --- | --- | --- | --- | --- | --- |
-| T27 | Content merge: replace every placeholder with your real text, photos and links from the plan's content checklist | Content agent | D4, T26 | No \[brackets\] remain with the T25 flag on; you have approved the copy in every window | Not started |
+| T27 | Content merge: replace every placeholder with your real text, photos and links from the plan's content checklist | Content agent | D4, T16 | No \[brackets\] remain with the T25 flag on; you have approved the copy in every window | Not started |
 | T28 | Domain and DNS: write step-by-step instructions for your host and registrar, then verify HTTPS and the www redirect after you buy and connect the domain | Ops agent, with you | D2, T4 | The site loads over HTTPS on your domain; one address is the main one and the other redirects to it | Not started |
 | T29 | Launch QA: run the plan's pre-launch checklist on the production site, including each window opened directly, and write a go or no-go report | QA agent | T20, T22, T23, T24, T25, T27, T28 | Every checklist item is ticked or has a noted exception; the go or no-go decision is recorded | Not started |
 

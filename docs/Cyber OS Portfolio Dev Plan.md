@@ -7,7 +7,7 @@ Oct 10, 2026 · @aadhya
 Build a fast, static one-page site in roughly eight part-time weeks (an estimate, adjust to your hours): a green and pink cyber OS desktop where every page opens as a popup window over the same background. Once the cute theme is finished and checked, add a black minimal quiet mode a visitor can switch to.
 
 - **Audience:** hiring managers and clients who want to see how you work, plus readers who enjoy your writing.
-- **Core promise:** NDA work told honestly as written case studies, with no demos for now and no client detail.
+- **Core promise:** Projects told as written case studies, with no demos for now.
 - **Look:** a green and pink cyber OS with gingham wallpaper, lace edges, black and pink bows, pixel hearts and chunky window frames. Dark green outlines and white window bodies do the reading work, so it stays professional. Quiet mode is the second skin, added after the cute theme is done: black, hairline borders, monospace type and no decoration, for visitors who want the content without the ribbons.
 - **Structure:** one home backdrop that never changes. About, Experience and Letters open as popup windows on top of it, each with its own web address.
 - **Done means:** every window live on your own domain, passing accessibility and speed checks on desktop and phone, and a new letter publishable by adding one text file.
@@ -23,7 +23,7 @@ Three nav items (About, Experience, Letters) over one home backdrop. Work and Pr
 | /about | about\_me.txt | Taped photo, "dear visitor" letter, quick facts, things I love, contact line | Mocked |
 | /experience | experience | All, work and projects tabs, list, preview pane, résumé button | Mocked |
 | /experience/(role) | experience / role | What I did, stack, What I learned, link to a letter | Mocked |
-| /experience/(project) | experience / project | NDA note, problem, what I made, what I would change, stack and timeline | Mocked |
+| /experience/(project) | experience / project | Problem, what I made, what I would change, stack and timeline | Mocked |
 | /letters | letters | Category tabs, inbox list with date and reading time | Mocked |
 | /letters/(letter) | letters / title | Long-read body and sign-off | Mocked |
 | /404 | error.exe | Friendly error window with a link home | Not mocked |
@@ -109,18 +109,16 @@ Eight weeks in five phases, with a review gate before work moves on. The week co
 
 &#91;embedded content: build roadmap · 5 phases, 3 gates\]
 
-The gates catch the two costliest late surprises: a window pattern that breaks for keyboard, back-button or phone users, and a case study that edges toward confidential work. Windows and case studies run side by side in weeks 3 to 5. Quiet mode waits until the cute theme is built and has passed its accessibility audit, then runs in weeks 6 to 7.
+The gates catch the two costliest late surprises: a window pattern that breaks for keyboard, back-button or phone users, and a placeholder that slips through to launch. Windows and case studies run side by side in weeks 3 to 5. Quiet mode waits until the cute theme is built and has passed its accessibility audit, then runs in weeks 6 to 7.
 
 ## Projects (no demos)
 
-Write each NDA project as a case study with no demo for now: the problem, what you made and what you would change, told without client names, real numbers or screenshots. The mockup shows three: Fulfillment Dashboard, Onboarding Flow and Signal Study.
+Write each project as a case study with no demo for now: the problem, what you made and what you would change. The mockup shows three: Fulfillment Dashboard, Onboarding Flow and Signal Study.
 
-1. **Check your agreement first.** Read your NDA or employment contract for what counts as confidential. I am not a lawyer, so if a piece feels close to the line, ask the company for written permission or leave it out.
-2. **Describe, don't copy.** Write fresh prose. Do not reuse source files, screenshots, brand assets, internal terminology or proprietary logic.
-3. **Lead with the engineering.** For backend and ML roles, the reader wants the problem, the design choices, the trade-offs and what you would change. Say what you can honestly say about scale, latency or model quality in generic terms, and nothing you were told to keep private.
-4. **Say plainly what you can't show.** Every project carries one short NDA note near the top, in place of a demo.
-5. **Use one window template.** The NDA note, the problem, what I made, what I would change, then stack and timeline. Keep outcomes to what you are allowed to share.
-6. **Keep the door open for demos.** If you later build a public side project, it can get its own section without changing the window shell.
+1. **Describe, don't copy.** Write fresh prose rather than reusing source files or brand assets.
+2. **Lead with the engineering.** For backend and ML roles, the reader wants the problem, the design choices, the trade-offs and what you would change.
+3. **Use one window template.** The problem, what I made, what I would change, then stack and timeline.
+4. **Keep the door open for demos.** If you later build a public side project, it can get its own section without changing the window shell.
 
 ## Content checklist
 
@@ -132,11 +130,10 @@ Every bracket in the mockup is something to write or gather. Finish these before
 - [ ] The four status tiles (open to, building, reading, listening) and the three side-widget lines
 - [ ] Two or three roles for Experience: what you did, your stack, and three lessons each for "What I learned"
 - [ ] Three projects: problem, what you made, what you would change, stack, timeline
-- [ ] A one-line NDA note for each project: what you cannot show
 - [ ] Three starter letters, plus your category names
 - [ ] Email address, LinkedIn, GitHub and a résumé PDF
 - [ ] Favicon (the bow works), social share image, and a page title and description per window
-- [ ] Footer line and a short note on NDA work
+- [ ] Footer line
 
 ## Launch and after
 
@@ -152,7 +149,7 @@ Launch on your own domain once the checks below pass, then keep upkeep small eno
 - [ ] Switch themes on every window: contrast in both, a saved choice after reload, no flash on first load, and the switch usable by keyboard
 - [ ] Test every link, each address opened directly in a fresh tab, the back button, the contact email, the résumé download and the RSS feed
 - [ ] Add titles, descriptions, a sitemap and a social share image
-- [ ] Ask one trusted person to read the project windows for anything that sounds confidential
+- [ ] Ask one trusted person to read the project windows
 
 **After launch**
 

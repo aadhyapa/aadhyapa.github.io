@@ -52,17 +52,14 @@ const experience = defineCollection({
 			kind: z.literal('work'),
 			organization: z.string().min(1),
 			learned: z.array(lesson).min(1),
-			syntheticData: z.boolean(),
 		}),
 		z.object({
 			...shared,
 			kind: z.literal('project'),
 			client: z.string().min(1),
 			learned: z.array(lesson).optional(),
-			syntheticData: z.literal(true, {
-				error:
-					'Projects must be rebuilt with synthetic data: syntheticData must be true',
-			}),
+			problem: z.string().min(1),
+			change: z.string().min(1),
 		}),
 	]),
 });

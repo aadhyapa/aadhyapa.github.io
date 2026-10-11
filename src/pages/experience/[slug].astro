@@ -3,6 +3,7 @@ import { getCollection } from 'astro:content';
 import Layout from '../../layouts/Layout.astro';
 import Window from '../../components/Window.astro';
 import RoleDetail from '../../components/experience/RoleDetail.astro';
+import CaseStudy from '../../components/experience/CaseStudy.astro';
 
 export async function getStaticPaths() {
 	const entries = await getCollection('experience');
@@ -24,11 +25,7 @@ const { entry } = Astro.props;
 		{entry.data.kind === 'work' ? (
 			<RoleDetail entry={entry} />
 		) : (
-			/* T16 replaces this fallback with the project template. */
-			<article>
-				<h1>{entry.data.title}</h1>
-				<p>{entry.data.summary}</p>
-			</article>
+			<CaseStudy entry={entry} />
 		)}
 	</Window>
 </Layout>

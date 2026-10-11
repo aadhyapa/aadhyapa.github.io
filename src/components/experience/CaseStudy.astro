@@ -1,0 +1,202 @@
+---
+/**
+ * CaseStudy: body of the project window, a white sheet on gingham.
+ * Props:
+ *   entry   a project entry from the experience collection
+ * Sections: problem, what I made, what I would change, then stack and timeline.
+ * Shaped to fit a window about 700px wide and the phone sheet.
+ */
+import PearlBullet from '../ui/PearlBullet.astro';
+import Pill from '../ui/Pill.astro';
+import RibbonLabel from '../ui/RibbonLabel.astro';
+import { formatSpan, type Entry } from './entries';
+
+interface Props {
+	entry: Entry;
+}
+
+const { entry } = Astro.props;
+if (entry.data.kind !== 'project') {
+	throw new Error(`CaseStudy only renders project entries, got "${entry.id}"`);
+}
+const { title, client, summary, problem, did, change, stack } = entry.data;
+const pillTones = ['pink', 'green', 'white'] as const;
+---
+
+<div class="case-gingham gingham">
+	<article class="sheet">
+		<p class="meta">
+			<Pill tone="pink" pixel>
+				project
+			</Pill>
+			<span class="dates">{formatSpan(entry.data)}</span>
+		</p>
+		<h1 class="title">{title}</h1>
+		<p class="org">{client}</p>
+		<p class="summary">{summary}</p>
+
+		<section class="block" aria-label="the problem">
+			<RibbonLabel as="h2">the problem</RibbonLabel>
+			<p class="text">{problem}</p>
+		</section>
+
+		<section class="block" aria-label="what i made">
+			<RibbonLabel as="h2">what i made</RibbonLabel>
+			<ul class="made">
+				{did.map((item) => (
+					<li>
+						<PearlBullet />
+						<span>{item}</span>
+					</li>
+				))}
+			</ul>
+		</section>
+
+		<section class="block" aria-label="what i would change">
+			<RibbonLabel as="h2">what i would change</RibbonLabel>
+			<p class="text">{change}</p>
+		</section>
+
+		<hr class="divider" />
+
+		<section class="block" aria-label="stack and timeline">
+			<RibbonLabel as="h2">stack and timeline</RibbonLabel>
+			<dl class="facts">
+				<div>
+					<dt>stack</dt>
+					<dd>
+						<ul class="pills">
+							{stack.map((tool, i) => (
+								<li>
+									<Pill tone={pillTones[i % pillTones.length]}>{tool}</Pill>
+								</li>
+							))}
+						</ul>
+					</dd>
+				</div>
+				<div>
+					<dt>timeline</dt>
+					<dd>{formatSpan(entry.data)}</dd>
+				</div>
+			</dl>
+		</section>
+	</article>
+</div>
+
+<style>
+	.case-gingham {
+		--gingham-size: 28px;
+		--bleed: var(--space-5);
+		margin: calc(var(--bleed) * -1);
+		padding: var(--space-5) var(--space-6);
+	}
+	.sheet {
+		padding: var(--space-5) var(--space-6) var(--space-6);
+		background: var(--color-white);
+		border: var(--outline-width) solid var(--color-ink);
+		border-radius: var(--radius-window);
+		color: var(--color-text);
+	}
+
+	.meta {
+		display: flex;
+		flex-wrap: wrap;
+		align-items: center;
+		gap: var(--space-2);
+		margin: 0 0 var(--space-2);
+	}
+	.dates {
+		font-size: var(--text-sm);
+	}
+	.title {
+		margin: 0;
+		font-family: var(--font-display);
+		font-size: var(--text-2xl);
+		font-weight: 400;
+		line-height: var(--leading-tight);
+		color: var(--color-ink);
+		text-shadow: 2px 2px 0 var(--color-pink);
+		overflow-wrap: anywhere;
+	}
+	.org {
+		margin: var(--space-1) 0 0;
+		font-size: var(--text-md);
+	}
+	.summary {
+		margin: var(--space-4) 0 0;
+		font-size: var(--text-md);
+		line-height: var(--leading-body);
+	}
+
+	.block {
+		margin-block-start: var(--space-5);
+	}
+	.block > :global(h2) {
+		margin: 0 0 var(--space-3);
+	}
+	.text {
+		margin: 0;
+		max-width: 34em;
+		line-height: var(--leading-body);
+	}
+
+	.made,
+	.pills {
+		margin: 0;
+		padding: 0;
+		list-style: none;
+	}
+	.made li {
+		display: flex;
+		align-items: baseline;
+		gap: var(--space-3);
+		padding-block: var(--space-1);
+		line-height: var(--leading-body);
+	}
+	.made :global(.pearl-bullet) {
+		translate: 0 0.1em;
+	}
+
+	.divider {
+		margin: var(--space-5) 0 0;
+		border: 0;
+		border-block-start: 2px dashed var(--color-pink);
+	}
+
+	.facts {
+		display: grid;
+		gap: var(--space-3);
+		margin: 0;
+	}
+	.facts > div {
+		display: flex;
+		flex-wrap: wrap;
+		align-items: center;
+		gap: var(--space-3);
+	}
+	.facts dt {
+		min-inline-size: 5rem;
+		font-weight: var(--weight-bold);
+	}
+	.facts dd {
+		margin: 0;
+	}
+	.pills {
+		display: flex;
+		flex-wrap: wrap;
+		gap: var(--space-2);
+	}
+
+	@media (max-width: 43.75rem) {
+		.case-gingham {
+			--bleed: var(--space-4);
+			padding: var(--space-4);
+		}
+		.sheet {
+			padding: var(--space-4);
+		}
+		.title {
+			font-size: var(--text-xl);
+		}
+	}
+</style>
