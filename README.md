@@ -25,11 +25,16 @@ Run all commands from the project root.
 ```text
 /
 ├── docs/               plan, task list and design
-├── public/             static files (favicon)
+├── public/             static files (favicon, résumé PDF)
 └── src/
     ├── layouts/        Layout.astro: persistent backdrop + view transitions
     └── pages/          one file per address
 ```
+
+## Résumé and 404
+
+- **Résumé:** The résumé is `public/Aadhya_Pandillapally_Resume.pdf`. To update it, replace that file, keeping the name, so the menu bar, home card and Experience buttons keep working.
+- **404:** `src/pages/404.astro` builds to `dist/404.html`. The host must serve that file with a 404 status for unknown addresses. Host choice is still open, so no host config is included.
 
 ## Docs
 

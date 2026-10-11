@@ -1,0 +1,49 @@
+---
+import Layout from '../layouts/Layout.astro';
+import Window from '../components/Window.astro';
+import StickerButton from '../components/ui/StickerButton.astro';
+---
+
+<Layout title="Page not found">
+	<Window title="error.exe" closeHref="/">
+		<section class="error">
+			<p class="code">404</p>
+			<h1>oops, nothing lives here</h1>
+			<p class="message">
+				This address doesn't open anything. The link may be old, or a typo
+				snuck in. Head back home and try again.
+			</p>
+			<StickerButton href="/" variant="pink">Back home</StickerButton>
+		</section>
+	</Window>
+</Layout>
+
+<style>
+	.error {
+		display: grid;
+		justify-items: start;
+		gap: var(--space-4);
+		padding: var(--space-5);
+		color: var(--color-text);
+	}
+	.code {
+		margin: 0;
+		font-family: var(--font-pixel);
+		font-size: var(--text-2xl);
+		line-height: var(--leading-tight);
+		color: var(--color-raspberry);
+	}
+	h1 {
+		margin: 0;
+		font-family: var(--font-display);
+		font-size: var(--text-xl);
+		line-height: var(--leading-tight);
+		color: var(--color-ink);
+	}
+	.message {
+		margin: 0;
+		max-width: 36ch;
+		font-size: var(--text-md);
+		line-height: var(--leading-body);
+	}
+</style>
