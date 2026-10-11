@@ -1,0 +1,349 @@
+---
+/**
+ * Explorer: toolbar and two-pane list/preview for the experience window.
+ * Props:
+ *   filter   'all' | 'work' | 'projects', picks the active tab and the rows
+ * Server renders every preview panel; only the selected one is visible.
+ * Without JavaScript the first entry is selected and rows are plain links to
+ * their detail pages. With it, the script below swaps the preview in place.
+ */
+import PearlBullet from '../ui/PearlBullet.astro';
+import Pill from '../ui/Pill.astro';
+import StickerButton from '../ui/StickerButton.astro';
+import {
+	formatSpan,
+	kindLabel,
+	loadEntries,
+	subtitle,
+	tabs,
+	type Filter,
+} from './entries';
+
+interface Props {
+	filter: Filter;
+}
+
+const { filter } = Astro.props;
+const { entries, counts } = await loadEntries();
+const rows = entries[filter];
+---
+
+<div class="explorer" data-explorer>
+	<div class="toolbar">
+		<nav aria-label="Experience filter">
+			<ul class="tabs">
+				{tabs.map((tab) => (
+					<li>
+						<a
+							class="tab"
+							href={tab.href}
+							aria-current={tab.filter === filter ? 'page' : undefined}
+						>
+							{tab.label} · {counts[tab.filter]}
+						</a>
+					</li>
+				))}
+			</ul>
+		</nav>
+		<StickerButton class="resume" href="/resume.pdf" download>
+			résumé.pdf <span aria-hidden="true">↓</span>
+		</StickerButton>
+	</div>
+
+	{rows.length === 0 ? (
+		<p class="empty">Nothing here yet.</p>
+	) : (
+		<div class="panes">
+			<ul class="list" aria-label="Experience entries">
+				{rows.map((entry, i) => (
+					<li>
+						<a
+							class="row"
+							href={`/experience/${entry.id}`}
+							data-row={entry.id}
+							aria-current={i === 0 ? 'true' : undefined}
+						>
+							<span
+								class={`marker marker--${entry.data.kind}`}
+								aria-hidden="true"
+							/>
+							<span class="row-text">
+								<span class="row-title">{entry.data.title}</span>
+								<span class="row-meta">
+									{formatSpan(entry.data)} · {kindLabel(entry)}
+								</span>
+							</span>
+						</a>
+					</li>
+				))}
+			</ul>
+
+			<div class="preview">
+				{rows.map((entry, i) => (
+					<article
+						class="panel"
+						data-panel={entry.id}
+						aria-labelledby={`panel-title-${entry.id}`}
+						hidden={i !== 0}
+					>
+						<Pill pixel tone={entry.data.kind === 'work' ? 'green' : 'pink'}>
+							{kindLabel(entry)}
+						</Pill>
+						<h2 class="panel-title" id={`panel-title-${entry.id}`}>
+							{entry.data.title}
+						</h2>
+						<p class="panel-sub">{subtitle(entry)}</p>
+						<p class="panel-summary">{entry.data.summary}</p>
+						<h3 class="panel-did">what i did</h3>
+						<ul class="did">
+							{entry.data.did.map((item) => (
+								<li>
+									<PearlBullet />
+									<span>{item}</span>
+								</li>
+							))}
+						</ul>
+						<p class="stack">
+							<strong>stack</strong>
+							{entry.data.stack.join(', ')}
+						</p>
+						<StickerButton href={`/experience/${entry.id}`}>
+							{kindLabel(entry)} details <span aria-hidden="true">→</span>
+						</StickerButton>
+					</article>
+				))}
+			</div>
+		</div>
+	)}
+</div>
+
+<style>
+	/* Cancel the window body padding so the panes run edge to edge. */
+	.explorer {
+		margin: calc(-1 * var(--space-5));
+	}
+
+	.toolbar {
+		display: flex;
+		flex-wrap: wrap;
+		align-items: center;
+		justify-content: space-between;
+		gap: var(--space-2) var(--space-4);
+		padding: var(--space-2) var(--space-4);
+		background: var(--color-blush);
+		border-block-end: var(--outline-width) solid var(--color-ink);
+	}
+	.tabs {
+		display: flex;
+		flex-wrap: wrap;
+		gap: var(--space-2);
+		margin: 0;
+		padding: 0;
+		list-style: none;
+	}
+	.tab {
+		display: inline-flex;
+		align-items: center;
+		min-block-size: var(--tap-target);
+		padding-inline: var(--space-4);
+		font-weight: var(--weight-bold);
+		text-decoration: none;
+		color: var(--color-ink);
+		background: var(--color-pink-light);
+		border: 2px solid var(--color-ink);
+		border-radius: var(--radius-pill);
+	}
+	.tab:hover {
+		background: var(--color-white);
+		text-decoration: none;
+	}
+	.tab[aria-current='page'] {
+		background: var(--color-mint);
+	}
+	.toolbar :global(.resume) {
+		box-shadow: var(--shadow-sm);
+	}
+
+	.empty {
+		padding: var(--space-6) var(--space-5);
+	}
+
+	.panes {
+		display: grid;
+		grid-template-columns: minmax(0, 5fr) minmax(0, 8fr);
+		min-block-size: 24rem;
+	}
+
+	.list {
+		margin: 0;
+		padding: 0;
+		list-style: none;
+	}
+	.list li {
+		border-block-end: 2px solid var(--color-pink-light);
+	}
+	.row {
+		display: flex;
+		inline-size: 100%; /* responsive.css makes window links inline-flex on phones */
+		align-items: center;
+		gap: var(--space-3);
+		padding: var(--space-3) var(--space-4);
+		text-decoration: none;
+		color: var(--color-ink);
+	}
+	.row:hover {
+		background: var(--color-blush);
+		text-decoration: none;
+	}
+	.row[aria-current='true'] {
+		background: var(--color-pink-light);
+	}
+	.row-text {
+		display: flex;
+		flex-direction: column;
+		min-inline-size: 0;
+	}
+	.row-title {
+		font-weight: var(--weight-bold);
+		line-height: 1.3;
+	}
+	.row-meta {
+		font-size: var(--text-sm);
+		line-height: 1.3;
+		color: var(--color-text);
+	}
+
+	.marker {
+		position: relative;
+		flex: none;
+		inline-size: 1.75rem;
+		block-size: 1.75rem;
+		background: var(--color-pink);
+		border: var(--outline-width) solid var(--color-ink);
+		border-radius: var(--radius-sm);
+	}
+	/* folder tab */
+	.marker--work::before {
+		content: '';
+		position: absolute;
+		inset-block-start: calc(-0.4rem - var(--outline-width));
+		inset-inline-start: -2.5px;
+		inline-size: 0.9rem;
+		block-size: 0.4rem;
+		background: var(--color-pink);
+		border: var(--outline-width) solid var(--color-ink);
+		border-block-end: 0;
+		border-radius: 4px 4px 0 0;
+	}
+	.marker--project {
+		background: var(--color-green);
+		border-radius: 50%;
+	}
+
+	.preview {
+		padding: var(--space-5);
+		background:
+			radial-gradient(var(--color-lace) 1px, transparent 1.5px) 0 0 / 14px 14px,
+			var(--color-white);
+		border-inline-start: var(--outline-width) solid var(--color-ink);
+	}
+	.panel[hidden] {
+		display: none;
+	}
+	.panel-title {
+		margin-block-start: var(--space-2);
+		font-size: var(--text-xl);
+	}
+	.panel-sub {
+		color: var(--color-text);
+	}
+	.panel-summary {
+		margin-block: var(--space-3);
+	}
+	.panel-did {
+		font-family: var(--font-hand);
+		font-size: var(--text-lg);
+		color: var(--color-raspberry);
+	}
+	.did {
+		display: grid;
+		gap: var(--space-1);
+		margin: var(--space-2) 0 var(--space-3);
+		padding: 0;
+		list-style: none;
+	}
+	.did li {
+		display: flex;
+		align-items: baseline;
+		gap: var(--space-2);
+	}
+	.stack {
+		margin-block-end: var(--space-4);
+		font-size: var(--text-base);
+	}
+	.stack strong {
+		margin-inline-end: var(--space-1);
+		color: var(--color-ink);
+	}
+
+	@media (max-width: 43.75rem) {
+		.explorer {
+			margin: calc(-1 * var(--space-4));
+		}
+		.toolbar {
+			padding-inline: var(--space-3);
+		}
+		.panes {
+			grid-template-columns: minmax(0, 1fr);
+			min-block-size: 0;
+		}
+		.preview {
+			padding: var(--space-4);
+			border-inline-start: 0;
+			border-block-start: var(--outline-width) solid var(--color-ink);
+		}
+	}
+</style>
+
+<script>
+	// Delegated and in the capture phase so it runs before the view-transition
+	// router sees the click. Plain left clicks only; modified clicks open the link.
+	const stacked = matchMedia('(max-width: 43.75rem)');
+
+	document.addEventListener(
+		'click',
+		(event) => {
+			if (
+				event.defaultPrevented ||
+				event.button !== 0 ||
+				event.metaKey ||
+				event.ctrlKey ||
+				event.shiftKey ||
+				event.altKey
+			)
+				return;
+			const row = (event.target as Element).closest<HTMLElement>('[data-row]');
+			const explorer = row?.closest<HTMLElement>('[data-explorer]');
+			if (!row || !explorer) return;
+			event.preventDefault();
+
+			explorer.querySelectorAll<HTMLElement>('[data-row]').forEach((el) => {
+				if (el === row) el.setAttribute('aria-current', 'true');
+				else el.removeAttribute('aria-current');
+			});
+			let shown: HTMLElement | null = null;
+			explorer
+				.querySelectorAll<HTMLElement>('[data-panel]')
+				.forEach((panel) => {
+					panel.hidden = panel.dataset.panel !== row.dataset.row;
+					if (!panel.hidden) shown = panel;
+				});
+			// On a phone the preview sits below the list; bring it into view.
+			// Focus stays on the row.
+			if (stacked.matches) {
+				(shown as HTMLElement | null)?.scrollIntoView({ block: 'nearest' });
+			}
+		},
+		true,
+	);
+</script>
