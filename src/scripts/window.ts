@@ -12,7 +12,7 @@ import { navigate } from 'astro:transitions/client';
 const FOCUSABLE =
 	'a[href], button:not([disabled]), input:not([disabled]), select:not([disabled]), textarea:not([disabled]), [tabindex]:not([tabindex="-1"])';
 
-let opener: { el: HTMLElement; href: string } | null = null;
+let opener: { el: HTMLElement; href: string; index: number } | null = null;
 let lastWindowPath: string | null = null;
 
 const getWindow = () => document.querySelector<HTMLElement>('[data-window]');
@@ -34,7 +34,9 @@ function restoreFocus() {
 	const target =
 		(opener?.el.isConnected ? opener.el : null) ??
 		(opener
-			? document.querySelector<HTMLElement>(`a[href="${opener.href}"]`)
+			? document
+					.querySelectorAll<HTMLElement>(`a[href="${opener.href}"]`)
+					.item(opener.index)
 			: null) ??
 		(lastWindowPath
 			? [...document.querySelectorAll<HTMLAnchorElement>('#menubar a')].find(
@@ -66,7 +68,14 @@ document.addEventListener(
 		const link = (event.target as Element).closest<HTMLAnchorElement>(
 			'a[href]',
 		);
-		if (link) opener = { el: link, href: link.getAttribute('href') ?? '' };
+		if (!link) return;
+		const href = link.getAttribute('href') ?? '';
+		// Position among links with the same address, so the home card button is
+		// found again after the page swap instead of the menu bar link.
+		const index = [
+			...document.querySelectorAll<HTMLElement>(`a[href="${href}"]`),
+		].indexOf(link);
+		opener = { el: link, href, index: Math.max(index, 0) };
 	},
 	true,
 );
