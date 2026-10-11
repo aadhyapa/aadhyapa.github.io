@@ -1,11 +1,14 @@
 ---
 import Layout from '../layouts/Layout.astro';
+import Window from '../components/Window.astro';
 ---
 
 <Layout title="About">
-	<dialog open aria-labelledby="about-title">
-		<h2 id="about-title">about_me.txt</h2>
-		<p>Throwaway test dialog.</p>
-		<a href="/">Close</a>
-	</dialog>
+	<Window title="about_me.txt" closeHref="/">
+		<h2>dear visitor,</h2>
+		<p>Placeholder content for the window shell.</p>
+		<p>
+			<a href="/experience">A link inside the window</a>
+		</p>
+	</Window>
 </Layout>

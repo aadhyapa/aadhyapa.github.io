@@ -1,0 +1,334 @@
+---
+/**
+ * HomeCard: the home page card. Lace frame around a gingham card with a ribbon label,
+ * heart-shaped portrait, intro, pills, bio, status tiles, link directory and icon strip.
+ * Every [bracket] is a placeholder to replace with real content.
+ * Decorative parts are aria-hidden; the only heading above the directory is the h1.
+ */
+import Bow from './decor/Bow.astro';
+import LaceEdge from './decor/LaceEdge.astro';
+import Leaf from './decor/Leaf.astro';
+import PixelHeart from './decor/PixelHeart.astro';
+import Pill from './ui/Pill.astro';
+import RibbonLabel from './ui/RibbonLabel.astro';
+import StatusTile from './ui/StatusTile.astro';
+import StickerButton from './ui/StickerButton.astro';
+
+const status = [
+	{ label: 'open to', value: '[work / freelance]', tone: 'green' },
+	{ label: 'building', value: '[side project]', tone: 'pink' },
+	{ label: 'reading', value: '[book title]', tone: 'green' },
+	{ label: 'listening', value: '[song, artist]', tone: 'pink' },
+] as const;
+
+const links = [
+	{ href: '/about', label: 'About', variant: 'white', icon: 'doc' },
+	{ href: '/experience', label: 'Experience', variant: 'pink', icon: 'folder' },
+	{ href: '/letters', label: 'Letters', variant: 'green', icon: 'mail' },
+	{
+		href: '/resume.pdf',
+		label: 'Résumé ↓',
+		variant: 'white',
+		icon: 'doc',
+		download: true,
+	},
+] as const;
+---
+
+<main class="home">
+	<div class="lace-frame">
+		<LaceEdge position="top" size="22px" />
+		<section class="card gingham">
+			<p class="ribbon-wrap">
+				<RibbonLabel as="span">
+					welcome to my corner of the internet
+				</RibbonLabel>
+			</p>
+
+			<div class="intro">
+				<div class="portrait">
+					<span class="bow bow-black">
+						<Bow variant="black" size="3.75rem" />
+					</span>
+					<span class="bow bow-pink">
+						<Bow variant="pink" size="2.25rem" />
+					</span>
+					<svg
+						class="heart-defs"
+						width="0"
+						height="0"
+						aria-hidden="true"
+						focusable="false"
+					>
+						<clipPath id="heart-clip" clipPathUnits="objectBoundingBox">
+							<path d="M0.5 0.95 C0.1 0.62 0.02 0.42 0.02 0.28 C0.02 0.12 0.14 0.03 0.27 0.03 C0.38 0.03 0.46 0.09 0.5 0.18 C0.54 0.09 0.62 0.03 0.73 0.03 C0.86 0.03 0.98 0.12 0.98 0.28 C0.98 0.42 0.9 0.62 0.5 0.95 Z"></path>
+						</clipPath>
+					</svg>
+					<div class="heart-outer" aria-hidden="true">
+						<div class="heart-inner">
+							<span>[your photo]</span>
+						</div>
+					</div>
+				</div>
+
+				<div class="intro-text">
+					<h1>
+						<span class="hi">hi, i'm</span>
+						<span class="name">[Your Name]</span>
+					</h1>
+					<ul class="pills">
+						<li>
+							<Pill tone="pink">[role]</Pill>
+						</li>
+						<li>
+							<Pill tone="green">[city]</Pill>
+						</li>
+						<li>
+							<Pill>[she/her]</Pill>
+						</li>
+					</ul>
+					<p class="bio">
+						[A short, honest paragraph about you: what you do, what you care
+						about, and what you are working toward right now.]
+					</p>
+				</div>
+			</div>
+
+			<section class="block" aria-label="Status">
+				<RibbonLabel as="h2" class="block-label">
+					status
+				</RibbonLabel>
+				<ul class="status">
+					{status.map((s) => (
+						<li>
+							<StatusTile label={s.label} value={s.value} tone={s.tone} />
+						</li>
+					))}
+				</ul>
+			</section>
+
+			<nav class="block" aria-label="Link directory">
+				<RibbonLabel as="h2" class="block-label">
+					link directory
+				</RibbonLabel>
+				<ul class="directory">
+					{links.map((l) => (
+						<li>
+							<StickerButton
+								href={l.href}
+								variant={l.variant}
+								{...('download' in l ? { download: true } : {})}
+							>
+								<svg
+									class="icon"
+									viewBox="0 0 24 24"
+									aria-hidden="true"
+									focusable="false"
+								>
+									{l.icon === 'doc' && (
+										<path d="M6 3h8l4 4v14H6z M14 3v4h4 M9 12h6 M9 16h6" />
+									)}
+									{l.icon === 'folder' && (
+										<path d="M3 6h7l2 2h9v11H3z M3 10h18" />
+									)}
+									{l.icon === 'mail' && <path d="M3 6h18v13H3z M3 7l9 7 9-7" />}
+								</svg>
+								{l.label}
+							</StickerButton>
+						</li>
+					))}
+				</ul>
+			</nav>
+
+			<div class="strip" aria-hidden="true">
+				<PixelHeart variant="pink" size="1.5rem" />
+				<Leaf size="1.5rem" />
+				<Bow variant="pink" size="2.25rem" />
+				<PixelHeart variant="green" size="1.5rem" />
+				<Bow variant="black" size="2.25rem" />
+				<Leaf size="1.5rem" />
+				<PixelHeart variant="pink" size="1.5rem" />
+			</div>
+		</section>
+		<LaceEdge position="bottom" size="22px" />
+	</div>
+</main>
+
+<style>
+	.home {
+		position: relative;
+		z-index: 1;
+		padding: calc(var(--space-8) + var(--space-5)) var(--space-4) var(--space-8);
+	}
+
+	.lace-frame {
+		max-width: 54rem;
+		margin-inline: auto;
+		padding: var(--space-3);
+		background: var(--color-lace);
+		border: var(--outline-width) solid var(--color-ink);
+		border-radius: var(--radius-window);
+		box-shadow: var(--shadow-lg);
+	}
+
+	.card {
+		display: flex;
+		flex-direction: column;
+		gap: var(--space-6);
+		padding: var(--space-6) var(--space-6) var(--space-5);
+		border: var(--outline-width) solid var(--color-ink);
+		border-radius: var(--radius-window-sm);
+	}
+
+	.ribbon-wrap {
+		text-align: center;
+		margin-block-start: calc(var(--space-2) * -1);
+	}
+
+	.intro {
+		display: grid;
+		grid-template-columns: 15rem 1fr;
+		gap: var(--space-6);
+		align-items: center;
+	}
+
+	.portrait {
+		position: relative;
+		width: 15rem;
+		aspect-ratio: 1;
+	}
+	.heart-defs {
+		position: absolute;
+	}
+	.heart-outer {
+		width: 100%;
+		height: 100%;
+		background: var(--color-ink);
+		clip-path: url(#heart-clip);
+	}
+	.heart-inner {
+		position: absolute;
+		inset: 0.55rem;
+		display: grid;
+		place-items: center;
+		font-family: var(--font-pixel);
+		font-size: var(--text-xs);
+		text-transform: uppercase;
+		letter-spacing: 0.1em;
+		color: var(--color-ink);
+		background: var(--color-mint);
+		clip-path: url(#heart-clip);
+	}
+	.bow {
+		position: absolute;
+		z-index: 1;
+	}
+	.bow-black {
+		top: -0.4rem;
+		left: -0.9rem;
+		rotate: -12deg;
+	}
+	.bow-pink {
+		right: 0.2rem;
+		bottom: 1.1rem;
+		rotate: 14deg;
+	}
+
+	h1 {
+		display: flex;
+		flex-direction: column;
+		gap: var(--space-1);
+	}
+	.hi {
+		font-family: var(--font-hand);
+		font-size: var(--text-xl);
+		color: var(--color-raspberry);
+	}
+	.name {
+		font-size: var(--text-2xl);
+		line-height: var(--leading-tight);
+		text-shadow: 3px 3px 0 var(--color-pink);
+	}
+
+	.pills {
+		display: flex;
+		flex-wrap: wrap;
+		gap: var(--space-2);
+		padding: 0;
+		margin: var(--space-3) 0;
+		list-style: none;
+	}
+
+	.bio {
+		max-width: 34rem;
+	}
+
+	.block {
+		display: flex;
+		flex-direction: column;
+		gap: var(--space-3);
+	}
+	.block :global(.block-label) {
+		align-self: flex-start;
+	}
+
+	.status,
+	.directory {
+		display: grid;
+		gap: var(--space-3);
+		padding: 0;
+		list-style: none;
+	}
+	.status {
+		grid-template-columns: repeat(4, 1fr);
+	}
+	.status :global(.status-tile) {
+		height: 100%;
+	}
+	.directory {
+		display: flex;
+		flex-wrap: wrap;
+	}
+
+	.icon {
+		width: 1.4rem;
+		height: 1.4rem;
+		fill: none;
+		stroke: var(--color-ink);
+		stroke-width: 1.8;
+		stroke-linejoin: round;
+		stroke-linecap: round;
+	}
+
+	.strip {
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		gap: var(--space-4);
+		padding-block: var(--space-3);
+		border-block: 2px dashed var(--color-lace);
+	}
+
+	@media (max-width: 56rem) {
+		.status {
+			grid-template-columns: repeat(2, 1fr);
+		}
+	}
+
+	@media (max-width: 43.75rem) {
+		.card {
+			padding: var(--space-5) var(--space-4);
+		}
+		.intro {
+			grid-template-columns: 1fr;
+			justify-items: center;
+			text-align: center;
+		}
+		.pills {
+			justify-content: center;
+		}
+		.status {
+			grid-template-columns: 1fr;
+		}
+	}
+</style>

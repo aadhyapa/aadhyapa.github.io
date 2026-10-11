@@ -1,0 +1,181 @@
+---
+/**
+ * Window: popup window shell shown over the backdrop with a dimmed overlay.
+ * Rendered on the server at its own address, so it works without JavaScript;
+ * src/scripts/window.ts adds focus handling, Tab trap, Escape and outside click.
+ * Props:
+ *   title      title bar text, also the dialog's accessible name
+ *   closeHref  where the close button goes, default '/'
+ *   backHref   optional; shows a back button in the title bar
+ * The default slot is the scrolling body.
+ */
+import Bow from './decor/Bow.astro';
+import LaceEdge from './decor/LaceEdge.astro';
+
+interface Props {
+	title: string;
+	closeHref?: string;
+	backHref?: string;
+}
+
+const { title, closeHref = '/', backHref } = Astro.props;
+---
+
+<div class="window-layer" data-window-layer data-close-href={closeHref}>
+	<div
+		class="window"
+		role="dialog"
+		aria-modal="true"
+		aria-labelledby="window-title"
+		tabindex="-1"
+		data-window
+	>
+		<div class="titlebar">
+			{backHref && (
+				<a class="tb-button tb-back" href={backHref} data-window-back>
+					<span aria-hidden="true">←</span> Back
+				</a>
+			)}
+			<span class="title" id="window-title">
+				{title}
+			</span>
+			<a
+				class="tb-button tb-close"
+				href={closeHref}
+				aria-label="Close window"
+				data-window-close
+			>
+				<span aria-hidden="true">×</span>
+			</a>
+		</div>
+		<div class="body" role="region" aria-labelledby="window-title" tabindex="0">
+			<slot />
+		</div>
+		<LaceEdge class="lace" position="bottom" size="18px" />
+		<Bow class="bow bow-left" variant="black" size="3.5rem" />
+		<Bow class="bow bow-right" variant="pink" size="3.5rem" />
+	</div>
+</div>
+
+<style>
+	.window-layer {
+		position: fixed;
+		inset: 0;
+		z-index: 10;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		padding: 5.5rem var(--space-5) var(--space-6);
+		background: color-mix(in srgb, var(--color-ink) 45%, transparent);
+	}
+
+	.window {
+		position: relative;
+		display: flex;
+		flex-direction: column;
+		inline-size: min(100%, 790px);
+		max-block-size: 100%;
+		background: var(--color-white);
+		border: var(--outline-width) solid var(--color-ink);
+		border-radius: var(--radius-window);
+		box-shadow: var(--shadow-lg);
+	}
+	.window:focus {
+		outline: none;
+	}
+
+	.titlebar {
+		display: flex;
+		align-items: center;
+		gap: var(--space-3);
+		padding: var(--space-1) var(--space-2) var(--space-1) var(--space-3);
+		background: linear-gradient(
+			to right,
+			var(--color-pink),
+			var(--color-pink-light) 45%,
+			var(--color-green)
+		);
+		border-block-end: var(--outline-width) solid var(--color-ink);
+		border-radius: calc(var(--radius-window) - var(--outline-width))
+			calc(var(--radius-window) - var(--outline-width)) 0 0;
+	}
+	.title {
+		flex: 1;
+		font-family: var(--font-pixel);
+		font-size: var(--text-sm);
+		font-weight: var(--weight-bold);
+		letter-spacing: 0.08em;
+		text-transform: uppercase;
+		color: var(--color-ink);
+	}
+
+	.tb-button {
+		display: inline-flex;
+		align-items: center;
+		justify-content: center;
+		min-inline-size: var(--tap-target);
+		min-block-size: var(--tap-target);
+		padding-inline: var(--space-3);
+		font-family: var(--font-pixel);
+		font-size: var(--text-sm);
+		font-weight: var(--weight-bold);
+		text-transform: uppercase;
+		text-decoration: none;
+		color: var(--color-ink);
+	}
+	.tb-button:hover {
+		text-decoration: none;
+		background: color-mix(in srgb, var(--color-white) 55%, transparent);
+	}
+	.tb-close {
+		font-size: var(--text-xl);
+		line-height: 1;
+	}
+	.tb-back {
+		gap: var(--space-1);
+		background: var(--color-white);
+		border: var(--outline-width) solid var(--color-ink);
+		border-radius: var(--radius-sm);
+	}
+
+	.body {
+		overflow-y: auto;
+		max-block-size: 600px;
+		min-block-size: 0;
+		padding: var(--space-5);
+		overscroll-behavior: contain;
+	}
+
+	.window :global(.lace) {
+		flex: none;
+		padding-block-start: var(--space-1);
+	}
+
+	.window :global(.bow) {
+		position: absolute;
+		z-index: 1;
+		pointer-events: none;
+	}
+	.window :global(.bow-left) {
+		inset-block-start: -1.4rem;
+		inset-inline-start: -1.2rem;
+		rotate: -12deg;
+	}
+	.window :global(.bow-right) {
+		inset-block-start: -1.4rem;
+		inset-inline-end: -1.2rem;
+		rotate: 12deg;
+	}
+
+	@media (prefers-reduced-motion: no-preference) {
+		.window {
+			animation: window-open 160ms ease-out;
+		}
+		@keyframes window-open {
+			from {
+				opacity: 0;
+				transform: translateY(8px) scale(0.98);
+			}
+		}
+	}
+</style>

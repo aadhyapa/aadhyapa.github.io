@@ -43,14 +43,8 @@ const { title } = Astro.props;
 		margin: 0;
 		min-height: 100%;
 	}
-
-	/* Windows sit above the backdrop and widgets, below the menu bar. */
-	dialog[open] {
-		position: fixed;
-		z-index: 10;
-		inset: 20% auto auto 50%;
-		translate: -50% 0;
-		border: var(--outline-width) solid var(--color-ink);
-		background: var(--color-white);
-	}
 </style>
+
+<script>
+	import '../scripts/window.ts';
+</script>
