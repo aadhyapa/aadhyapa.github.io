@@ -197,6 +197,15 @@ const { title, closeHref = '/', backHref } = Astro.props;
 			max-block-size: none;
 			padding: var(--space-4);
 		}
+		/* Gingham detail bodies (role, case study) fill the sheet instead of
+		   stopping at the end of their content. */
+		.body:has(> :global(.gingham)) {
+			display: flex;
+			flex-direction: column;
+		}
+		.body > :global(.gingham) {
+			flex: 1 0 auto;
+		}
 		.window :global(.bow) {
 			display: none;
 		}
