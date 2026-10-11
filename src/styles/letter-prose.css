@@ -1,0 +1,133 @@
+/*
+ * Long-read type for rendered letter Markdown. Everything is scoped under
+ * .letter-prose because the Markdown output carries no component scope.
+ * Headings start at h2 (the letter title is the page's only h1).
+ * The handwriting font is NOT used here; it belongs to the salutation and
+ * sign-off in LetterBody.astro only.
+ */
+.letter-prose {
+	max-inline-size: 68ch;
+	font-size: var(--text-lg);
+	font-weight: var(--weight-medium);
+	line-height: 1.7;
+	color: var(--color-text);
+}
+
+.letter-prose > * + * {
+	margin-block-start: var(--space-4);
+}
+
+.letter-prose h2,
+.letter-prose h3,
+.letter-prose h4 {
+	color: var(--color-ink);
+	line-height: var(--leading-tight);
+}
+.letter-prose h2,
+.letter-prose h3,
+.letter-prose h4,
+.letter-prose h5,
+.letter-prose h6 {
+	margin-block-start: var(--space-6);
+	margin-block-end: calc(var(--space-2) * -1);
+}
+.letter-prose h2 {
+	font-size: var(--text-xl);
+}
+.letter-prose h3 {
+	font-size: var(--text-lg);
+}
+.letter-prose h4,
+.letter-prose h5,
+.letter-prose h6 {
+	font-family: var(--font-body);
+	font-size: var(--text-md);
+	font-weight: var(--weight-bold);
+}
+
+/* Links: keep them inline in running text (global.css sets the colour). */
+.window .body .letter-prose a {
+	display: inline;
+	min-block-size: 0;
+	font-weight: var(--weight-bold);
+	text-decoration-color: var(--color-pink);
+}
+.letter-prose a:hover {
+	text-decoration-color: currentColor;
+}
+
+.letter-prose strong {
+	font-weight: var(--weight-bold);
+	color: var(--color-ink);
+}
+
+.letter-prose ul,
+.letter-prose ol {
+	padding-inline-start: var(--space-5);
+}
+.letter-prose li + li {
+	margin-block-start: var(--space-2);
+}
+.letter-prose li::marker {
+	color: var(--color-raspberry);
+	font-weight: var(--weight-bold);
+}
+.letter-prose li > ul,
+.letter-prose li > ol {
+	margin-block-start: var(--space-2);
+}
+
+.letter-prose blockquote {
+	padding: var(--space-2) var(--space-4);
+	border-inline-start: 4px solid var(--color-pink);
+	background: var(--color-blush);
+	border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
+}
+.letter-prose blockquote > * + * {
+	margin-block-start: var(--space-3);
+}
+
+.letter-prose img {
+	block-size: auto;
+	border: var(--outline-width) solid var(--color-ink);
+	border-radius: var(--radius-sm);
+	box-shadow: var(--shadow-md);
+}
+
+.letter-prose hr {
+	border: 0;
+	border-block-start: 2px dashed var(--color-pink);
+}
+
+.letter-prose code {
+	padding: 0.1em 0.35em;
+	font-size: 0.9em;
+	background: var(--color-pink-light);
+	border-radius: var(--radius-sm);
+}
+.letter-prose pre {
+	padding: var(--space-4);
+	overflow-x: auto;
+	font-size: var(--text-base);
+	line-height: var(--leading-body);
+	background: var(--color-blush);
+	border: var(--outline-width) solid var(--color-ink);
+	border-radius: var(--radius-sm);
+}
+.letter-prose pre code {
+	padding: 0;
+	background: none;
+}
+
+@media (max-width: 43.75rem) {
+	.letter-prose {
+		font-size: var(--text-md);
+		line-height: var(--leading-body);
+	}
+	.letter-prose h2 {
+		font-size: var(--text-lg);
+	}
+	.letter-prose h3 {
+		font-size: var(--text-md);
+	}
+}
