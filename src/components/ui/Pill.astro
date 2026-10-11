@@ -46,4 +46,13 @@ const { tone = 'white', pixel = false, class: className = '' } = Astro.props;
 		letter-spacing: 0.1em;
 		text-transform: uppercase;
 	}
+
+	/* Quiet theme: outlined tag, hairline drawn inside the transparent border. */
+	:global(:root[data-theme='quiet']) .pill {
+		color: var(--color-text);
+		background: transparent;
+		border-color: transparent;
+		outline: 1px solid var(--color-line);
+		outline-offset: -1.5px;
+	}
 </style>

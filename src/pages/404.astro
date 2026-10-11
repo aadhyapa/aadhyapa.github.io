@@ -10,10 +10,12 @@ import StickerButton from '../components/ui/StickerButton.astro';
 			<p class="code">404</p>
 			<h1>oops, nothing lives here</h1>
 			<p class="message">
-				This address doesn't open anything. The link may be old, or a typo
-				snuck in. Head back home and try again.
+				This address doesn't open anything. The link may be old, or a typo snuck
+				in. Head back home and try again.
 			</p>
-			<StickerButton href="/" variant="pink">Back home</StickerButton>
+			<StickerButton href="/" variant="pink">
+				Back home
+			</StickerButton>
 		</section>
 	</Window>
 </Layout>
@@ -45,5 +47,9 @@ import StickerButton from '../components/ui/StickerButton.astro';
 		max-width: 36ch;
 		font-size: var(--text-md);
 		line-height: var(--leading-body);
+	}
+
+	:global(:root[data-theme='quiet']) .code {
+		color: var(--color-muted);
 	}
 </style>

@@ -107,4 +107,27 @@ const dateLabel = date.toLocaleDateString('en-US', {
 			font-size: var(--text-lg);
 		}
 	}
+
+	/* Quiet theme: no gingham, the sheet becomes a hairline surface panel.
+	   The wrapper keeps its padding so the sheet sits where it does in cute. */
+	:global(:root[data-theme='quiet']) .letter-gingham {
+		background-color: var(--color-surface);
+		background-image: none;
+	}
+	:global(:root[data-theme='quiet']) .sheet {
+		background: var(--color-surface);
+		border-color: transparent;
+		box-shadow: 0 0 0 1px var(--color-line);
+	}
+	:global(:root[data-theme='quiet']) .title {
+		text-shadow: none;
+	}
+
+	:global(:root[data-theme='quiet']) .hand {
+		font-family: var(--font-body);
+		color: var(--color-muted);
+	}
+	:global(:root[data-theme='quiet']) .signoff {
+		color: var(--color-ink);
+	}
 </style>

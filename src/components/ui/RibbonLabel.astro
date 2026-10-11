@@ -39,4 +39,12 @@ const { as: Tag = 'h2', class: className = '' } = Astro.props;
 			var(--notch) 50%
 		);
 	}
+
+	/* Quiet theme: small outlined label, no swallowtail. Padding stays. */
+	:global(:root[data-theme='quiet']) .ribbon-label {
+		color: var(--color-muted);
+		background: none;
+		clip-path: none;
+		box-shadow: 0 0 0 1px var(--color-line);
+	}
 </style>

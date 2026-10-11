@@ -256,4 +256,44 @@ const pillTones = ['pink', 'green', 'white'] as const;
 			font-size: var(--text-xl);
 		}
 	}
+
+	/* Quiet theme: no gingham, the sheet becomes a hairline surface panel.
+	   The wrapper keeps its padding so the sheet sits where it does in cute. */
+	:global(:root[data-theme='quiet']) .role-gingham {
+		background-color: var(--color-surface);
+		background-image: none;
+	}
+	:global(:root[data-theme='quiet']) .sheet {
+		background: var(--color-surface);
+		border-color: transparent;
+		box-shadow: 0 0 0 1px var(--color-line);
+	}
+	:global(:root[data-theme='quiet']) .title {
+		text-shadow: none;
+	}
+
+	:global(:root[data-theme='quiet']) .divider {
+		border-block-start-color: transparent;
+		background-image: linear-gradient(var(--color-line), var(--color-line));
+		background-position: top;
+		background-size: 100% 1px;
+		background-repeat: no-repeat;
+		background-origin: border-box;
+	}
+	:global(:root[data-theme='quiet']) .badge {
+		color: var(--color-muted);
+		background: transparent;
+		border-color: var(--color-line);
+		border-width: var(--hairline-width);
+		box-shadow: none;
+	}
+	:global(:root[data-theme='quiet']) .lesson-title {
+	}
+	:global(:root[data-theme='quiet']) .stack-label {
+		color: var(--color-muted);
+	}
+	:global(:root[data-theme='quiet']) .hand {
+		font-family: var(--font-body);
+		color: var(--color-muted);
+	}
 </style>

@@ -34,4 +34,18 @@ const { size = '0.7rem', class: className = '' } = Astro.props;
 		);
 		box-shadow: 0 0 0 1px var(--color-lace);
 	}
+
+	/* Quiet theme: a plain square marker; the box keeps its size. */
+	:global(:root[data-theme='quiet']) .pearl-bullet {
+		position: relative;
+		background: none;
+		border-radius: 0;
+		box-shadow: none;
+	}
+	:global(:root[data-theme='quiet']) .pearl-bullet::before {
+		content: '';
+		position: absolute;
+		inset: 32%;
+		background: var(--color-muted);
+	}
 </style>

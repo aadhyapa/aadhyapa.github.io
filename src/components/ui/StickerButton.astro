@@ -86,4 +86,22 @@ const classes = ['sticker-button', `sticker-button--${variant}`, className];
 		transform: none;
 		box-shadow: var(--shadow-sm);
 	}
+
+	/* Quiet theme: outlined button, no shadow or lift. The hairline is a spread
+	   shadow so the focus outline stays free for the focus ring. */
+	:global(:root[data-theme='quiet']) .sticker-button {
+		color: var(--color-ink);
+		background: transparent;
+		border-color: transparent;
+		box-shadow: 0 0 0 1px var(--color-line);
+		transition: none;
+	}
+	:global(:root[data-theme='quiet']) .sticker-button:hover,
+	:global(:root[data-theme='quiet']) .sticker-button:active {
+		transform: none;
+		box-shadow: 0 0 0 1px var(--color-ink);
+	}
+	:global(:root[data-theme='quiet']) .sticker-button:disabled {
+		box-shadow: 0 0 0 1px var(--color-line);
+	}
 </style>

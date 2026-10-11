@@ -45,7 +45,11 @@ const rows = entries[filter];
 				))}
 			</ul>
 		</nav>
-		<StickerButton class="resume" href="/Aadhya_Pandillapally_Resume.pdf" download>
+		<StickerButton
+			class="resume"
+			href="/Aadhya_Pandillapally_Resume.pdf"
+			download
+		>
 			résumé.pdf <span aria-hidden="true">↓</span>
 		</StickerButton>
 	</div>
@@ -301,6 +305,103 @@ const rows = entries[filter];
 			padding: var(--space-4);
 			border-inline-start: 0;
 			border-block-start: var(--outline-width) solid var(--color-ink);
+		}
+	}
+
+	:global(:root[data-theme='quiet']) .toolbar {
+		background-color: var(--color-surface);
+		background-image: linear-gradient(var(--color-line), var(--color-line));
+		background-position: bottom;
+		background-size: 100% 1px;
+		background-repeat: no-repeat;
+		background-origin: border-box;
+		border-block-end-color: transparent;
+	}
+	:global(:root[data-theme='quiet']) .tab {
+		color: var(--color-muted);
+		background: transparent;
+		border-color: transparent;
+		box-shadow: 0 0 0 1px var(--color-line);
+	}
+	:global(:root[data-theme='quiet']) .tab:hover {
+		color: var(--color-ink);
+		background: transparent;
+		box-shadow: 0 0 0 1px var(--color-ink);
+	}
+	:global(:root[data-theme='quiet']) .tab[aria-current='page'] {
+		color: var(--color-ink);
+		background: transparent;
+		box-shadow: 0 0 0 1px var(--color-text);
+	}
+
+	:global(:root[data-theme='quiet']) .list li {
+		background-image: linear-gradient(var(--color-line), var(--color-line));
+		background-position: bottom;
+		background-size: 100% 1px;
+		background-repeat: no-repeat;
+		background-origin: border-box;
+		border-block-end-color: transparent;
+	}
+	:global(:root[data-theme='quiet']) .row {
+	}
+	:global(:root[data-theme='quiet']) .row:hover {
+		background: color-mix(in srgb, var(--color-line) 50%, transparent);
+	}
+
+	:global(:root[data-theme='quiet']) .toolbar :global(.resume) {
+		box-shadow: 0 0 0 1px var(--color-line);
+	}
+	:global(:root[data-theme='quiet']) .toolbar :global(.resume:hover) {
+		box-shadow: 0 0 0 1px var(--color-ink);
+	}
+	:global(:root[data-theme='quiet']) .row[aria-current='true'] {
+		background: var(--color-line);
+	}
+	:global(:root[data-theme='quiet']) .row-title {
+	}
+	:global(:root[data-theme='quiet']) .marker {
+		background: transparent;
+		border-width: var(--hairline-width);
+		border-color: var(--color-muted);
+	}
+	:global(:root[data-theme='quiet']) .marker--work::before {
+		inset-block-start: calc(-0.4rem - var(--hairline-width));
+		inset-inline-start: calc(-1 * var(--hairline-width));
+		background: var(--color-surface);
+		border-width: var(--hairline-width);
+		border-color: var(--color-muted);
+	}
+	:global(:root[data-theme='quiet'])
+		.row[aria-current='true']
+		.marker--work::before {
+		background: var(--color-line);
+	}
+	:global(:root[data-theme='quiet']) .marker--project {
+		background: transparent;
+	}
+	:global(:root[data-theme='quiet']) .preview {
+		background-color: var(--color-surface);
+		background-image: linear-gradient(var(--color-line), var(--color-line));
+		background-position: left;
+		background-size: 1px 100%;
+		background-repeat: no-repeat;
+		background-origin: border-box;
+		border-inline-start-color: transparent;
+	}
+	:global(:root[data-theme='quiet']) .panel-did {
+		font-family: var(--font-body);
+		color: var(--color-muted);
+	}
+	:global(:root[data-theme='quiet']) .stack strong {
+		color: var(--color-muted);
+	}
+
+	@media (max-width: 43.75rem) {
+		:global(:root[data-theme='quiet']) .preview {
+			background-image: linear-gradient(var(--color-line), var(--color-line));
+			background-position: top;
+			background-size: 100% 1px;
+			border-block-start-color: transparent;
 		}
 	}
 </style>

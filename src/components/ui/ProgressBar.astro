@@ -66,4 +66,23 @@ const filled = Math.round((clamped / 100) * segments);
 		background: var(--bar-fill);
 		box-shadow: inset 0 0 0 1px var(--color-ink);
 	}
+
+	/* Quiet theme: hairline slot and flat segments, no inset shadow. */
+	:global(:root[data-theme='quiet']) .progress-bar {
+		--bar-fill: var(--color-muted);
+		background: transparent;
+		border-color: transparent;
+		outline: 1px solid var(--color-line);
+		outline-offset: -1.5px;
+	}
+	:global(:root[data-theme='quiet']) .progress-bar--green {
+		--bar-fill: var(--color-muted);
+	}
+	:global(:root[data-theme='quiet']) .segment {
+		background: var(--color-line);
+	}
+	:global(:root[data-theme='quiet']) .segment--on {
+		background: var(--bar-fill);
+		box-shadow: none;
+	}
 </style>

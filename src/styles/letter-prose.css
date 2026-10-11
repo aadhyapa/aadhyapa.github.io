@@ -88,3 +88,38 @@
 	max-width: 100%;
 	height: auto;
 }
+
+/* Quiet theme: plain mono, flat code and quotes, hairline rules. The line is
+   capped in characters so it stays between 60 and 75 in Plex Mono. */
+:root[data-theme='quiet'] .letter-prose {
+	max-width: 70ch;
+}
+:root[data-theme='quiet'] .letter-prose a {
+	color: var(--color-ink);
+}
+:root[data-theme='quiet'] .letter-prose blockquote {
+	background-color: transparent;
+	background-image: linear-gradient(var(--color-line), var(--color-line));
+	background-position: left;
+	background-size: 1px 100%;
+	background-repeat: no-repeat;
+	background-origin: border-box;
+	border-inline-start-color: transparent;
+	color: var(--color-muted);
+}
+:root[data-theme='quiet'] .letter-prose hr {
+	border-block-start-color: transparent;
+	background-image: linear-gradient(var(--color-line), var(--color-line));
+	background-position: top;
+	background-size: 100% 1px;
+	background-repeat: no-repeat;
+	background-origin: border-box;
+}
+:root[data-theme='quiet'] .letter-prose code,
+:root[data-theme='quiet'] .letter-prose pre {
+	background: var(--color-bg);
+	box-shadow: 0 0 0 1px var(--color-line);
+}
+:root[data-theme='quiet'] .letter-prose pre code {
+	box-shadow: none;
+}

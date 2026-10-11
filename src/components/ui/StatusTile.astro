@@ -55,4 +55,15 @@ const { label, value, tone = 'pink', class: className = '' } = Astro.props;
 		margin-inline-end: 0.3em;
 		font-weight: var(--weight-bold);
 	}
+
+	/* Quiet theme: outlined tile, hairline drawn inside the transparent border. */
+	:global(:root[data-theme='quiet']) .status-tile {
+		background: transparent;
+		border-color: transparent;
+		outline: 1px solid var(--color-line);
+		outline-offset: -1.5px;
+	}
+	:global(:root[data-theme='quiet']) strong {
+		color: var(--color-muted);
+	}
 </style>

@@ -45,7 +45,7 @@ const { title, closeHref = '/', backHref } = Astro.props;
 				aria-label="Close window"
 				data-window-close
 			>
-				<span aria-hidden="true">×</span>
+				<span aria-hidden="true">X</span>
 			</a>
 		</div>
 		<div class="body" role="region" aria-labelledby="window-title" tabindex="0">
@@ -220,6 +220,54 @@ const { title, closeHref = '/', backHref } = Astro.props;
 				opacity: 0;
 				transform: translateY(8px) scale(0.98);
 			}
+		}
+	}
+
+	/* Quiet theme: flat surface, hairlines, no gradients or shadows. Borders
+	   stay transparent at their cute width so every box keeps its size; the
+	   hairline is drawn outside the box with a spread shadow or, for
+	   dividers, a 1px strip at the border edge. */
+	:global(:root[data-theme='quiet']) .window-layer {
+		background: color-mix(in srgb, var(--color-bg) 78%, transparent);
+	}
+	:global(:root[data-theme='quiet']) .window {
+		background: var(--color-surface);
+		border-color: transparent;
+		box-shadow: 0 0 0 1px var(--color-line);
+	}
+	:global(:root[data-theme='quiet']) .titlebar {
+		background-color: var(--color-surface);
+		background-image: linear-gradient(var(--color-line), var(--color-line));
+		background-position: bottom;
+		background-size: 100% 1px;
+		background-repeat: no-repeat;
+		background-origin: border-box;
+		border-block-end-color: transparent;
+	}
+	:global(:root[data-theme='quiet']) .title,
+	:global(:root[data-theme='quiet']) .tb-button {
+		color: var(--color-ink);
+	}
+	:global(:root[data-theme='quiet']) .tb-button:hover {
+		background: var(--color-line);
+	}
+	:global(:root[data-theme='quiet']) .tb-back {
+		background: transparent;
+		border-color: transparent;
+		box-shadow: 0 0 0 1px var(--color-line);
+	}
+	:global(:root[data-theme='quiet']) .tb-back:hover {
+		box-shadow: 0 0 0 1px var(--color-ink);
+	}
+
+	@media (max-width: 43.75rem) {
+		/* The sheet fills the screen with the surface colour. */
+		:global(:root[data-theme='quiet']) .window {
+			box-shadow: none;
+		}
+		:global(:root[data-theme='quiet']) .body,
+		:global(:root[data-theme='quiet']) .body > :global(.gingham) {
+			background-color: var(--color-surface);
 		}
 	}
 </style>
