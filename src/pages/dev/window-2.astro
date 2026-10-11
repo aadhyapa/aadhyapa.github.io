@@ -1,0 +1,24 @@
+---
+/**
+ * Dev-only second placeholder window, used by the gate check for the
+ * back button and detail-window pattern. Replaced by real windows later.
+ */
+import Layout from '../../layouts/Layout.astro';
+import Window from '../../components/Window.astro';
+---
+
+<Layout title="Second window">
+	<meta name="robots" content="noindex" />
+	<Window title="second_window.txt" closeHref="/" backHref="/about">
+		<h2>second window</h2>
+		<p>Placeholder window with a back button.</p>
+		{Array.from({ length: 24 }, (_, i) => (
+			<p>
+				Filler paragraph {i + 1} so the body has to scroll inside the sheet.
+			</p>
+		))}
+		<p>
+			<a href="/about">Back to about</a>
+		</p>
+	</Window>
+</Layout>

@@ -110,6 +110,7 @@ const { title, closeHref = '/', backHref } = Astro.props;
 	}
 
 	.tb-button {
+		flex: none;
 		display: inline-flex;
 		align-items: center;
 		justify-content: center;
@@ -165,6 +166,40 @@ const { title, closeHref = '/', backHref } = Astro.props;
 		inset-block-start: -1.4rem;
 		inset-inline-end: -1.2rem;
 		rotate: 12deg;
+	}
+
+	@media (max-width: 43.75rem) {
+		.window-layer {
+			z-index: 30;
+			padding: 0;
+		}
+		.window {
+			inline-size: 100%;
+			block-size: 100dvh;
+			max-block-size: none;
+			border: 0;
+			border-radius: 0;
+			box-shadow: none;
+		}
+		.titlebar {
+			flex: none;
+			padding-inline: var(--space-2);
+			border-radius: 0;
+		}
+		.title {
+			min-inline-size: 0;
+			overflow: hidden;
+			text-overflow: ellipsis;
+			white-space: nowrap;
+		}
+		.body {
+			flex: 1;
+			max-block-size: none;
+			padding: var(--space-4);
+		}
+		.window :global(.bow) {
+			display: none;
+		}
 	}
 
 	@media (prefers-reduced-motion: no-preference) {

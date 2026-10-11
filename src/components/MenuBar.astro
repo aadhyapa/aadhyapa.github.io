@@ -42,8 +42,15 @@ const isCurrent = (href: string) =>
 			</ul>
 		</nav>
 		<div class="right">
-			<StickerButton class="resume" href="/resume.pdf" download variant="pink">
-				résumé.pdf <span aria-hidden="true">↓</span>
+			<StickerButton
+				class="resume"
+				href="/resume.pdf"
+				download
+				variant="pink"
+				aria-label="résumé.pdf"
+			>
+				<span class="resume-text">résumé.pdf</span>
+				<span aria-hidden="true">↓</span>
 			</StickerButton>
 			<Clock />
 		</div>
@@ -133,6 +140,39 @@ const isCurrent = (href: string) =>
 	.right :global(.resume) {
 		padding-inline: var(--space-4);
 		box-shadow: var(--shadow-sm);
+	}
+
+	@media (max-width: 43.75rem) {
+		.bar {
+			gap: var(--space-1);
+			padding-inline: var(--space-2);
+		}
+		.brand-name,
+		.resume-text,
+		.right :global([data-clock]),
+		.divider {
+			position: absolute;
+			inline-size: 1px;
+			block-size: 1px;
+			overflow: hidden;
+			clip-path: inset(50%);
+			white-space: nowrap;
+		}
+		.brand {
+			min-inline-size: var(--tap-target);
+			justify-content: center;
+		}
+		.nav-list {
+			gap: 0;
+		}
+		.nav-link {
+			padding-inline: var(--space-2);
+			font-size: var(--text-base);
+		}
+		.right :global(.resume) {
+			min-inline-size: var(--tap-target);
+			padding-inline: var(--space-2);
+		}
 	}
 </style>
 
