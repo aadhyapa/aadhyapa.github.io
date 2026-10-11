@@ -1,6 +1,11 @@
 ---
 import { ClientRouter } from 'astro:transitions';
 import '../styles/global.css';
+import '../styles/gingham.css';
+import '../styles/scallop.css';
+import Backdrop from '../components/Backdrop.astro';
+import MenuBar from '../components/MenuBar.astro';
+import SideWidgets from '../components/SideWidgets.astro';
 
 interface Props {
 	title: string;
@@ -22,23 +27,13 @@ const { title } = Astro.props;
 	</head>
 	<body>
 		<div id="backdrop" transition:persist>
-			<h1>Backdrop</h1>
-			<p>
-				Loaded at <time id="backdrop-loaded">…</time>
-			</p>
-			<nav aria-label="Test routes">
-				<a href="/">Home</a>
-				<a href="/about">About</a>
-			</nav>
+			<Backdrop />
+			<SideWidgets />
+		</div>
+		<div id="menubar" transition:persist>
+			<MenuBar />
 		</div>
 		<slot />
-		<script is:inline>
-			const stamp = document.getElementById('backdrop-loaded');
-			if (stamp && !stamp.dataset.set) {
-				stamp.dataset.set = 'true';
-				stamp.textContent = new Date().toISOString();
-			}
-		</script>
 	</body>
 </html>
 
@@ -49,14 +44,10 @@ const { title } = Astro.props;
 		min-height: 100%;
 	}
 
-	#backdrop {
-		min-height: 100vh;
-		padding: 1rem;
-		background: var(--color-mint);
-	}
-
+	/* Windows sit above the backdrop and widgets, below the menu bar. */
 	dialog[open] {
 		position: fixed;
+		z-index: 10;
 		inset: 20% auto auto 50%;
 		translate: -50% 0;
 		border: var(--outline-width) solid var(--color-ink);

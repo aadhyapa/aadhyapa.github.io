@@ -1,0 +1,110 @@
+---
+/**
+ * Backdrop: fixed gingham wallpaper with a soft centre glow, sparkles and a pixel
+ * heart cluster. Purely decorative, so everything inside is aria-hidden.
+ * Sits below the page content (z-index 0); the layout keeps it across routes.
+ */
+import PixelHeart from './decor/PixelHeart.astro';
+import Sparkle from './decor/Sparkle.astro';
+---
+
+<div class="backdrop gingham gingham--mint" aria-hidden="true">
+	<div class="glow"></div>
+
+	<span class="spark spark-a">
+		<Sparkle size="1.75rem" />
+	</span>
+	<span class="spark spark-b">
+		<Sparkle variant="pink" size="1.25rem" />
+	</span>
+	<span class="spark spark-c">
+		<Sparkle size="2rem" />
+	</span>
+	<span class="spark spark-d">
+		<Sparkle variant="green" size="1.25rem" />
+	</span>
+
+	<div class="hearts">
+		<span class="heart heart-a">
+			<PixelHeart variant="pink" size="3.25rem" />
+		</span>
+		<span class="heart heart-b">
+			<PixelHeart variant="green" size="3.25rem" />
+		</span>
+		<span class="heart heart-c">
+			<PixelHeart variant="raspberry" size="4rem" />
+		</span>
+	</div>
+</div>
+
+<style>
+	.backdrop {
+		--gingham-size: 44px;
+		position: fixed;
+		inset: 0;
+		z-index: 0;
+		overflow: hidden;
+		pointer-events: none;
+	}
+
+	.glow {
+		position: absolute;
+		inset: 0;
+		background: radial-gradient(
+			ellipse 55% 60% at 50% 52%,
+			color-mix(in srgb, var(--color-white) 70%, transparent),
+			transparent 100%
+		);
+	}
+
+	.spark {
+		position: absolute;
+	}
+	.spark-a {
+		left: 10%;
+		bottom: 12%;
+	}
+	.spark-b {
+		left: 22%;
+		top: 20%;
+	}
+	.spark-c {
+		right: 6%;
+		bottom: 16%;
+	}
+	.spark-d {
+		right: 28%;
+		top: 14%;
+	}
+
+	.hearts {
+		position: absolute;
+		left: 2.5%;
+		top: 58%;
+		width: 8rem;
+		height: 6rem;
+	}
+	.heart {
+		position: absolute;
+	}
+	.heart-a {
+		left: 0;
+		top: 0.75rem;
+	}
+	.heart-b {
+		left: 4.25rem;
+		top: 0;
+	}
+	.heart-c {
+		left: 2.75rem;
+		top: 2.25rem;
+	}
+
+	@media (max-width: 43.75rem) {
+		.hearts,
+		.spark-b,
+		.spark-d {
+			display: none;
+		}
+	}
+</style>

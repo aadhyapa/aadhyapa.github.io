@@ -1,0 +1,154 @@
+---
+/**
+ * MenuBar: fixed top bar. Brand on the left, a nav list of real links, then the
+ * résumé pill and live clock on the right. The current section gets aria-current.
+ * The bar persists across routes, so a small script re-marks the current link
+ * after each navigation; the server also marks it for direct visits.
+ */
+import PixelHeart from './decor/PixelHeart.astro';
+import StickerButton from './ui/StickerButton.astro';
+import Clock from './Clock.astro';
+
+const links = [
+	{ href: '/about', label: 'About' },
+	{ href: '/experience', label: 'Experience' },
+	{ href: '/letters', label: 'Letters' },
+];
+const path = Astro.url.pathname.replace(/\/+$/, '') || '/';
+const isCurrent = (href: string) =>
+	path === href || path.startsWith(`${href}/`);
+---
+
+<header class="menubar">
+	<div class="bar">
+		<a class="brand" href="/">
+			<PixelHeart size="1.5rem" />
+			<span class="brand-name">[yourname].exe</span>
+		</a>
+		<span class="divider" aria-hidden="true"></span>
+		<nav aria-label="Primary">
+			<ul class="nav-list">
+				{links.map((link) => (
+					<li>
+						<a
+							class="nav-link"
+							href={link.href}
+							aria-current={isCurrent(link.href) ? 'page' : undefined}
+						>
+							{link.label}
+						</a>
+					</li>
+				))}
+			</ul>
+		</nav>
+		<div class="right">
+			<StickerButton class="resume" href="/resume.pdf" download variant="pink">
+				résumé.pdf <span aria-hidden="true">↓</span>
+			</StickerButton>
+			<Clock />
+		</div>
+	</div>
+	<div class="scallop-edge" aria-hidden="true"></div>
+</header>
+
+<style>
+	.menubar {
+		position: fixed;
+		inset: 0 0 auto 0;
+		z-index: 20;
+	}
+	.bar {
+		display: flex;
+		align-items: center;
+		gap: var(--space-3);
+		padding: var(--space-2) var(--space-4);
+		background: linear-gradient(
+			to bottom,
+			var(--color-white),
+			var(--color-pink-light)
+		);
+		border-bottom: var(--outline-width) solid var(--color-ink);
+	}
+	.menubar .scallop-edge {
+		--scallop-size: 16px;
+		--scallop-color: var(--color-lace);
+	}
+
+	.brand {
+		display: inline-flex;
+		align-items: center;
+		gap: var(--space-2);
+		min-block-size: var(--tap-target);
+		text-decoration: none;
+		color: var(--color-ink);
+	}
+	.brand-name {
+		font-family: var(--font-pixel);
+		font-size: var(--text-sm);
+		font-weight: var(--weight-bold);
+		letter-spacing: 0.08em;
+		text-transform: uppercase;
+	}
+	.divider {
+		align-self: stretch;
+		margin-block: var(--space-1);
+		border-inline-start: 2px solid var(--color-ink);
+		opacity: 0.35;
+	}
+
+	.nav-list {
+		display: flex;
+		align-items: center;
+		gap: var(--space-1);
+		margin: 0;
+		padding: 0;
+		list-style: none;
+	}
+	.nav-link {
+		display: inline-flex;
+		align-items: center;
+		min-block-size: var(--tap-target);
+		padding-inline: var(--space-4);
+		font-weight: var(--weight-bold);
+		text-decoration: none;
+		color: var(--color-ink);
+		border: var(--outline-width) solid transparent;
+		border-radius: var(--radius-pill);
+	}
+	.nav-link:hover {
+		background: var(--color-pink-light);
+		text-decoration: none;
+	}
+	.nav-link[aria-current='page'] {
+		background: var(--color-mint);
+		border-color: var(--color-ink);
+	}
+
+	.right {
+		display: flex;
+		align-items: center;
+		gap: var(--space-3);
+		margin-inline-start: auto;
+	}
+	.right :global(.resume) {
+		padding-inline: var(--space-4);
+		box-shadow: var(--shadow-sm);
+	}
+</style>
+
+<script>
+	function markCurrent() {
+		const path = location.pathname.replace(/\/+$/, '') || '/';
+		document.querySelectorAll<HTMLAnchorElement>('.nav-link').forEach((a) => {
+			const href = new URL(a.href).pathname;
+			if (path === href || path.startsWith(`${href}/`)) {
+				a.setAttribute('aria-current', 'page');
+			} else {
+				a.removeAttribute('aria-current');
+			}
+		});
+	}
+
+	document.addEventListener('astro:page-load', markCurrent);
+	markCurrent();
+</script>

@@ -1,0 +1,53 @@
+---
+/**
+ * Clock: live local time like "12:24 am" in an outlined pill. Fixed width and
+ * tabular digits so a changing time never shifts the menu bar. Not a live region,
+ * so screen readers are not interrupted every minute.
+ */
+---
+
+<time class="clock" data-clock>
+	--:-- --
+</time>
+
+<style>
+	.clock {
+		display: inline-flex;
+		align-items: center;
+		justify-content: center;
+		inline-size: 6.5rem;
+		min-block-size: var(--tap-target);
+		padding-inline: var(--space-3);
+		font-size: var(--text-base);
+		font-weight: var(--weight-bold);
+		font-variant-numeric: tabular-nums;
+		white-space: nowrap;
+		color: var(--color-ink);
+		background: var(--color-white);
+		border: var(--outline-width) solid var(--color-ink);
+		border-radius: var(--radius-pill);
+	}
+</style>
+
+<script>
+	const format = new Intl.DateTimeFormat('en-US', {
+		hour: 'numeric',
+		minute: '2-digit',
+	});
+
+	function tick() {
+		const text = format
+			.format(new Date())
+			.replace(/\s*([AP])M/, ' $1m')
+			.toLowerCase();
+		document.querySelectorAll<HTMLTimeElement>('[data-clock]').forEach((el) => {
+			if (el.textContent !== text) {
+				el.textContent = text;
+				el.dateTime = new Date().toTimeString().slice(0, 5);
+			}
+		});
+	}
+
+	tick();
+	setInterval(tick, 1000);
+</script>
