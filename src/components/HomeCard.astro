@@ -359,12 +359,17 @@ const links = [
 	:global(:root[data-theme='quiet']) .status :global(.status-icon) {
 		display: none;
 	}
+	/* The portrait keeps its 15rem box but loses the heart cut-out. */
 	:global(:root[data-theme='quiet']) .heart-outer {
 		background: var(--color-line);
+		clip-path: none;
+		border-radius: var(--radius-window);
 	}
 	:global(:root[data-theme='quiet']) .heart-inner {
 		color: var(--color-muted);
 		background: var(--color-surface);
+		clip-path: none;
+		border-radius: var(--radius-sm);
 	}
 	:global(:root[data-theme='quiet']) .hi {
 		font-family: var(--font-body);
