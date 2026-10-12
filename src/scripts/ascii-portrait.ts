@@ -140,8 +140,20 @@ function setup(canvas: HTMLCanvasElement) {
 		canvas.width = Math.round(width * dpr);
 		canvas.height = Math.round(height * dpr);
 		context.setTransform(dpr, 0, 0, dpr, 0, 0);
-		sample();
-		draw(performance.now());
+		try {
+			sample();
+			draw(performance.now());
+		} catch {
+			// canvas read blocked (tainted SVG): fall back to the plain image
+			fail();
+		}
+	}
+
+	// Hand the box to the black and white <img> fallback in HomeCard.astro.
+	function fail() {
+		delete canvas.dataset.ready;
+		canvas.dataset.failed = '';
+		cells = [];
 	}
 
 	function draw(now: number) {
@@ -265,6 +277,7 @@ function setup(canvas: HTMLCanvasElement) {
 		layout();
 		kick();
 	};
+	img.onerror = () => fail();
 	img.src = canvas.dataset.src ?? '';
 }
 

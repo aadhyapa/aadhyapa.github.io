@@ -102,6 +102,13 @@ const links = [
 						data-src="/portfolio-website-picture.svg"
 						aria-hidden="true"
 					></canvas>
+					<img
+						class="ascii-fallback"
+						src="/portfolio-website-picture.svg"
+						alt=""
+						aria-hidden="true"
+						loading="lazy"
+					/>
 				</div>
 
 				<div class="intro-text">
@@ -446,32 +453,48 @@ const links = [
 	:global(:root[data-theme='quiet']) .ascii[data-ready] {
 		display: block;
 	}
+	/* If the canvas fails, show the same SVG as a plain black and white image. */
+	.ascii-fallback {
+		display: none;
+		position: absolute;
+		inset: 0;
+		inline-size: 100%;
+		block-size: 100%;
+		object-fit: contain;
+		filter: grayscale(1);
+	}
+	:global(:root[data-theme='quiet']) .portrait:has(.ascii[data-failed]) .ascii-fallback {
+		display: block;
+	}
+	:global(:root[data-theme='quiet']) .portrait:has(.ascii[data-failed]) .heart-outer {
+		display: none;
+	}
 	:global(:root[data-theme='quiet'])
-		.portrait:has(.ascii[data-ready])
+		.portrait:has(.ascii:is([data-ready], [data-failed]))
 		.heart-inner
 		.placeholder {
 		visibility: hidden;
 	}
 	/* Once the ASCII portrait is ready it stands alone: no box, bigger, and the
 	   image's own aspect. Until then the placeholder box stays. */
-	:global(:root[data-theme='quiet']) .portrait:has(.ascii[data-ready]) {
+	:global(:root[data-theme='quiet']) .portrait:has(.ascii:is([data-ready], [data-failed])) {
 		width: 13rem;
 		aspect-ratio: 369 / 676;
 	}
 	@media (min-width: 43.76rem) {
-		:global(:root[data-theme='quiet']) .intro:has(.ascii[data-ready]) {
+		:global(:root[data-theme='quiet']) .intro:has(.ascii:is([data-ready], [data-failed])) {
 			grid-template-columns: 13rem 1fr;
 			gap: var(--space-8);
 			align-items: stretch;
 		}
 		/* Side by side: the portrait is as tall as the text beside it. */
-		:global(:root[data-theme='quiet']) .portrait:has(.ascii[data-ready]) {
+		:global(:root[data-theme='quiet']) .portrait:has(.ascii:is([data-ready], [data-failed])) {
 			width: 100%;
 			aspect-ratio: auto;
 		}
 	}
 	:global(:root[data-theme='quiet'])
-		.portrait:has(.ascii[data-ready])
+		.portrait:has(.ascii:is([data-ready], [data-failed]))
 		.heart-outer {
 		display: none;
 	}

@@ -74,7 +74,7 @@ const rows = entries[filter];
 							<span class="row-text">
 								<span class="row-title">{entry.data.title}</span>
 								<span class="row-meta">
-									{formatSpan(entry.data)} · {kindLabel(entry)}
+									{formatSpan(entry.data)} · <strong>{subtitle(entry)}</strong>
 								</span>
 							</span>
 						</a>
@@ -96,7 +96,7 @@ const rows = entries[filter];
 						<h2 class="panel-title" id={`panel-title-${entry.id}`}>
 							{entry.data.title}
 						</h2>
-						<p class="panel-sub">{subtitle(entry)}</p>
+						<p class="panel-sub"><strong>{subtitle(entry)}</strong></p>
 						<p class="panel-summary">{entry.data.summary}</p>
 						<h3 class="panel-did">what i did</h3>
 						<ul class="did">
