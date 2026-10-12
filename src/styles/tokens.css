@@ -85,6 +85,7 @@
 	--color-surface: #111111;
 	--color-line: #2b2b2b;
 	--color-muted: #a3a3a3;
+	--color-ascii: #ffffff; /* quiet ASCII portrait, decoration only */
 
 	--font-display: 'IBM Plex Mono', ui-monospace, monospace;
 	--font-body: 'IBM Plex Mono', ui-monospace, monospace;

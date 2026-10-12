@@ -15,10 +15,31 @@ import StatusTile from './ui/StatusTile.astro';
 import StickerButton from './ui/StickerButton.astro';
 
 const status = [
-	{ label: 'open to', value: '[work / freelance]', tone: 'green' },
-	{ label: 'building', value: '[side project]', tone: 'pink' },
-	{ label: 'reading', value: '[book title]', tone: 'green' },
-	{ label: 'listening', value: '[song, artist]', tone: 'pink' },
+	{ label: 'watching', value: 'Steven Universe ', tone: 'green' },
+	{ label: 'learning', value: 'Rock Climbing', tone: 'pink' },
+	{ label: 'reading', value: 'Immortal Rose', tone: 'green' },
+	{ label: 'listening', value: 'Sunday Candy', tone: 'pink' },
+] as const;
+
+const contact = [
+	{
+		href: 'mailto:aadhya.pandilla@gmail.com',
+		label: 'Email',
+		variant: 'pink',
+		icon: 'mail',
+	},
+	{
+		href: 'https://github.com/aadhyapa',
+		label: 'GitHub',
+		variant: 'green',
+		icon: 'github',
+	},
+	{
+		href: 'https://www.linkedin.com/in/aadhyapa',
+		label: 'LinkedIn',
+		variant: 'white',
+		icon: 'linkedin',
+	},
 ] as const;
 
 const links = [
@@ -65,30 +86,45 @@ const links = [
 					</svg>
 					<div class="heart-outer" aria-hidden="true">
 						<div class="heart-inner">
-							<span>[your photo]</span>
+							<img
+								class="photo"
+								src="/portfolio-cute-picture.jpg"
+								alt="Aadhya smiling at a paint bar table, chin resting on her hands"
+								width="1200"
+								height="1600"
+							/>
+							<span class="placeholder">[your photo]</span>
 						</div>
 					</div>
+					<canvas
+						class="ascii"
+						data-ascii-portrait
+						data-src="/portfolio-website-picture.svg"
+						aria-hidden="true"
+					></canvas>
 				</div>
 
 				<div class="intro-text">
 					<h1>
 						<span class="hi">hi, i'm</span>
-						<span class="name">[Your Name]</span>
+						<span class="name">Aadhya Pandillapally</span>
 					</h1>
+					<p class="prev">Prev @ Hudl</p>
 					<ul class="pills">
 						<li>
-							<Pill tone="pink">[role]</Pill>
+							<Pill tone="pink">Software Engineer</Pill>
 						</li>
 						<li>
-							<Pill tone="green">[city]</Pill>
+							<Pill tone="green">East Lansing</Pill>
 						</li>
 						<li>
-							<Pill>[she/her]</Pill>
+							<Pill>she/her</Pill>
 						</li>
 					</ul>
 					<p class="bio">
-						[A short, honest paragraph about you: what you do, what you care
-						about, and what you are working toward right now.]
+						Software and ML Engineer. I build Tech that improves people lives.
+						When I am not coding, I am learning something new like rock climbing, 
+						baking, or archeology.
 					</p>
 				</div>
 			</div>
@@ -106,38 +142,41 @@ const links = [
 				</ul>
 			</section>
 
-			<nav class="block" aria-label="Link directory">
-				<RibbonLabel as="h2" class="block-label">
-					link directory
-				</RibbonLabel>
+			<section class="block" aria-label="Contact">
 				<ul class="directory">
-					{links.map((l) => (
+					{contact.map((c) => (
 						<li>
 							<StickerButton
-								href={l.href}
-								variant={l.variant}
-								{...('download' in l ? { download: true } : {})}
+								class="contact-link"
+								href={c.href}
+								variant={c.variant}
+								aria-label={c.label}
+								target={c.href.startsWith('http') ? '_blank' : undefined}
+								rel={c.href.startsWith('http') ? 'noopener noreferrer' : undefined}
 							>
-								<svg
-									class="icon"
-									viewBox="0 0 24 24"
-									aria-hidden="true"
-									focusable="false"
-								>
-									{l.icon === 'doc' && (
-										<path d="M6 3h8l4 4v14H6z M14 3v4h4 M9 12h6 M9 16h6" />
+								<svg class="icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+									{c.icon === 'mail' && (
+										<>
+											<path d="M4 4h16a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2z" />
+											<polyline points="22,6 12,13 2,6" />
+										</>
 									)}
-									{l.icon === 'folder' && (
-										<path d="M3 6h7l2 2h9v11H3z M3 10h18" />
+									{c.icon === 'github' && (
+										<path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22" />
 									)}
-									{l.icon === 'mail' && <path d="M3 6h18v13H3z M3 7l9 7 9-7" />}
+									{c.icon === 'linkedin' && (
+										<>
+											<path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z" />
+											<rect x="2" y="9" width="4" height="12" />
+											<circle cx="4" cy="4" r="2" />
+										</>
+									)}
 								</svg>
-								{l.label}
 							</StickerButton>
 						</li>
 					))}
 				</ul>
-			</nav>
+			</section>
 
 			<div class="strip" aria-hidden="true">
 				<PixelHeart variant="pink" size="1.5rem" />
@@ -220,6 +259,24 @@ const links = [
 		background: var(--color-mint);
 		clip-path: url(#heart-clip);
 	}
+	/* Cute theme shows the photo; quiet swaps it for the placeholder / ASCII portrait. */
+	.photo {
+		position: absolute;
+		inset: 0;
+		width: 100%;
+		height: 100%;
+		object-fit: cover;
+		object-position: 55% 30%;
+	}
+	.placeholder {
+		display: none;
+	}
+	:global(:root[data-theme='quiet']) .photo {
+		display: none;
+	}
+	:global(:root[data-theme='quiet']) .placeholder {
+		display: inline;
+	}
 	.bow {
 		position: absolute;
 		z-index: 1;
@@ -272,6 +329,12 @@ const links = [
 	.block :global(.block-label) {
 		align-self: flex-start;
 	}
+	.block[aria-label='Contact'] {
+		align-items: center;
+	}
+	.block[aria-label='Contact'] :global(.block-label) {
+		align-self: center;
+	}
 
 	.status,
 	.directory {
@@ -289,6 +352,16 @@ const links = [
 	.directory {
 		display: flex;
 		flex-wrap: wrap;
+		justify-content: center;
+	}
+	.prev {
+		margin-block: var(--space-1) var(--space-2);
+		font-weight: var(--weight-bold);
+		color: var(--color-ink);
+	}
+	:global(:root[data-theme='quiet']) .prev {
+		font-weight: var(--weight-medium);
+		color: var(--color-muted);
 	}
 
 	.icon {
@@ -359,7 +432,50 @@ const links = [
 	:global(:root[data-theme='quiet']) .status :global(.status-icon) {
 		display: none;
 	}
-	/* The portrait keeps its 15rem box but loses the heart cut-out. */
+	/* Quiet only: the photo as interactive ASCII. Hidden in the cute theme and until the
+	   image has loaded, so the placeholder stays if it fails. Vertical swipes still scroll. */
+	.ascii {
+		display: none;
+		position: absolute;
+		inset: 0;
+		inline-size: 100%;
+		block-size: 100%;
+		touch-action: pan-y;
+		cursor: crosshair;
+	}
+	:global(:root[data-theme='quiet']) .ascii[data-ready] {
+		display: block;
+	}
+	:global(:root[data-theme='quiet'])
+		.portrait:has(.ascii[data-ready])
+		.heart-inner
+		.placeholder {
+		visibility: hidden;
+	}
+	/* Once the ASCII portrait is ready it stands alone: no box, bigger, and the
+	   image's own aspect. Until then the placeholder box stays. */
+	:global(:root[data-theme='quiet']) .portrait:has(.ascii[data-ready]) {
+		width: 13rem;
+		aspect-ratio: 369 / 676;
+	}
+	@media (min-width: 43.76rem) {
+		:global(:root[data-theme='quiet']) .intro:has(.ascii[data-ready]) {
+			grid-template-columns: 13rem 1fr;
+			gap: var(--space-8);
+			align-items: stretch;
+		}
+		/* Side by side: the portrait is as tall as the text beside it. */
+		:global(:root[data-theme='quiet']) .portrait:has(.ascii[data-ready]) {
+			width: 100%;
+			aspect-ratio: auto;
+		}
+	}
+	:global(:root[data-theme='quiet'])
+		.portrait:has(.ascii[data-ready])
+		.heart-outer {
+		display: none;
+	}
+	/* The placeholder keeps its box but loses the heart cut-out. */
 	:global(:root[data-theme='quiet']) .heart-outer {
 		background: var(--color-line);
 		clip-path: none;
@@ -410,3 +526,7 @@ const links = [
 		background-origin: border-box;
 	}
 </style>
+
+<script>
+	import '../scripts/ascii-portrait.ts';
+</script>

@@ -33,6 +33,7 @@ const { label, value, tone = 'pink', class: className = '' } = Astro.props;
 
 <style>
 	.status-tile {
+		position: relative;
 		display: flex;
 		align-items: center;
 		gap: var(--space-3);
@@ -42,9 +43,14 @@ const { label, value, tone = 'pink', class: className = '' } = Astro.props;
 		border: 2px solid var(--color-ink);
 		border-radius: var(--radius-window-sm);
 	}
+	/* The heart sits on the top border so it takes no room inside the tile. */
 	.status-icon {
+		position: absolute;
+		inset-block-start: 0;
+		inset-inline-start: var(--space-3);
+		transform: translateY(-50%);
 		display: inline-flex;
-		flex: none;
+		line-height: 0;
 	}
 	p {
 		font-size: var(--text-base);
