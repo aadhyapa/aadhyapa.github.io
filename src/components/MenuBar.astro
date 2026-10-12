@@ -214,6 +214,29 @@ const isCurrent = (href: string) =>
 			padding-inline: var(--space-2);
 		}
 	}
+
+	/* Very narrow phones: tighten the bar so the theme switch is never cut off. */
+	@media (max-width: 24rem) {
+		.nav-link {
+			padding-inline: var(--space-1);
+			font-size: var(--text-sm);
+		}
+		.right {
+			gap: var(--space-1);
+		}
+		.right :global(.theme-switch) {
+			padding-inline: var(--space-2);
+			letter-spacing: 0.04em;
+		}
+	}
+	@media (max-width: 21rem) {
+		.bar {
+			padding-inline: var(--space-1);
+		}
+		.brand {
+			min-inline-size: 2rem;
+		}
+	}
 </style>
 
 <script>
