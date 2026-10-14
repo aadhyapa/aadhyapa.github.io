@@ -51,7 +51,7 @@ const experience = defineCollection({
 			...shared,
 			kind: z.literal('work'),
 			organization: z.string().min(1),
-			learned: z.array(lesson).min(1),
+			learned: z.array(lesson).optional(),
 		}),
 		z.object({
 			...shared,
@@ -59,7 +59,7 @@ const experience = defineCollection({
 			client: z.string().min(1),
 			learned: z.array(lesson).optional(),
 			problem: z.string().min(1),
-			change: z.string().min(1),
+			change: z.string().min(1).optional(),
 		}),
 	]),
 });

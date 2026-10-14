@@ -12,6 +12,5 @@ did:
   - 'Packaging findings into a failure taxonomy and an open-source Python module for ProseAI.'
 stack: ['Python', 'sentence-transformers', 'rapidfuzz', 'NLP']
 problem: 'AI-generated legal documents can cite cases or quotes that do not exist. The pipeline needed to catch fabricated citations in a document and flag misquoted ones, favoring recall on fabricated citations.'
-change: '[What I would change.]'
 order: 4
 ---

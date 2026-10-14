@@ -65,27 +65,31 @@ const pillTones = ['pink', 'green', 'white'] as const;
 			</div>
 		</section>
 
-		<hr class="divider" />
+		{learned && learned.length > 0 && (
+			<>
+				<hr class="divider" />
 
-		<section class="block" aria-label="what i learned">
-			<RibbonLabel as="h2">what i learned</RibbonLabel>
-			<ol class="lessons">
-				{learned.map((lesson, i) => (
-					<li>
-						<span
-							class:list={['badge', i % 2 === 1 && 'badge--green']}
-							aria-hidden="true"
-						>
-							{String(i + 1).padStart(2, '0')}
-						</span>
-						<div>
-							<h3 class="lesson-title">{lesson.title}</h3>
-							<p class="lesson-text">{lesson.text}</p>
-						</div>
-					</li>
-				))}
-			</ol>
-		</section>
+				<section class="block" aria-label="what i learned">
+					<RibbonLabel as="h2">what i learned</RibbonLabel>
+					<ol class="lessons">
+						{learned.map((lesson, i) => (
+							<li>
+								<span
+									class:list={['badge', i % 2 === 1 && 'badge--green']}
+									aria-hidden="true"
+								>
+									{String(i + 1).padStart(2, '0')}
+								</span>
+								<div>
+									<h3 class="lesson-title">{lesson.title}</h3>
+									<p class="lesson-text">{lesson.text}</p>
+								</div>
+							</li>
+						))}
+					</ol>
+				</section>
+			</>
+		)}
 
 		{letter && (
 			<footer class="closing">

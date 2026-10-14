@@ -12,8 +12,5 @@ did:
   - 'Cut QA regression time by 10% by debugging and fixing 50+ flaky Vitest unit tests.'
   - 'Awarded the "We Listen" Value Award (top 6 of 70 interns) for a customer-first mindset.'
 stack: ['React', 'Vitest', 'Playwright', 'GraphQL', 'GitHub Actions']
-learned:
-  - title: '[Lesson one, in a short phrase]'
-    text: '[Placeholder: two sentences on what happened and what you do differently now.]'
 order: 2
 ---

@@ -10,8 +10,5 @@ did:
   - 'Integrated MCP servers and context engineering so employees could create, preview and approve 500+ localized content pieces.'
   - 'Built stale link detection in Ruby on Rails with parallelized testing, rerouting handling and daily jobs, wired into Octopus Deploy with structured logging.'
 stack: ['ReactJS', 'MySQL', 'Ruby on Rails', 'Octopus Deploy', 'MCP']
-learned:
-  - title: '[Lesson one, in a short phrase]'
-    text: '[Placeholder: two sentences on what happened and what you do differently now.]'
 order: 3
 ---

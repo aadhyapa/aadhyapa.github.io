@@ -21,6 +21,5 @@ stack:
     'Amazon Transcribe',
   ]
 problem: 'Candidates practising behavioral interviews get little feedback on how well a spoken answer follows the STAR method, and human reviewers do not scale. The platform needed to score answers in real time and keep that scoring trustworthy.'
-change: '[What I would change.]'
 order: 5
 ---

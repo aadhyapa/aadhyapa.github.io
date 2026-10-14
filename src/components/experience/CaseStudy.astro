@@ -52,10 +52,12 @@ const pillTones = ['pink', 'green', 'white'] as const;
 			</ul>
 		</section>
 
-		<section class="block" aria-label="what i would change">
-			<RibbonLabel as="h2">what i would change</RibbonLabel>
-			<p class="text">{change}</p>
-		</section>
+		{change && (
+			<section class="block" aria-label="what i would change">
+				<RibbonLabel as="h2">what i would change</RibbonLabel>
+				<p class="text">{change}</p>
+			</section>
+		)}
 
 		<hr class="divider" />
 
