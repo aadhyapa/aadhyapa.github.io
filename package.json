@@ -15,7 +15,8 @@
 		"format": "prettier --write .",
 		"format:check": "prettier --check .",
 		"build:strict": "CHECK_CONTENT=1 astro build && CHECK_CONTENT=1 node scripts/check-content.mjs",
-		"check:content": "CHECK_CONTENT=1 node scripts/check-content.mjs"
+		"check:content": "CHECK_CONTENT=1 node scripts/check-content.mjs",
+		"seal": "node scripts/seal-loveletters.mjs"
 	},
 	"dependencies": {
 		"@astrojs/rss": "^4.0.19",
@@ -31,9 +32,11 @@
 		"@eslint/js": "^10.0.1",
 		"eslint": "^10.12.0",
 		"eslint-plugin-astro": "^1.7.0",
+		"marked": "^18.3.0",
 		"prettier": "^3.9.10",
 		"prettier-plugin-astro": "^1.1.1",
 		"typescript": "^6.0.3",
-		"typescript-eslint": "^8.71.1"
+		"typescript-eslint": "^8.71.1",
+		"yaml": "^2.9.1"
 	}
 }
