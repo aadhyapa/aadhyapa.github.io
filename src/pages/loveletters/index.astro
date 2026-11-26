@@ -1,7 +1,8 @@
 ---
 /**
  * /loveletters: a public landing page with one key field. A friend's key
- * finds and decrypts their own sealed letter in the browser; see
+ * finds and decrypts their own sealed letters in the browser: one letter
+ * opens straight away, several show as an inbox first. See
  * scripts/seal-loveletters.mjs and src/scripts/loveletters.ts.
  * Works only with JavaScript, since decryption runs in the browser.
  */
@@ -21,10 +22,10 @@ import '../../styles/letter-prose.css';
 					<PixelHeart variant="raspberry" size="2.25rem" />
 					<PixelHeart variant="pink" size="1.75rem" />
 				</div>
-				<h1 class="heading">a letter for you</h1>
+				<h1 class="heading">letters for you</h1>
 				<p class="lede">
 					If you're someone I love, you have a secret key. Type it in to open
-					the letter I wrote just for you.
+					the letters I wrote just for you.
 				</p>
 				<form class="form" data-ll-form>
 					<label class="label" for="ll-key">
@@ -44,7 +45,7 @@ import '../../styles/letter-prose.css';
 						<input type="checkbox" data-ll-show /> show key
 					</label>
 					<StickerButton type="submit" variant="pink" data-ll-submit>
-						open my letter
+						open my letters
 					</StickerButton>
 					<p class="status" role="status" aria-live="polite" data-ll-status></p>
 				</form>
@@ -55,15 +56,30 @@ import '../../styles/letter-prose.css';
 				</noscript>
 			</section>
 
+			<section class="sheet" data-ll-inbox hidden>
+				<h2 class="inbox-heading">
+					for <span data-ll-to></span>
+				</h2>
+				<p class="meta" data-ll-count></p>
+				<ul class="list" data-ll-list></ul>
+				<button type="button" class="link" data-ll-relock>
+					lock my letters
+				</button>
+			</section>
+
 			<article class="sheet" data-ll-letter hidden>
+				<button type="button" class="link back" data-ll-back hidden>
+					<span aria-hidden="true">←</span> all letters
+				</button>
 				<p class="meta" data-ll-date></p>
+				<h2 class="letter-title" data-ll-title></h2>
 				<p class="hand salutation">
 					dear <span data-ll-to></span>,
 				</p>
 				<div class="letter-prose" data-ll-body></div>
 				<p class="hand signoff">all my love, Aadhya</p>
-				<button type="button" class="relock" data-ll-relock>
-					close this letter
+				<button type="button" class="link relock" data-ll-relock>
+					lock my letters
 				</button>
 			</article>
 		</div>
@@ -98,7 +114,8 @@ import '../../styles/letter-prose.css';
 		text-align: center;
 	}
 	.lock[hidden],
-	.sheet[hidden] {
+	.sheet[hidden],
+	.link[hidden] {
 		display: none;
 	}
 	.hearts {
@@ -184,7 +201,67 @@ import '../../styles/letter-prose.css';
 		font-size: var(--text-xl);
 		color: var(--color-ink);
 	}
-	.relock {
+	.inbox-heading,
+	.letter-title {
+		margin: 0;
+		font-family: var(--font-display);
+		font-weight: 400;
+		line-height: var(--leading-tight);
+		color: var(--color-ink);
+		text-shadow: 2px 2px 0 var(--color-pink);
+		overflow-wrap: anywhere;
+	}
+	.inbox-heading {
+		margin-block-end: var(--space-1);
+		font-size: var(--text-2xl);
+	}
+	.letter-title {
+		font-size: var(--text-xl);
+	}
+
+	.list {
+		display: grid;
+		gap: var(--space-3);
+		margin: var(--space-4) 0 0;
+		padding: 0;
+		list-style: none;
+	}
+	.list :global(.item) {
+		display: flex;
+		flex-wrap: wrap;
+		align-items: baseline;
+		justify-content: space-between;
+		gap: var(--space-1) var(--space-3);
+		box-sizing: border-box;
+		inline-size: 100%;
+		min-block-size: var(--tap-target);
+		padding: var(--space-3) var(--space-4);
+		font: inherit;
+		text-align: start;
+		color: var(--color-ink);
+		background: var(--color-pink-light);
+		border: var(--outline-width) solid var(--color-ink);
+		border-radius: var(--radius-sm);
+		box-shadow: var(--shadow-sm);
+		cursor: pointer;
+	}
+	.list :global(.item:hover) {
+		background: var(--color-pink);
+	}
+	.list :global(.item-title) {
+		font-weight: var(--weight-bold);
+		overflow-wrap: anywhere;
+	}
+	.list :global(.item-date) {
+		font-size: var(--text-sm);
+	}
+
+	.link.back {
+		margin-block: 0 var(--space-3);
+	}
+	.link {
+		display: inline-flex;
+		gap: var(--space-1);
 		margin-block-start: var(--space-5);
 		padding: 0;
 		font: inherit;
@@ -206,8 +283,12 @@ import '../../styles/letter-prose.css';
 		.sheet {
 			padding: var(--space-4);
 		}
-		.heading {
+		.heading,
+		.inbox-heading {
 			font-size: var(--text-xl);
+		}
+		.letter-title {
+			font-size: var(--text-lg);
 		}
 		.salutation,
 		.signoff {
@@ -226,8 +307,18 @@ import '../../styles/letter-prose.css';
 		border-color: transparent;
 		box-shadow: 0 0 0 1px var(--color-line);
 	}
-	:global(:root[data-theme='quiet']) .heading {
+	:global(:root[data-theme='quiet']) .heading,
+	:global(:root[data-theme='quiet']) .inbox-heading,
+	:global(:root[data-theme='quiet']) .letter-title {
 		text-shadow: none;
+	}
+	:global(:root[data-theme='quiet']) .list :global(.item) {
+		background: transparent;
+		border-color: transparent;
+		box-shadow: 0 0 0 1px var(--color-line);
+	}
+	:global(:root[data-theme='quiet']) .list :global(.item:hover) {
+		box-shadow: 0 0 0 1px var(--color-ink);
 	}
 	:global(:root[data-theme='quiet']) .input {
 		background: transparent;
@@ -244,7 +335,7 @@ import '../../styles/letter-prose.css';
 	:global(:root[data-theme='quiet']) .signoff {
 		color: var(--color-ink);
 	}
-	:global(:root[data-theme='quiet']) .relock {
+	:global(:root[data-theme='quiet']) .link {
 		color: var(--color-ink);
 	}
 </style>

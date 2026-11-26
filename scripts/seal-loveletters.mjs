@@ -1,16 +1,20 @@
 // Seals the private love letters into encrypted files the site can serve.
 //
-// Reads  private/loveletters/*.md        (gitignored; plaintext and keys)
+// Reads  private/loveletters/<person>/   (gitignored; plaintext and keys)
+//          person.yml   to: <name>, key: <secret>
+//          *.md         one letter each: title, date, optional draft
 // Writes public/loveletters/sealed/*.json (committed; ciphertext only)
 //
-// Each letter's key is stretched with PBKDF2 into an AES-GCM key plus a
-// lookup id. The id is the file name, so a reader's key finds their letter
-// without the site keeping any list of who has one. The crypto parameters
-// must match src/scripts/loveletters.ts.
+// Each person's key is stretched with PBKDF2 into an AES-GCM key plus a
+// lookup id. All of that person's letters go into one file named by the id,
+// so a reader's key finds their letters without the site keeping any list of
+// who has some. The crypto parameters must match src/scripts/loveletters.ts.
 //
 // Usage: npm run seal
 import {
+	existsSync,
 	readdirSync,
+	statSync,
 	readFileSync,
 	mkdirSync,
 	rmSync,
@@ -70,69 +74,118 @@ async function derive(key) {
 	return { aes, id };
 }
 
-function readLetter(file) {
-	const raw = readFileSync(join(SRC, file), 'utf8');
+function frontmatter(path, label) {
+	const raw = readFileSync(path, 'utf8');
 	const match = raw.match(/^---\r?\n([\s\S]*?)\r?\n---\r?\n?([\s\S]*)$/);
-	if (!match) throw new Error(`${file}: missing --- frontmatter --- block`);
-	const data = parseYaml(match[1]) ?? {};
-	const body = match[2].trim();
+	if (!match) throw new Error(`${label}: missing --- frontmatter --- block`);
+	return { data: parseYaml(match[1]) ?? {}, body: match[2].trim() };
+}
+
+function readPerson(dir) {
+	const label = `${dir}/person.yml`;
+	const path = join(SRC, dir, 'person.yml');
+	if (!existsSync(path))
+		throw new Error(`${label} is missing. Add one with "to:" and "key:".`);
+	const data = parseYaml(readFileSync(path, 'utf8')) ?? {};
 	if (typeof data.to !== 'string' || !data.to.trim())
-		throw new Error(`${file}: frontmatter needs "to: <name>"`);
+		throw new Error(`${label}: needs "to: <name>"`);
 	if (typeof data.key !== 'string')
 		throw new Error(
-			`${file}: frontmatter needs "key: <secret>" (quote it if it looks like a number)`,
+			`${label}: needs "key: <secret>" (quote it if it looks like a number)`,
 		);
 	if (normalizeKey(data.key).length < MIN_KEY_LENGTH)
 		throw new Error(
-			`${file}: key is too short. Use at least ${MIN_KEY_LENGTH} characters; a few random words works well.`,
+			`${label}: key is too short. Use at least ${MIN_KEY_LENGTH} characters; a few random words works well.`,
 		);
-	if (!body) throw new Error(`${file}: letter body is empty`);
+	return { dir, to: data.to.trim(), key: data.key };
+}
+
+function readLetter(dir, file) {
+	const label = `${dir}/${file}`;
+	const { data, body } = frontmatter(join(SRC, dir, file), label);
+	if (typeof data.title !== 'string' || !data.title.trim())
+		throw new Error(`${label}: frontmatter needs "title: <title>"`);
+	if (!body) throw new Error(`${label}: letter body is empty`);
 	const date = data.date ? new Date(data.date) : null;
 	if (date && Number.isNaN(date.valueOf()))
-		throw new Error(`${file}: date is not a valid date`);
+		throw new Error(`${label}: date is not a valid date`);
 	return {
 		file,
 		draft: data.draft === true,
-		to: data.to.trim(),
-		key: data.key,
+		title: data.title.trim(),
 		date,
 		body,
 	};
 }
 
+// Newest first; undated letters last, then by file name.
+const byDate = (a, b) =>
+	(b.date?.valueOf() ?? -Infinity) - (a.date?.valueOf() ?? -Infinity) ||
+	a.file.localeCompare(b.file);
+
 async function main() {
-	let files;
+	let entries;
 	try {
-		files = readdirSync(SRC).filter((f) => f.endsWith('.md'));
+		entries = readdirSync(SRC);
 	} catch {
 		console.error(
-			`No letters folder at ${SRC}. Create it and add a .md file per friend.`,
+			`No letters folder at ${SRC}. Create it with one folder per person.`,
 		);
 		process.exit(1);
 	}
 
-	const letters = files.map(readLetter).filter((l) => !l.draft);
+	const loose = entries.filter((f) => f.endsWith('.md'));
+	if (loose.length)
+		throw new Error(
+			`${loose.join(', ')} should be inside a person's folder, e.g. private/loveletters/<name>/`,
+		);
+
+	const people = entries
+		.filter((d) => !d.startsWith('.') && statSync(join(SRC, d)).isDirectory())
+		.sort()
+		.map((dir) => {
+			const person = readPerson(dir);
+			const letters = readdirSync(join(SRC, dir))
+				.filter((f) => f.endsWith('.md'))
+				.map((f) => readLetter(dir, f));
+			return {
+				...person,
+				letters: letters.filter((l) => !l.draft).sort(byDate),
+				drafts: letters.filter((l) => l.draft).length,
+			};
+		});
 
 	const seen = new Map();
-	for (const l of letters) {
-		const k = normalizeKey(l.key);
+	for (const p of people) {
+		const k = normalizeKey(p.key);
 		if (seen.has(k))
 			throw new Error(
-				`${l.file} and ${seen.get(k)} use the same key. Every friend needs their own.`,
+				`${p.dir} and ${seen.get(k)} use the same key. Every person needs their own.`,
 			);
-		seen.set(k, l.file);
+		seen.set(k, p.dir);
 	}
 
 	// Rebuild from scratch so removed letters and changed keys leave nothing behind.
 	rmSync(OUT, { recursive: true, force: true });
 	mkdirSync(OUT, { recursive: true });
 
-	for (const l of letters) {
-		const { aes, id } = await derive(l.key);
+	let sealed = 0;
+	for (const p of people) {
+		const note = p.drafts ? `, ${p.drafts} draft(s) skipped` : '';
+		if (!p.letters.length) {
+			console.log(`skipped ${p.dir}/  (no published letters${note})`);
+			continue;
+		}
+		const { aes, id } = await derive(p.key);
 		const payload = JSON.stringify({
-			to: l.to,
-			date: l.date ? l.date.toISOString().slice(0, 10) : null,
-			html: await marked.parse(l.body),
+			to: p.to,
+			letters: await Promise.all(
+				p.letters.map(async (l) => ({
+					title: l.title,
+					date: l.date ? l.date.toISOString().slice(0, 10) : null,
+					html: await marked.parse(l.body),
+				})),
+			),
 		});
 		const iv = crypto.getRandomValues(new Uint8Array(12));
 		const ct = new Uint8Array(
@@ -145,17 +198,17 @@ async function main() {
 		writeFileSync(
 			join(OUT, `${id}.json`),
 			JSON.stringify({
-				v: 1,
+				v: 2,
 				iv: Buffer.from(iv).toString('base64'),
 				ct: Buffer.from(ct).toString('base64'),
 			}) + '\n',
 		);
-		console.log(`sealed  ${l.file}  (to ${l.to})`);
+		sealed++;
+		console.log(
+			`sealed  ${p.dir}/  (to ${p.to}, ${p.letters.length} letter(s)${note})`,
+		);
 	}
-	const drafts = files.length - letters.length;
-	console.log(
-		`\n${letters.length} letter(s) sealed into public/loveletters/sealed/${drafts ? `, ${drafts} draft(s) skipped` : ''}.`,
-	);
+	console.log(`\n${sealed} person(s) sealed into public/loveletters/sealed/.`);
 }
 
 main().catch((err) => {
