@@ -22,3 +22,6 @@ pnpm-debug.log*
 
 # jetbrains setting folder
 .idea/
+
+# love letters: plaintext and keys, local only (see README)
+private/

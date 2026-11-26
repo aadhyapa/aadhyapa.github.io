@@ -1,0 +1,250 @@
+---
+/**
+ * /loveletters: a public landing page with one key field. A friend's key
+ * finds and decrypts their own sealed letter in the browser; see
+ * scripts/seal-loveletters.mjs and src/scripts/loveletters.ts.
+ * Works only with JavaScript, since decryption runs in the browser.
+ */
+import Layout from '../../layouts/Layout.astro';
+import Window from '../../components/Window.astro';
+import StickerButton from '../../components/ui/StickerButton.astro';
+import PixelHeart from '../../components/decor/PixelHeart.astro';
+import '../../styles/letter-prose.css';
+---
+
+<Layout title="Love letters" noindex>
+	<Window title="loveletters" closeHref="/">
+		<div class="ll-gingham gingham">
+			<section class="lock" data-ll-lock>
+				<div class="hearts">
+					<PixelHeart variant="pink" size="1.75rem" />
+					<PixelHeart variant="raspberry" size="2.25rem" />
+					<PixelHeart variant="pink" size="1.75rem" />
+				</div>
+				<h1 class="heading">a letter for you</h1>
+				<p class="lede">
+					If you're someone I love, you have a secret key. Type it in to open
+					the letter I wrote just for you.
+				</p>
+				<form class="form" data-ll-form>
+					<label class="label" for="ll-key">
+						secret key
+					</label>
+					<input
+						id="ll-key"
+						class="input"
+						name="key"
+						type="password"
+						autocomplete="off"
+						autocapitalize="none"
+						spellcheck="false"
+						required
+					/>
+					<label class="show">
+						<input type="checkbox" data-ll-show /> show key
+					</label>
+					<StickerButton type="submit" variant="pink" data-ll-submit>
+						open my letter
+					</StickerButton>
+					<p class="status" role="status" aria-live="polite" data-ll-status></p>
+				</form>
+				<noscript>
+					<p class="status">
+						Letters open in your browser, so this page needs JavaScript.
+					</p>
+				</noscript>
+			</section>
+
+			<article class="sheet" data-ll-letter hidden>
+				<p class="meta" data-ll-date></p>
+				<p class="hand salutation">
+					dear <span data-ll-to></span>,
+				</p>
+				<div class="letter-prose" data-ll-body></div>
+				<p class="hand signoff">all my love, Aadhya</p>
+				<button type="button" class="relock" data-ll-relock>
+					close this letter
+				</button>
+			</article>
+		</div>
+	</Window>
+</Layout>
+
+<script>
+	import '../../scripts/loveletters.ts';
+</script>
+
+<style>
+	.ll-gingham {
+		--gingham-size: 28px;
+		--bleed: var(--space-5);
+		margin: calc(var(--bleed) * -1);
+		padding: var(--space-5) var(--space-6);
+	}
+
+	.lock,
+	.sheet {
+		padding: var(--space-5) var(--space-6) var(--space-6);
+		background: var(--color-white);
+		border: var(--outline-width) solid var(--color-ink);
+		border-radius: var(--radius-window);
+		color: var(--color-text);
+	}
+
+	.lock {
+		display: grid;
+		justify-items: center;
+		gap: var(--space-4);
+		text-align: center;
+	}
+	.lock[hidden],
+	.sheet[hidden] {
+		display: none;
+	}
+	.hearts {
+		display: flex;
+		align-items: end;
+		gap: var(--space-2);
+	}
+	.heading {
+		margin: 0;
+		font-family: var(--font-display);
+		font-size: var(--text-2xl);
+		font-weight: 400;
+		line-height: var(--leading-tight);
+		color: var(--color-ink);
+		text-shadow: 2px 2px 0 var(--color-pink);
+	}
+	.lede {
+		margin: 0;
+		max-width: 38ch;
+		font-size: var(--text-md);
+		line-height: var(--leading-body);
+	}
+
+	.form {
+		display: grid;
+		justify-items: center;
+		gap: var(--space-3);
+		inline-size: min(100%, 22rem);
+	}
+	.label {
+		font-family: var(--font-pixel);
+		font-size: var(--text-sm);
+		font-weight: var(--weight-bold);
+		letter-spacing: 0.08em;
+		text-transform: uppercase;
+		color: var(--color-ink);
+	}
+	.input {
+		box-sizing: border-box;
+		inline-size: 100%;
+		min-block-size: var(--tap-target);
+		padding: var(--space-2) var(--space-4);
+		font: inherit;
+		font-size: var(--text-md);
+		text-align: center;
+		color: var(--color-ink);
+		background: var(--color-pink-light);
+		border: var(--outline-width) solid var(--color-ink);
+		border-radius: var(--radius-pill);
+	}
+	.show {
+		display: inline-flex;
+		align-items: center;
+		gap: var(--space-2);
+		font-size: var(--text-sm);
+		cursor: pointer;
+	}
+	.status {
+		margin: 0;
+		min-block-size: 1.5em;
+		font-size: var(--text-sm);
+		color: var(--color-raspberry);
+	}
+
+	.meta {
+		margin: 0 0 var(--space-2);
+		font-size: var(--text-sm);
+	}
+	.meta:empty {
+		display: none;
+	}
+	.hand {
+		margin: 0;
+		font-family: var(--font-hand);
+		color: var(--color-raspberry);
+	}
+	.salutation {
+		margin-block: var(--space-2) var(--space-4);
+		font-size: var(--text-xl);
+	}
+	.signoff {
+		margin-block-start: var(--space-5);
+		font-size: var(--text-xl);
+		color: var(--color-ink);
+	}
+	.relock {
+		margin-block-start: var(--space-5);
+		padding: 0;
+		font: inherit;
+		font-size: var(--text-sm);
+		color: var(--color-deep-green);
+		text-decoration: underline;
+		text-underline-offset: 0.2em;
+		background: none;
+		border: 0;
+		cursor: pointer;
+	}
+
+	@media (max-width: 43.75rem) {
+		.ll-gingham {
+			--bleed: var(--space-4);
+			padding: var(--space-4);
+		}
+		.lock,
+		.sheet {
+			padding: var(--space-4);
+		}
+		.heading {
+			font-size: var(--text-xl);
+		}
+		.salutation,
+		.signoff {
+			font-size: var(--text-lg);
+		}
+	}
+
+	/* Quiet theme: hairline panels, no gingham, no handwriting. */
+	:global(:root[data-theme='quiet']) .ll-gingham {
+		background-color: var(--color-surface);
+		background-image: none;
+	}
+	:global(:root[data-theme='quiet']) .lock,
+	:global(:root[data-theme='quiet']) .sheet {
+		background: var(--color-surface);
+		border-color: transparent;
+		box-shadow: 0 0 0 1px var(--color-line);
+	}
+	:global(:root[data-theme='quiet']) .heading {
+		text-shadow: none;
+	}
+	:global(:root[data-theme='quiet']) .input {
+		background: transparent;
+		border-color: transparent;
+		box-shadow: 0 0 0 1px var(--color-line);
+	}
+	:global(:root[data-theme='quiet']) .hand {
+		font-family: var(--font-body);
+		color: var(--color-muted);
+	}
+	:global(:root[data-theme='quiet']) .status {
+		color: var(--color-muted);
+	}
+	:global(:root[data-theme='quiet']) .signoff {
+		color: var(--color-ink);
+	}
+	:global(:root[data-theme='quiet']) .relock {
+		color: var(--color-ink);
+	}
+</style>
