@@ -17,6 +17,8 @@ interface Sealed {
 }
 interface Letter {
 	title: string;
+	/** Full salutation line; files sealed before greetings existed lack it. */
+	greeting?: string;
 	date: string | null;
 	html: string;
 }
@@ -127,6 +129,8 @@ function setupLoveLetters() {
 
 	const read = (l: Letter) => {
 		q('[data-ll-title]').textContent = l.title;
+		q('[data-ll-greeting]').textContent =
+			l.greeting ?? `dear ${bundle?.to ?? 'you'},`;
 		q('[data-ll-date]').textContent = formatDate(l.date);
 		// Trusted: written by Aadhya and authenticated by AES-GCM.
 		body.innerHTML = l.html;

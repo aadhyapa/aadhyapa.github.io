@@ -1,8 +1,10 @@
 // Seals the private love letters into encrypted files the site can serve.
 //
 // Reads  private/loveletters/<person>/   (gitignored; plaintext and keys)
-//          person.yml   to: <name>, key: <secret>
-//          *.md         one letter each: title, date, optional draft
+//          person.yml   to: <name>, key: <secret>, optional greeting
+//          *.md         one letter each: title, optional date, greeting, draft
+//
+// The greeting line is the letter's own, else the person's, else "dear <to>,".
 // Writes public/loveletters/sealed/*.json (committed; ciphertext only)
 //
 // Each person's key is stretched with PBKDF2 into an AES-GCM key plus a
@@ -81,6 +83,13 @@ function frontmatter(path, label) {
 	return { data: parseYaml(match[1]) ?? {}, body: match[2].trim() };
 }
 
+function optionalText(value, label, field) {
+	if (value === undefined || value === null) return null;
+	if (typeof value !== 'string' || !value.trim())
+		throw new Error(`${label}: "${field}" must be some text (or leave it out)`);
+	return value.trim();
+}
+
 function readPerson(dir) {
 	const label = `${dir}/person.yml`;
 	const path = join(SRC, dir, 'person.yml');
@@ -97,7 +106,12 @@ function readPerson(dir) {
 		throw new Error(
 			`${label}: key is too short. Use at least ${MIN_KEY_LENGTH} characters; a few random words works well.`,
 		);
-	return { dir, to: data.to.trim(), key: data.key };
+	return {
+		dir,
+		to: data.to.trim(),
+		key: data.key,
+		greeting: optionalText(data.greeting, label, 'greeting'),
+	};
 }
 
 function readLetter(dir, file) {
@@ -113,6 +127,7 @@ function readLetter(dir, file) {
 		file,
 		draft: data.draft === true,
 		title: data.title.trim(),
+		greeting: optionalText(data.greeting, label, 'greeting'),
 		date,
 		body,
 	};
@@ -182,6 +197,7 @@ async function main() {
 			letters: await Promise.all(
 				p.letters.map(async (l) => ({
 					title: l.title,
+					greeting: l.greeting ?? p.greeting ?? `dear ${p.to},`,
 					date: l.date ? l.date.toISOString().slice(0, 10) : null,
 					html: await marked.parse(l.body),
 				})),
