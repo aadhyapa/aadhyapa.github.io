@@ -1,7 +1,8 @@
 /**
- * /loveletters: turn a key into a letter, entirely in the browser.
- * The key is stretched with PBKDF2 into an AES-GCM key plus a lookup id;
- * the id names the sealed file, the AES key opens it. The key never leaves
+ * /loveletters: turn a key into that person's letters, entirely in the
+ * browser. The key is stretched with PBKDF2 into an AES-GCM key plus a
+ * lookup id; the id names the sealed file, the AES key opens it. One letter
+ * opens straight away; several show as an inbox first. The key never leaves
  * the page. A link may carry the key after # (#k=...), which browsers do not
  * send to the server.
  * Parameters must match scripts/seal-loveletters.mjs.
@@ -15,9 +16,13 @@ interface Sealed {
 	ct: string;
 }
 interface Letter {
-	to: string;
+	title: string;
 	date: string | null;
 	html: string;
+}
+interface Bundle {
+	to: string;
+	letters: Letter[];
 }
 
 const enc = new TextEncoder();
@@ -58,8 +63,18 @@ async function derive(key: string) {
 	return { aes, id: toHex(bits.slice(32, 48)) };
 }
 
-/** null when no letter matches the key. */
-async function open(key: string): Promise<Letter | null> {
+const formatDate = (date: string | null) =>
+	date
+		? new Date(`${date}T00:00:00Z`).toLocaleDateString('en-US', {
+				year: 'numeric',
+				month: 'long',
+				day: 'numeric',
+				timeZone: 'UTC',
+			})
+		: '';
+
+/** null when no letters match the key. */
+async function open(key: string): Promise<Bundle | null> {
 	const { aes, id } = await derive(key);
 	const res = await fetch(`/loveletters/sealed/${id}.json`, {
 		cache: 'no-store',
@@ -72,7 +87,7 @@ async function open(key: string): Promise<Letter | null> {
 		aes,
 		fromBase64(sealed.ct),
 	);
-	return JSON.parse(new TextDecoder().decode(plain)) as Letter;
+	return JSON.parse(new TextDecoder().decode(plain)) as Bundle;
 }
 
 function setupLoveLetters() {
@@ -83,35 +98,77 @@ function setupLoveLetters() {
 	const q = <T extends HTMLElement>(sel: string) =>
 		document.querySelector<T>(sel)!;
 	const lock = q('[data-ll-lock]');
+	const inbox = q('[data-ll-inbox]');
+	const list = q('[data-ll-list]');
 	const letter = q('[data-ll-letter]');
 	const input = q<HTMLInputElement>('#ll-key');
 	const show = q<HTMLInputElement>('[data-ll-show]');
 	const submit = q<HTMLButtonElement>('[data-ll-submit]');
 	const status = q('[data-ll-status]');
 	const body = q('[data-ll-body]');
+	const back = q('[data-ll-back]');
 	const scroller = letter.closest<HTMLElement>('.body');
+
+	let bundle: Bundle | null = null;
 
 	show.addEventListener('change', () => {
 		input.type = show.checked ? 'text' : 'password';
 	});
 
-	const reveal = (l: Letter) => {
-		q('[data-ll-to]').textContent = l.to;
-		q('[data-ll-date]').textContent = l.date
-			? new Date(`${l.date}T00:00:00Z`).toLocaleDateString('en-US', {
-					year: 'numeric',
-					month: 'long',
-					day: 'numeric',
-					timeZone: 'UTC',
-				})
-			: '';
+	/** Show exactly one of the three views and move focus into it. */
+	const view = (el: HTMLElement) => {
+		for (const v of [lock, inbox, letter]) v.hidden = v !== el;
+		scroller?.scrollTo({ top: 0 });
+		if (el !== lock) {
+			el.setAttribute('tabindex', '-1');
+			el.focus({ preventScroll: true });
+		}
+	};
+
+	const read = (l: Letter) => {
+		q('[data-ll-title]').textContent = l.title;
+		q('[data-ll-date]').textContent = formatDate(l.date);
 		// Trusted: written by Aadhya and authenticated by AES-GCM.
 		body.innerHTML = l.html;
-		lock.hidden = true;
-		letter.hidden = false;
-		scroller?.scrollTo({ top: 0 });
-		letter.setAttribute('tabindex', '-1');
-		letter.focus({ preventScroll: true });
+		back.hidden = (bundle?.letters.length ?? 0) < 2;
+		view(letter);
+	};
+
+	const showInbox = () => {
+		if (!bundle) return;
+		body.innerHTML = '';
+		list.replaceChildren(
+			...bundle.letters.map((l) => {
+				const li = document.createElement('li');
+				const button = document.createElement('button');
+				button.type = 'button';
+				button.className = 'item';
+				const title = document.createElement('span');
+				title.className = 'item-title';
+				title.textContent = l.title;
+				button.append(title);
+				if (l.date) {
+					const date = document.createElement('span');
+					date.className = 'item-date';
+					date.textContent = formatDate(l.date);
+					button.append(date);
+				}
+				button.addEventListener('click', () => read(l));
+				li.append(button);
+				return li;
+			}),
+		);
+		view(inbox);
+	};
+
+	const unlock = (b: Bundle) => {
+		bundle = b;
+		for (const el of document.querySelectorAll('[data-ll-to]'))
+			el.textContent = b.to;
+		q('[data-ll-count]').textContent =
+			`${b.letters.length} letters, all for you`;
+		if (b.letters.length === 1) read(b.letters[0]);
+		else showInbox();
 	};
 
 	const tryKey = async (key: string) => {
@@ -119,17 +176,17 @@ function setupLoveLetters() {
 		submit.disabled = true;
 		status.textContent = 'unsealing…';
 		try {
-			const l = await open(key);
-			if (l) {
+			const b = await open(key);
+			if (b?.letters.length) {
 				status.textContent = '';
-				reveal(l);
+				unlock(b);
 			} else {
 				status.textContent =
 					"hmm, that key doesn't open anything. check the spelling? 💌";
 			}
 		} catch {
 			status.textContent =
-				'something went wrong opening the letter. try again in a moment.';
+				'something went wrong opening your letters. try again in a moment.';
 		} finally {
 			submit.disabled = false;
 		}
@@ -140,13 +197,17 @@ function setupLoveLetters() {
 		void tryKey(input.value);
 	});
 
-	q('[data-ll-relock]').addEventListener('click', () => {
-		body.innerHTML = '';
-		input.value = '';
-		letter.hidden = true;
-		lock.hidden = false;
-		input.focus();
-	});
+	back.addEventListener('click', showInbox);
+
+	for (const button of document.querySelectorAll('[data-ll-relock]'))
+		button.addEventListener('click', () => {
+			bundle = null;
+			body.innerHTML = '';
+			list.replaceChildren();
+			input.value = '';
+			view(lock);
+			input.focus();
+		});
 
 	// #k=<key> opens straight away; drop it from the address bar after reading.
 	const hashKey = new URLSearchParams(location.hash.slice(1)).get('k');
